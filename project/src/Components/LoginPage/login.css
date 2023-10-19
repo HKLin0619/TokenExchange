@@ -1,11 +1,13 @@
 .container{
     display: flex;
     flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     margin: auto;
-    margin-top: 200px;
     width: 600px;
     background: white;
-    padding-bottom: 30px;
 }
 
 .header{
@@ -59,13 +61,16 @@
     outline: none;
     color: #797979;
     font-size: 19px;
+    
 }
 
 .forgot-password{
-    padding-left: 62px;
-    margin-top: 27px;
+    padding-left: 65px;
+    margin-top: 10px;
     color: red;
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: bolder;
+    text-decoration: underline;
     cursor: pointer;
 }
 
@@ -87,9 +92,4 @@
     font-size: 19px;
     font-weight: 700;
     cursor: pointer;
-}
-
-.gray{
-    background: #eaeaea;
-    color: #676767 ;
 }

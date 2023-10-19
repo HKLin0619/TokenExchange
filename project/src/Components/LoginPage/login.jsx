@@ -29,10 +29,11 @@ export const login = () => {
 
       <div className='submit-container'>
         <div className='submit'>Login</div>
-        <div className='submit'>Sign Up</div>
       </div>
 
     </div>
+
+    
   )
 }
 
