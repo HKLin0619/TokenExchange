@@ -1,10 +1,10 @@
 import './App.css';
-import LoginPage from './Components/LoginPage/login';
+import Navbar from './Components/IndexNavbar/Navbar.jsx';
 
 function App() {
   return (
     <div>
-      <LoginPage/>
+      <Navbar/>
     </div>
   );
 }
