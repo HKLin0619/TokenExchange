@@ -15,13 +15,6 @@ export const MenuItems = [
     },
 
     {
-        title : "Contact",
-        url : "/contact",
-        className : "nav-links",
-        icon : "fa-solid fa-address-card"
-    },
-
-    {
         title : "Login",
         url : "/login",
         className : "nav-links-mobile",

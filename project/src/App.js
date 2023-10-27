@@ -1,12 +1,15 @@
 import './App.css';
-import Navbar from './Components/Navbar/Navbar.jsx';
+import About from './Routes/About';
+import Home from './Routes/Home';
+import { Route, Routes } from 'react-router-dom';
 
-function App() {
+export default function App() {
   return (
-    <div>
-      <Navbar/>
+    <div className='App'>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/about' element={<About/>}/>
+      </Routes>
     </div>
   );
 }
-
-export default App;
