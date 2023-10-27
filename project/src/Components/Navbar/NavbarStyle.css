@@ -73,7 +73,7 @@ button:hover{
 display: none;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 850px) {
     .navbarIteams{
         z-index: 99;
     }
