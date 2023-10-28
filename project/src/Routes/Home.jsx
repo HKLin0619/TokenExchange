@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../Components/Navbar/Navbar';
 import Background from '../Components/Background/Background';
+import FixedContent from '../Components/Content/FixedContent';
 
 function Home() {
   return (
@@ -15,6 +16,7 @@ function Home() {
         url="url"
         btnClass="show"
         />
+        <FixedContent/>
     </>
   )
 }
