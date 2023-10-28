@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../Components/Navbar/Navbar';
 import Background from '../Components/Background/Background';
 import FixedContent from '../Components/Content/FixedContent';
+import SelectContent from '../Components/Content/SelectContent';
 
 function Home() {
   return (
@@ -17,6 +18,7 @@ function Home() {
         btnClass="show"
         />
         <FixedContent/>
+        <SelectContent/>
     </>
   )
 }

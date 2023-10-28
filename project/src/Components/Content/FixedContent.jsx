@@ -3,7 +3,7 @@ import "./FixedContentStyle.css";
 
 const Content = () => {
     return(
-        <div className="content">
+        <div className="fixedContent">
             <h1>Tittle</h1>
             <p>This is some description put in here.</p>
 
