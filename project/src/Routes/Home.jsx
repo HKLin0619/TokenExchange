@@ -1,8 +1,9 @@
 import React from 'react'
 import Navbar from '../Components/Navbar/Navbar';
 import Background from '../Components/Background/Background';
-import FixedContent from '../Components/Content/FixedContent';
-import SelectContent from '../Components/Content/SelectContent';
+import FixedContent from '../Components/Content/HomeFixedContent';
+import SelectContent from '../Components/Content/HomeSelectContent';
+import Footer from '../Components/Footer/Footer';
 
 function Home() {
   return (
@@ -19,6 +20,7 @@ function Home() {
         />
         <FixedContent/>
         <SelectContent/>
+        <Footer/>
     </>
   )
 }

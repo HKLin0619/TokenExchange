@@ -1,6 +1,6 @@
-import "./SelectContentStlye.css"
+import "./HomeSelectContentStlye.css"
 
-function SelectContentData(props) {
+function HomeSelectContentData(props) {
   return (
     <div className="c-card">
         <div className="c-image">
@@ -12,4 +12,4 @@ function SelectContentData(props) {
   )
 }
 
-export default SelectContentData
+export default HomeSelectContentData

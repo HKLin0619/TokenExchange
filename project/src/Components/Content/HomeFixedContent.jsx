@@ -1,7 +1,7 @@
-import ContentData from "./FixedContentData";
-import "./FixedContentStyle.css";
+import ContentData from "./HomeFixedContentData";
+import "./HomeFixedContentStyle.css";
 
-const Content = () => {
+const HomeFixedContent = () => {
     return(
         <div className="fixedContent">
             <h1>Tittle</h1>
@@ -25,4 +25,4 @@ const Content = () => {
         </div>
     );
 };
-export default Content;
+export default HomeFixedContent;

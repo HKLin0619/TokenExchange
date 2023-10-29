@@ -1,7 +1,7 @@
-import "./SelectContentStlye.css"
-import SelectContentData from "./SelectContentData";
+import "./HomeSelectContentStlye.css"
+import SelectContentData from "./HomeSelectContentData";
 
-function SelectContent() {
+function HomeSelectContent() {
   return (
     <div className='selectContent'>
         <h1>Tittle</h1>
@@ -30,4 +30,4 @@ function SelectContent() {
   )
 }
 
-export default SelectContent
+export default HomeSelectContent

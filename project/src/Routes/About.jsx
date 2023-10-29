@@ -1,6 +1,8 @@
 import React from 'react'
 import Navbar from '../Components/Navbar/Navbar';
 import Background from '../Components/Background/Background';
+import Footer from '../Components/Footer/Footer';
+import AboutContent from '../Components/Content/AboutContent';
 
 function About() {
   return (
@@ -12,6 +14,8 @@ function About() {
         title="About"
         btnClass="hide"
         />
+        <AboutContent/>
+        <Footer/>
     </>
   )
 }

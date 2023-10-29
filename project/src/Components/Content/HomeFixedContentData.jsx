@@ -1,7 +1,7 @@
 import { Component } from "react";
-import "./FixedContentStyle.css";
+import "./HomeFixedContentStyle.css";
 
-class ContentData extends Component{
+class HomeFixedContentData extends Component{
     render(){
         return(
             <div className={this.props.className}>
@@ -18,4 +18,4 @@ class ContentData extends Component{
     }
 }
 
-export default ContentData;
+export default HomeFixedContentData;
