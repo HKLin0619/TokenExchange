@@ -1,45 +1,40 @@
-import React from 'react'
-import "./LoginSignUpContentStyle.css"
+import React from 'react';
+import './LoginSignUpContentStyle.css'
+import { useState } from 'react';
 
-function LoginSignUpContent() {
-    const [signIn, toggle] = React.useState(true);
+const LoginSignUpContent = () => {
+
+    const [action,setAction] = useState("Sign Up");
+
     return (
-        <div className='Container'>
-            <div className='SignUpContainer' signinIn={signIn}>
-                <div className='Form'>
-                    <h1>Create Account</h1>
-                    <input type='text' placeholder='Name'/>
-                    <input type='email' placeholder='Email'/>
-                    <input type='password' placeholder='Password'/>=
-                    <button>Sign Up</button>
-                </div>
+        <div className='container'>
+            <div className='header'>
+                <div className='text'>{action}</div>
+                <div className='underline'></div>
             </div>
+            <div className='inputs'>
+                {action==="Login"?<div></div>:                
+                <div className='input'>
+                    <i className='fa-solid fa-user'/>
+                    <input type='text' placeholder='Username'/>
+                </div>}
 
-            <div className='SignInContainer' signinIn={signIn}>
-                <div className='Form'>
-                    <h1>Sign in</h1>
+                <div className='input'>
+                    <i className='fa-solid fa-envelope'/>
                     <input type='email' placeholder='Email'/>
+                </div>
+                <div className='input'>
+                    <i className='fa-solid fa-lock'/>
                     <input type='password' placeholder='Password'/>
-                    <div className='forgot-password'>Forgot your password ?</div>
-                    <button>Sign In</button>
                 </div>
             </div>
-
-            <div className='OverlayContainer' signinIn={signIn}>
-                <div className='Overlay' signinIn={signIn}>
-                    <div className='LeftOverlayPanel' signinIn={signIn}>
-                        <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
-                        <button className='GhostButton' onClick={() => toggle(true)}>Sign In</button>
-                    </div>
-
-                    <div className='RightOverlayPanel' signinIn={signIn}>
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter Your personal details and start journey with us</p>
-                        <button className='GhostButton' onClick={() => toggle(false)}>Sign Up</button>
-                    </div>
+            {action==="Sign Up"?<div></div>:  
+            <div className='forgot-password'>Lost Password ? <span>Click Here !</span></div>}
+                <div className='submit-container'>
+                    <div className={action==="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
+                    <div className={action==="Sign Up"?"submit gray":"submit"} onClick={()=>{setAction("Login")}}>Login</div>
                 </div>
-            </div>
+
         </div>
     )
 }
