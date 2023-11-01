@@ -1,42 +1,44 @@
-import React from 'react';
-import './LoginSignUpContentStyle.css'
-import { useState } from 'react';
+import React from 'react'
+import "./LoginSignUpContentStyle.css";
 
-const LoginSignUpContent = () => {
+function LoginSignUpContent() {
+  return (
+    <div className="main">
 
-    const [action,setAction] = useState("Sign Up");
+        <div className="sub-main">
 
-    return (
-        <div className='container'>
-            <div className='header'>
-                <div className='text'>{action}</div>
+            <div className='title'>
+                <h1>ERC 20 Tokem Exchange</h1>
                 <div className='underline'></div>
             </div>
+
             <div className='inputs'>
-                {action==="Login"?<div></div>:                
                 <div className='input'>
-                    <i className='fa-solid fa-user'/>
-                    <input type='text' placeholder='Username'/>
-                </div>}
+                    <i className="fa-solid fa-user"/>
+                    <input type="text" placeholder="Username" className="name"/>
+                </div>
 
                 <div className='input'>
-                    <i className='fa-solid fa-envelope'/>
-                    <input type='email' placeholder='Email'/>
-                </div>
-                <div className='input'>
-                    <i className='fa-solid fa-lock'/>
-                    <input type='password' placeholder='Password'/>
+                    <i className="fa-solid fa-lock"/>
+                    <input type="password" placeholder="Password" className="name"/>
                 </div>
             </div>
-            {action==="Sign Up"?<div></div>:  
-            <div className='forgot-password'>Lost Password ? <span>Click Here !</span></div>}
-                <div className='submit-container'>
-                    <button className={action==="Login"?"submit gray":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</button>
-                    <button className={action==="Sign Up"?"submit gray":"submit"} onClick={()=>{setAction("Login")}}>Login</button>
-                </div>
 
+            <div className='forgot-remember'>
+                <label><input type='checkbox'/>Remember Me</label>
+                <a href="/">Forgot password ?</a>
+            </div>
+
+            <button className='btn'>Login</button>
+
+            <div className="signin-signup">
+                <p>Don't have an account ? <a href='/' className='signup-link'>Sign Up</a></p>
+            </div>
+            
         </div>
-    )
+       
+    </div>
+  )
 }
 
 export default LoginSignUpContent
