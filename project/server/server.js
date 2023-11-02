@@ -2,10 +2,6 @@ const express = require('express')
 const app = express()
 const database = require('./database')
 
-// app.get("/", (req, res) => {
-//     res.json({"users": ["userOne", "userTwo", "userThree"]})
-// })
-
 app.use(express.static('public'));
 app.use(express.json());
 
