@@ -17,15 +17,13 @@ app.post('/login', (req, res) => {
     database.query('SELECT * FROM "User" WHERE "userName" = $1 AND "password" = $2', [username, password]).then(result => {
         //const dbPassword = result.rows[0].password;
         if (result.rows.length === 1) {
-            res.send('Login Successful !');
-            // alert('Login Successful !');
+            return res.status(200).send({status: 200, message: 'Login Successful!'});
         } else {
-            res.send('Login Successful !');
-            // alert('Login failed, please check username and password !');
+            return res.status(400).send({status: 400, message: 'Login Unsuccessful!'});
         }
     }).catch(error => {
         console.error('Database Error: ', error);
-        res.send('Login failed and a database error occurred !')
+        return res.status(401).send({status: 401, message: 'Login failed and a database error occurred!'});
     });
 
 });

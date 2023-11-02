@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import "./LoginSignUpContentStyle.css";
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
+
 
 function LoginSignUpContent() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const handleLogin = async () => {
 
         const response = await fetch('/login', {
@@ -19,6 +21,16 @@ function LoginSignUpContent() {
         const data = await response.json();
 
         console.log(data);
+        if (data.status === 200){
+            navigate("/admin");
+            // return <Navigate to = "/admin" replace/>
+            
+            // redirect("/admin");
+            console.log("abc");
+        }
+        else{
+            alert(data.message);
+        }
 
     }
 
