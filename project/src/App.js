@@ -1,31 +1,31 @@
-//import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginSignUp from './Routes/LoginSignUp';
 
 function App() {
 
-  // const [backendData, setBackendData] = useState([{}])
+  const [backendData, setBackendData] = useState([{}])
 
-  // useEffect(() => {
-  //   fetch("/api").then(
-  //     response => response.json()
-  //   ).then(
-  //     data => {
-  //       setBackendData(data)
-  //     }
-  //   )
-  // },[])
+  useEffect(() => {
+    fetch("/api").then(
+      response => response.json()
+    ).then(
+      data => {
+        setBackendData(data)
+      }
+    )
+  },[])
 
   return (
-    <LoginSignUp/>
-    // <div>
-    //   {(typeof backendData.users === 'undefined') ? (
-    //     <p>Loading...</p>
-    //   ) : (
-    //     backendData.users.map((user, i) => (
-    //       <p key={i}>{user}</p>
-    //     ))
-    //   )}
-    // </div>
+    //<LoginSignUp/>
+    <div>
+      {(typeof backendData.users === 'undefined') ? (
+        <p>Loading...</p>
+      ) : (
+        backendData.users.map((user, i) => (
+          <p key={i}>{user}</p>
+        ))
+      )}
+    </div>
   )
 }
 
