@@ -14,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginSignUp/>} />
           <Route path="/admin" element={<AdminHome/>} />
-          {/* <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setEmail={setEmail} />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
