@@ -1,10 +1,10 @@
 import React from 'react';
-import LoginSignUp from './Routes/LoginSignUp';
+import Login from './Routes/Login';
 
 function App() {
 
   return (
-    <LoginSignUp/>
+    <Login/>
   )
 }
 
