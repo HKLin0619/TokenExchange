@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { useNavigate  } from 'react-router-dom';
 import "./LoginContentStyle.css";
 
 function LoginSignUpContent() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
 
@@ -19,6 +21,11 @@ function LoginSignUpContent() {
         const data = await response.json();
 
         console.log(data);
+
+        if (data.success) {
+            const userType = data.userType;
+            navigate(`/${userType}dashboard`);
+        }
 
     }
 
