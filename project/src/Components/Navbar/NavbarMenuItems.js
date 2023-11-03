@@ -1,29 +1,35 @@
-export const MenuItems = [
+export const AdminMenuItems = [
 
     {
-        title : "Home",
+        title : "Token Minting",
         url : "/",
         className : "nav-links",
-        icon : "fa-solid fa-house"
+        icon : "fa-solid fa-coins"
     },
 
     {
-        title : "About",
-        url : "/about",
+        title : "View Token",
+        url : "/",
         className : "nav-links",
-        icon : "fa-solid fa-circle-info"
+        icon : "fa-solid fa-gauge-high"
     },
 
     {
-        title : "Login",
-        url : "/login",
-        className : "nav-links-mobile",
+        title : "Logout",
+        url : "/",
+        className : "nav-links",
+        icon : "fa-solid fa-right-from-bracket"
     },
 
+]
+
+export const BuyerMenuItems = [
+
     {
-        title : "Sign Up",
-        url : "/signup",
-        className : "nav-links-mobile",
+        title : "Logout",
+        url : "/",
+        className : "nav-links",
+        icon : "fa-solid fa-right-from-bracket"
     },
 
 ]

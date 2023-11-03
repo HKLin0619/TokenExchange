@@ -3,7 +3,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 30px;
     box-shadow: 0 5px 15px 0 rgb(0, 0, 0, 0.25);
     height: 80px;
     width: 95%;
@@ -19,6 +18,7 @@
     color: black;
     font-size: 1.2rem;
     cursor: pointer;
+    padding-left: 30px;
 }
 
 .nav-menu{
@@ -49,31 +49,6 @@
     transition: all 0.2ms ease-in-out;
 }
 
-.nav-links-mobile{
-    display: none;
-}
-
-button{
-    background-color: black;
-    color: white;
-    margin-left: 20px;
-    padding: 0.5rem 1rem;
-    white-space: nowrap;
-    border-radius: 0.3rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2ms ease-in-out;
-    width: 100px;
-    height: 45px;
-}
-
-button:hover{
-    background-color: #808080;
-    color: black;
-}
-
 .menu-icons{
 display: none;
 }
@@ -95,7 +70,7 @@ display: none;
         left: -100%;
         opacity: 0;
         align-items: stretch;
-        padding: 80px 0 30px 0;
+        padding: 80px 0 20px ;
         margin: 0px;
         z-index: -1;
         transition: 0.3s ease-in-out;
@@ -107,13 +82,17 @@ display: none;
         opacity: 1;
         z-index: -1;
         transition: 0.3s ease-in-out;
+ 
     }
 
     .nav-links{
         display: block;
-        width: 100%;
+        text-align: center;
+        width: 95%;
         font-size: 1.2rem;
+        margin-left: 1rem;
         padding: 2rem 0;
+        border-radius: 6px;
     }
     
     .nav-links:hover{
@@ -121,26 +100,8 @@ display: none;
         transition: none;
     }
 
-    .nav-links-mobile{
-        display: block;
-        text-align: center;
-        padding: 1.5rem;
-        margin: auto;
-        border-radius: 4px;
-        width: 80%;
-        background: black;
-        text-decoration: none;
-        color: white;
-        font-size: 1.2rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-    }
-
-    button{
-        display: none;
-    }
-
     .menu-icons{
+        padding-right: 30px;
         display: block;
         cursor: pointer;
     }
