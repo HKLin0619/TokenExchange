@@ -73,7 +73,7 @@
 }
 
 .input input::placeholder{
-  color: black;
+  color: #DCDCDC;
   font-weight: 600;
 }
 
@@ -137,6 +137,7 @@
 .signin-signup p a:hover{
   text-decoration: underline;
 }
+
 
 
 
