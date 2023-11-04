@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { useNavigate  } from 'react-router-dom';
-import "./LoginContentStyle.css";
+import "./LoginSignUpContentStyle.css";
+import { Navigate, redirect, useNavigate } from 'react-router-dom';
+
 
 function LoginSignUpContent() {
 
@@ -12,25 +13,21 @@ function LoginSignUpContent() {
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type' : 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username,password }),
         });
 
         const data = await response.json();
 
         console.log(data);
-        if (data.success) {
-            const userType = data.userType;
-            navigate(`/${userType}dashboard`);
-        } else {
+        if (data.status === 200){
+            navigate("/admin");
+        
+        }
+        else{
             alert(data.message);
         }
-
-        // if (data.success) {
-        //     const userType = data.userType;
-        //     navigate(`/${userType}dashboard`);
-        // }
 
     }
 
