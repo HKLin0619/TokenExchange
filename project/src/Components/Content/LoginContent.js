@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import "./LoginSignUpContentStyle.css";
-import { Navigate, redirect, useNavigate } from 'react-router-dom';
-
+import { useNavigate  } from 'react-router-dom';
+import "./LoginContentStyle.css";
 
 function LoginSignUpContent() {
 
@@ -30,6 +29,11 @@ function LoginSignUpContent() {
         }
         else{
             alert(data.message);
+        }
+
+        if (data.success) {
+            const userType = data.userType;
+            navigate(`/${userType}dashboard`);
         }
 
     }

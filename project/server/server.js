@@ -2,10 +2,6 @@ const express = require('express')
 const app = express()
 const database = require('./database')
 
-// app.get("/", (req, res) => {
-//     res.json({"users": ["userOne", "userTwo", "userThree"]})
-// })
-
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -15,7 +11,6 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
 
     database.query('SELECT * FROM "User" WHERE "userName" = $1 AND "password" = $2', [username, password]).then(result => {
-        //const dbPassword = result.rows[0].password;
         if (result.rows.length === 1) {
             return res.status(200).send({status: 200, message: 'Login Successful!'});
         } else {

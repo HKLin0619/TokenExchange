@@ -1,7 +1,9 @@
 import React from 'react';
-import LoginSignUp from './Routes/LoginSignUp';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import AdminHome from './Routes/Admin/Home';
+import { Route, Routes } from 'react-router-dom';
+import Login from './Routes/Login';
+import AdminDashboard from './Routes/Admin/Dashboard';
+import BuyerDashboard from './Routes/Buyer/Dashboard';
+import FinancierDashboard from './Routes/Financier/Dashboard'
 
 function App() {
 
@@ -9,15 +11,16 @@ function App() {
   //   <LoginSignUp/>
   // )
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginSignUp/>} />
-          <Route path="/admin" element={<AdminHome/>} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-);
+    <>
+      <Routes>
+        <Route path='/' element={<Login/>}/>
+        <Route path='/admindashboard' element={<AdminDashboard/>}/>
+        <Route path='/buyerdashboard' element={<BuyerDashboard/>}/>
+        <Route path='/financierdashboard' element={<FinancierDashboard/>}/>
+      </Routes>
+    </>
+  )
+
 }
 
 export default App

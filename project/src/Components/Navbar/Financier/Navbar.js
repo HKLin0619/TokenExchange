@@ -1,6 +1,6 @@
 import  { Component } from 'react';
-import "./NavbarStyle.css";
-import { MenuItems } from "./NavbarMenuItems";
+import "../NavbarStyle.css";
+import { FinancierMenuItems } from "../NavbarMenuItems";
 import { Link } from 'react-router-dom';
 
 class Navbar extends Component{
@@ -18,7 +18,7 @@ class Navbar extends Component{
                 <i className={this.state.clicked ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'}></i>
             </div>
             <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-                {MenuItems.map((item, index) => {
+                {FinancierMenuItems.map((item, index) => {
                     return(
                         <li key={index}>
                             <Link className={item.className} to={item.url}>
@@ -28,13 +28,6 @@ class Navbar extends Component{
                     );
                 })}
 
-                <Link to={MenuItems[2].url}>
-                    <button>{MenuItems[2].title}</button>
-                </Link>
-
-                <Link to={MenuItems[3].url}>
-                    <button>{MenuItems[3].title}</button>
-                </Link>
 
             </ul>
         </nav>
