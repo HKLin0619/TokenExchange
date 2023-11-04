@@ -27,4 +27,9 @@ app.post('/login', (req, res) => {
 
 });
 
+// Web3.js route
+app.use('/web3', require('./routes/web3'))
+
+
+
 app.listen(5000, () => { console.log("Server started on port 5000") })
