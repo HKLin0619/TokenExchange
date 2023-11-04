@@ -12,11 +12,14 @@ app.post('/login', (req, res) => {
 
     database.query('SELECT * FROM "User" WHERE "userName" = $1 AND "password" = $2', [username, password]).then(result => {
         if (result.rows.length === 1) {
-            return res.status(200).send({status: 200, message: 'Login Successful!'});
+            const userType = result.rows[0].userType;
+            res.json({ success: true, userType });
+            // return res.status(200).send({status: 200, message: 'Login Successful!'});
         } else {
             return res.status(400).send({status: 400, message: 'Login Unsuccessful!'});
         }
     }).catch(error => {
+        res.json({ success: false });
         console.error('Database Error: ', error);
         return res.status(401).send({status: 401, message: 'Login failed and a database error occurred!'});
     });
