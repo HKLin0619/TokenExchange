@@ -27,11 +27,6 @@ function LoginSignUpContent() {
             alert(data.message);
         }
 
-        // if (data.success) {
-        //     const userType = data.userType;
-        //     navigate(`/${userType}dashboard`);
-        // }
-
     }
 
   return (

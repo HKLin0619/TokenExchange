@@ -2,7 +2,7 @@ export const AdminMenuItems = [
 
     {
         title : "Token Minting",
-        url : "/",
+        url : "/MintToken",
         className : "nav-links",
         icon : "fa-solid fa-coins"
     },
