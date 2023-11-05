@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate  } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,7 +8,46 @@ function LoginSignUpContent() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const savedRememberMe = localStorage.getItem('rememberMe');
+        if (savedRememberMe) {
+            setRememberMe(savedRememberMe === 'true');
+        }
+
+        const savedUsername = localStorage.getItem('username');
+        const savedPassword = localStorage.getItem('password');
+    
+        if (savedUsername) {
+            setUsername(savedUsername);
+        }
+    
+        if (savedPassword) {
+            setPassword(savedPassword);
+        }
+    
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('rememberMe', rememberMe);
+    }, [rememberMe]);
+
+    // useEffect(() => {
+
+    //     const savedUsername = localStorage.getItem('username');
+    //     const savedPassword = localStorage.getItem('password');
+
+    //     if (savedUsername) {
+    //         setUsername(savedUsername);
+    //     }
+
+    //     if (savedPassword) {
+    //         setPassword(savedPassword);
+    //     }
+
+    // }, []);
 
     const handleLogin = async () => {
 
@@ -84,6 +123,14 @@ function LoginSignUpContent() {
 
         }
 
+        if (rememberMe) {
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+        } else {
+            localStorage.removeItem('username');
+            localStorage.removeItem('password');
+        }
+
     }
 
   return (
@@ -133,7 +180,14 @@ function LoginSignUpContent() {
             </div>
 
             <div className='forgot-remember'>
-                <label><input type='checkbox'/>Remember Me</label>
+                <label>
+                    <input 
+                        type='checkbox'
+                        checked={rememberMe}
+                        onChange={() => setRememberMe(!rememberMe)}
+                    />
+                    Remember Me
+                </label>
                 <a href="/">Forgot password ?</a>
             </div>
 
