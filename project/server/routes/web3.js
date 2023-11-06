@@ -25,7 +25,7 @@ router.post('/mintToken', async (req, res) => {
 
     const result = await tokenContract.deploy({
         data: bytecode,
-        arguments: [tokenSymbol, tokenName.Name, noOfToken], // Use noOfToken as totalSupply
+        arguments: [tokenName.Name, tokenSymbol, noOfToken], // Use noOfToken as totalSupply
     })
         .send({
             from: '0x71Ea4935dAA0F90124f870DDd788AFD17c65F6F3',

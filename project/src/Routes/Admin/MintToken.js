@@ -24,7 +24,6 @@ function MintToken() {
       }).then(res => res.json())
 
       if(response.status === 200){
-        // console.log(contractAddress);
         console.log(response.message)
       } else {
         console.log(response.message)
