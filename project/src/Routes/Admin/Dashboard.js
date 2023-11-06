@@ -1,13 +1,14 @@
 import React from 'react'
 import Navbar from '../../Components/Navbar/Admin/Navbar'
-import Background from '../../Components/Background/Background'
+import FirstColumnContent from '../../Components/Content/FirstColumn'
+import '../Background.css'
 
 function Dashboard() {
   return (
-    <>
-        <Navbar/>
-        <Background/>
-    </>
+    <div className='main-content'>
+        <Navbar/>  
+        <FirstColumnContent/>
+    </div>
   )
 }
 

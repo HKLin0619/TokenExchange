@@ -1,5 +1,5 @@
 .navbarIteams{
-    background-color: white;
+    background-color: black;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,7 +15,7 @@
 }
 
 .navbar-logo{
-    color: black;
+    color: white;
     font-size: 1.2rem;
     cursor: pointer;
     padding-left: 30px;
@@ -31,7 +31,7 @@
 
 .nav-links{
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 1rem;
     font-weight: 600;
     padding: 0.7rem 1rem;
@@ -43,8 +43,8 @@
 }
 
 .nav-links:hover{
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
     border-radius: 4px;
     transition: all 0.2ms ease-in-out;
 }
@@ -62,16 +62,16 @@ display: none;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        background: white;
-        width: 100%;
+        background: black;
+        width: 95%;
         height: auto;
         position: absolute;
         top: 0;
         left: -100%;
         opacity: 0;
         align-items: stretch;
-        padding: 80px 0 20px ;
-        margin: 0px;
+        padding: 80px 12px 12px 12px ;
+        margin: 0;
         z-index: -1;
         transition: 0.3s ease-in-out;
         border-radius: 13px;
@@ -88,15 +88,14 @@ display: none;
     .nav-links{
         display: block;
         text-align: center;
-        width: 95%;
+        width: 100%;
         font-size: 1.2rem;
-        margin-left: 1rem;
         padding: 2rem 0;
         border-radius: 6px;
     }
     
     .nav-links:hover{
-        background: black;
+        background: white;
         transition: none;
     }
 
@@ -108,6 +107,6 @@ display: none;
 
     .menu-icons i{
         font-size: 1.2rem;
-        color: black;
+        color: white;
     }
 }
