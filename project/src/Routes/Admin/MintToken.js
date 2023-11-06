@@ -24,6 +24,7 @@ function MintToken() {
       }).then(res => res.json())
 
       if(response.status === 200){
+        // console.log(contractAddress);
         console.log(response.message)
       } else {
         console.log(response.message)
@@ -37,7 +38,7 @@ function MintToken() {
               <div class="d-flex flex-column mb-3">
                 <form onSubmit={handleSubmit}>
                   <div class="p-2 row">
-                      <label for="tokenSymbol" class="text-label col-sm-3">Token Name:</label>
+                      <label for="tokenSymbol" class="text-label col-sm-2">Token Name:</label>
                       <input
                           type="text"
                           id="tokenSymbol"
@@ -45,19 +46,19 @@ function MintToken() {
                           placeholder="Token Name"
                           value={formData.tokenSymbol}
                           onChange={handleInputChange}
-                          class="col-sm-4"
+                          class="col-sm-3"
                       />
                   </div>
                   <div class="p-2 row">
-                      <label for="noOfToken" class="text-label col-sm-3">Number of Tokens:</label>
+                      <label for="noOfToken" class="text-label col-sm-2">Number of Tokens:</label>
                       <input
                           type="text"
                           id="noOfToken"
                           name="noOfToken"
-                          placeholder="Input 2"
+                          placeholder="Number of Token"
                           value={formData.noOfToken}
                           onChange={handleInputChange}
-                          class="col-sm-4"
+                          class="col-sm-3"
                       />
                   </div>
                   <button type='submit'>Submit</button>
