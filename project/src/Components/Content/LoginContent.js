@@ -12,42 +12,24 @@ function LoginSignUpContent() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const savedRememberMe = localStorage.getItem('rememberMe');
-        if (savedRememberMe) {
-            setRememberMe(savedRememberMe === 'true');
-        }
-
         const savedUsername = localStorage.getItem('username');
         const savedPassword = localStorage.getItem('password');
-    
+        const savedRememberMe = localStorage.getItem('rememberMe');
         if (savedUsername) {
             setUsername(savedUsername);
         }
-    
         if (savedPassword) {
             setPassword(savedPassword);
         }
-    
+        if (savedRememberMe) {
+            setRememberMe(savedRememberMe === 'true');
+        }
+        
     }, []);
 
     useEffect(() => {
         localStorage.setItem('rememberMe', rememberMe);
     }, [rememberMe]);
-
-    // useEffect(() => {
-
-    //     const savedUsername = localStorage.getItem('username');
-    //     const savedPassword = localStorage.getItem('password');
-
-    //     if (savedUsername) {
-    //         setUsername(savedUsername);
-    //     }
-
-    //     if (savedPassword) {
-    //         setPassword(savedPassword);
-    //     }
-
-    // }, []);
 
     const handleLogin = async () => {
 
