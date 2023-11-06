@@ -23,7 +23,7 @@ router.post('/mintToken', async (req, res) => {
         data: bytecode,
         arguments: [tokenSymbol, tokenName.Name , noOfToken]
     }).send({
-        from: "0x59f646aa857AA5E6a6dff4e834acD91C7Fbe667E",
+        from: "0x4d7419a9834C5e9B5662FA5B1956e64C2d9e7926",
         gas: 6721975,
         gasPrice: 20000000000
     })
