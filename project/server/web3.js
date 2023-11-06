@@ -5,3 +5,4 @@ const tokenContract = new web3.eth.Contract(require('./assets/contractABI'))
 
 module.exports.web3 = web3;
 module.exports.tokenContract = tokenContract
+

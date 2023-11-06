@@ -9,7 +9,7 @@ export const AdminMenuItems = [
 
     {
         title : "View Token",
-        url : "/",
+        url : "/viewToken",
         className : "nav-links",
         icon : "fa-solid fa-gauge-high"
     },
