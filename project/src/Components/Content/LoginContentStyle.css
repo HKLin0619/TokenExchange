@@ -120,6 +120,11 @@
   margin-top: 30px;
 }
 
+.btn:hover {
+  background: white;
+  color: black;
+}
+
 .signin-signup {
   font-size: 0.9em;
   color: black;
