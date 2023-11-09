@@ -29,7 +29,7 @@ router.post('/mintToken', async (req, res) => {
         arguments: [tokenName.Name, tokenSymbol, noOfToken], // Use noOfToken as totalSupply
     })
     .send({
-        from: '0x65258e91F1b298C0056E36d344A3dbdbd9FCF7Ab',
+        from: '0x340E8b57D12A8F94833E104Eb7E09351DcF98A75',
         gas: 6721975,
         gasPrice: 20000000000,
     })
@@ -58,7 +58,7 @@ router.get('/viewToken', async (req, res) => {
         // select * from transciton 
 
         // Contract address and ABI (replace with your contract details)
-        const contractAddress = '0x8c36b2772f73eb9c51f32cc6d825f5467ce1dbe2';
+        const contractAddress = '0x277091b0174e3b9e83d952607c7f76f7b183676c';
 
         // Create a contract instance
         const contract = new web3.eth.Contract(contractAbi, contractAddress);
