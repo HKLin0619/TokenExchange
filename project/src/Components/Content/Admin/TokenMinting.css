@@ -1,15 +1,15 @@
-.main {
+.tm-main {
     text-align: center;
     justify-content: center;
     display: flex; 
     width: 100%;
     height: 100vh;
-    background: url("https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&q=80&w=1932&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background: url("https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     background-size: cover;
     background-position: center;
   }
   
-  .sub-main {
+  .tm-sub-main {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -24,81 +24,83 @@
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
   }
   
-  .title {
+  .tm-title {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  .title h1{
-    font-size: 26px;
-    color: black;
+  .tm-title h1{
+    font-size: 30px;
+    color: white;
   }
   
-  .underline {
+  .tm-underline {
     width: 61px;
     height: 6px;
-    background: black;
+    background: white;
     border-radius: 9px;
   }
   
-  .inputs {
+  .tm-inputs {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
     align-items: center;
   }
   
-  .input{
+  .tm-input{
     display: flex;
     align-items: center;
     margin-top: 20px;
     width: 350px;
     height: 50px;
     border-radius: 6px;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid white;
   } 
   
   
-  .input input{
+  .tm-input input{
     height: 100%;
     width: 100%;
     background: transparent;
     border: none;
     outline: none;
-    color: black;
+    color: white;
     font-size: 16px;
+    font-weight: 600;
     padding: 0 20px 0 5px;
   }
   
-  .input input::placeholder{
-    color: #DCDCDC;
+  .tm-input input::placeholder{
+    color: #808080;
     font-weight: 600;
   }
   
-  .input i{
-    color: black;
+  .tm-input i{
+    color: white;
     margin: 0px 20px;
   }
   
   
-  .btn {
+  .tm-btn {
     width: 100%;
     height: 45px;
     background: black;
-    border: none;
+    border: 2px solid white;
     outline: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     color: white;
     font-weight:600;
-    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-top: 50px;
   }
   
-  .btn:hover {
-    background: white;
+  .tm-btn:hover {
+    background: #00FF7F;
     color: black;
   }
     

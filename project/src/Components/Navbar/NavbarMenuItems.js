@@ -2,14 +2,14 @@ export const AdminMenuItems = [
 
     {
         title : "Token Minting",
-        url : "/tokenminting",
+        url : "/admindashboard/tokenminting",
         className : "nav-links",
         icon : "fa-solid fa-coins"
     },
 
     {
         title : "View Token",
-        url : "/",
+        url : "/admindashboard/viewtoken",
         className : "nav-links",
         icon : "fa-solid fa-gauge-high"
     },

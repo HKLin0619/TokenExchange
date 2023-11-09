@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from '../../Components/Navbar/Admin/Navbar'
-import Content from '../../Components/Content/Admin/TokenMinting'
+import Content from '../../Components/Content/Admin/ViewToken'
 import { useLocation } from 'react-router-dom';
 
 function TokenMinting() {

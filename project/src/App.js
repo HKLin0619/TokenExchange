@@ -5,6 +5,7 @@ import AdminDashboard from './Routes/Admin/Dashboard';
 import BuyerDashboard from './Routes/Buyer/Dashboard';
 import FinancierDashboard from './Routes/Financier/Dashboard'
 import TokenMinting from './Routes/Admin/TokenMinting';
+import ViewToken from './Routes/Admin/ViewToken';
 
 function App() {
 
@@ -15,7 +16,8 @@ function App() {
         <Route path='/admindashboard' element={<AdminDashboard/>}/>
         <Route path='/buyerdashboard' element={<BuyerDashboard/>}/>
         <Route path='/financierdashboard' element={<FinancierDashboard/>}/>
-        <Route path='/tokenminting' element={<TokenMinting/>}/>
+        <Route path='/admindashboard/tokenminting' element={<TokenMinting/>}/>
+        <Route path='/admindashboard/viewtoken' element={<ViewToken/>}/>
       </Routes>
     </>
   )
