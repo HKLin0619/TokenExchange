@@ -1,7 +1,8 @@
 import React from 'react';
 import "./FirstColumnStlye.css"
 
-function FirstColumn(props) {
+function FirstColumn() {
+
   return (
 
     <div className='first-column'>

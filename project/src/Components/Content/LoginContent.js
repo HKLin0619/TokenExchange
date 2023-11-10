@@ -59,8 +59,14 @@ function LoginSignUpContent() {
         } else {
 
             if (data.success) {
-                const userType = data.userType;
-                navigate(`/${userType}dashboard`);
+                //const userType = data.userType;
+                const userDetail = data.userDetail;
+                // const nextpage = '/${userDetail.userType}dashboard';                
+                // navigate.push({
+                //     pathname: nextpage,
+                //     state: { userDetail }
+                // });
+                navigate(`/${userDetail.userType}dashboard`);
             } else {
                 if (data.errorType === 'username') {
                     toast.error('Your username is incorrect !', {
