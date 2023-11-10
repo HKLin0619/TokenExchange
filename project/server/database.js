@@ -8,7 +8,7 @@ const client = new Client({
     database: 'postgres',
     password: '48da442a8944ea9a',
     port: '9991',
-    host: 'db.duox.tk'
+    host: 'db.yktk.cf'
 });
 
 client.connect().then(() => {
