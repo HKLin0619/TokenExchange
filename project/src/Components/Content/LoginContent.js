@@ -59,14 +59,17 @@ function LoginSignUpContent() {
         } else {
 
             if (data.success) {
-                //const userType = data.userType;
-                const userDetail = data.userDetail;
+                const userType = data.userType;
+                //const userDetail = data.userDetail;
                 // const nextpage = '/${userDetail.userType}dashboard';                
-                // navigate.push({
-                //     pathname: nextpage,
-                //     state: { userDetail }
-                // });
-                navigate(`/${userDetail.userType}dashboard`);
+                navigate.push({
+                    pathname: '/${userType}dashboard',
+                    state: { userData: data.userData }
+                });
+                //const nextPage = '/${userDetails.userType}dashboard';
+                // const nextPage = '/${userDetails.userType}dashboard';
+                // navigate(nextPage, { state: { userDetail } });
+                //navigate(`/${userDetail.userType}dashboard`);
             } else {
                 if (data.errorType === 'username') {
                     toast.error('Your username is incorrect !', {

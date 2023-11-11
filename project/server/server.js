@@ -18,11 +18,11 @@ app.post('/login', (req, res) => {
 
             if (dbPassword === password) {
 
-                // const userType = result.rows[0].userType
+                const userType = result.rows[0].userType
                 // res.json({ success: true, userType });
 
                 const userData = result.rows[0];
-                res.json({ success: true, userData });
+                res.json({ success: true, userData, userType});
 
             } else {
 
