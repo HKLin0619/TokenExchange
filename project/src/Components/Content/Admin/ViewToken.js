@@ -1,5 +1,5 @@
 import React from 'react';
-import "./ViewToken.css";
+import "./ViewTokenStyle.css";
 
 function ViewToken() {
 

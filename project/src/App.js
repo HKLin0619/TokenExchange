@@ -6,6 +6,7 @@ import BuyerDashboard from './Routes/Buyer/Dashboard';
 import FinancierDashboard from './Routes/Financier/Dashboard'
 import TokenMinting from './Routes/Admin/TokenMinting';
 import ViewToken from './Routes/Admin/ViewToken';
+import SignUp from './Routes/SignUp';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/financierdashboard' element={<FinancierDashboard/>}/>
         <Route path='/admindashboard/tokenminting' element={<TokenMinting/>}/>
         <Route path='/admindashboard/viewtoken' element={<ViewToken/>}/>
+        <Route path='/signup' element={<SignUp/>}/>
       </Routes>
     </>
   )

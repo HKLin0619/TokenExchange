@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate  } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import "./LoginContentStyle.css";
+import "./LoginStyle.css";
 
 function LoginSignUpContent() {
 
@@ -59,17 +59,9 @@ function LoginSignUpContent() {
         } else {
 
             if (data.success) {
-                const userType = data.userType;
-                //const userDetail = data.userDetail;
-                // const nextpage = '/${userDetail.userType}dashboard';                
-                navigate.push({
-                    pathname: '/${userType}dashboard',
-                    state: { userData: data.userData }
-                });
-                //const nextPage = '/${userDetails.userType}dashboard';
-                // const nextPage = '/${userDetails.userType}dashboard';
-                // navigate(nextPage, { state: { userDetail } });
-                //navigate(`/${userDetail.userType}dashboard`);
+                const userData = data.userData;
+                const nextPage = `/${userData.userType}dashboard`;
+                navigate(nextPage, { state: { userData } });
             } else {
                 if (data.errorType === 'username') {
                     toast.error('Your username is incorrect !', {
@@ -126,7 +118,7 @@ function LoginSignUpContent() {
 
   return (
     
-    <div className="main">
+    <div className="login-main">
 
         <ToastContainer
             position="top-center"
@@ -141,15 +133,15 @@ function LoginSignUpContent() {
             theme="colored"
         />
 
-        <div className="sub-main">
+        <div className="login-sub-main">
 
-            <div className='title'>
+            <div className='login-title'>
                 <h1>ERC 20 Token Exchange</h1>
-                <div className='underline'></div>
+                <div className='login-underline'></div>
             </div>
 
-            <div className='inputs'>
-                <div className='input'>
+            <div className='login-inputs'>
+                <div className='login-input'>
                     <i className="fa-solid fa-user"/>
                     <input
                         type="text" 
@@ -159,7 +151,7 @@ function LoginSignUpContent() {
                         onChange={(e) => setUsername(e.target.value)}/>
                 </div>
 
-                <div className='input'>
+                <div className='login-input'>
                     <i className="fa-solid fa-lock"/>
                     <input 
                         type="password" 
@@ -170,7 +162,7 @@ function LoginSignUpContent() {
                 </div>
             </div>
 
-            <div className='forgot-remember'>
+            <div className='login-forgot-remember'>
                 <label>
                     <input 
                         type='checkbox'
@@ -182,10 +174,10 @@ function LoginSignUpContent() {
                 <a href="/">Forgot password ?</a>
             </div>
 
-            <button className='btn' onClick={handleLogin}>Login</button>
+            <button className='login-btn' onClick={handleLogin}>Login</button>
 
-            <div className="signin-signup">
-                <p>Don't have an account ? <a href='/' className='signup-link'>Sign Up</a></p>
+            <div className="sign-in">
+                <p>Don't have an account ? <a href='/signup' className='sign-up-link'>Sign Up</a></p>
             </div>
             
         </div>

@@ -1,12 +1,12 @@
 import React from 'react'
 import Navbar from '../../Components/Navbar/Admin/Navbar'
-import FirstColumnContent from '../../Components/Content/FirstColumn'
+import ProfileCard from '../../Components/Content/ProfileCard/ProfileCard'
 
 function Dashboard() {
   return (
     <>
         <Navbar/>  
-        <FirstColumnContent/>
+        <ProfileCard/>
     </>
   )
 }
