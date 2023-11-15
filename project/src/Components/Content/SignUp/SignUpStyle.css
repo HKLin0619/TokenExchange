@@ -49,6 +49,65 @@
     margin-top: 20px;
     align-items: center;
   }
+
+  .sign-up-drop-down {
+    margin-top: 20px;
+    width: 355px;
+    height: 53px;
+    border-radius: 6px;
+    border: 2px solid black;
+  }
+
+  .sign-up-drop-down-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    color: black;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0 20px;
+  }
+
+  .sign-up-drop-down:hover {
+    border: 2px solid white;
+    border-radius: 4px;
+    transition: all 0.2ms ease-in-out;
+  }
+
+  .sign-up-drop-down-contents {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    background: black;
+    margin-top: 5px;
+    width: 342px;
+    border-radius: 6px;
+    border: 2px solid black;
+    padding: 5px;
+  }
+
+  .sign-up-drop-down-content {
+    padding: 5px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .sign-up-drop-down-content:hover {
+    background: white;
+    color: black;
+    transition: all 0.2ms ease-in-out;
+  }
+
+  .sign-up-drop-down-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
   
   .sign-up-input{
     display: flex;
@@ -59,7 +118,6 @@
     border-radius: 6px;
     border-bottom: 2px solid black;
   } 
-  
   
   .sign-up-input input{
     height: 100%;
@@ -99,6 +157,8 @@
   .sign-up-btn:hover {
     background: white;
     color: black;
+    border-radius: 4px;
+    transition: all 0.2ms ease-in-out;
   }
   
   .sign-up {

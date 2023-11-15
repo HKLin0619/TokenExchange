@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate  } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import "./LoginStyle.css";
 
@@ -10,6 +11,7 @@ function LoginSignUpContent() {
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const savedUsername = localStorage.getItem('username');
@@ -30,6 +32,24 @@ function LoginSignUpContent() {
     useEffect(() => {
         localStorage.setItem('rememberMe', rememberMe);
     }, [rememberMe]);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const successParam = queryParams.get('success');
+
+        if (successParam === 'true') {
+            toast.success('Register Successfully !', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        }
+    }, [location.search]);
 
     const handleLogin = async () => {
 
@@ -115,6 +135,8 @@ function LoginSignUpContent() {
         }
 
     }
+
+
 
   return (
     
