@@ -29,7 +29,7 @@ router.post('/mintToken', async (req, res) => {
         arguments: [tokenName.Name, tokenSymbol, noOfToken], // Use noOfToken as totalSupply
     })
     .send({
-        from: '0x340E8b57D12A8F94833E104Eb7E09351DcF98A75',
+        from: '0xff78d05053a75b6F0B209A0B9E362DCf0ae80E03',
         gas: 6721975,
         gasPrice: 20000000000,
     })
