@@ -58,7 +58,7 @@ app.post('/signup', (req, res) => {
 
         } else {
 
-            if (userType === 'User Type') {
+            if (userType === 'Roles') {
 
                 res.json({ success: false, errorType: 'userType' });
 

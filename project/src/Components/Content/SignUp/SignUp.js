@@ -8,7 +8,7 @@ import "./SignUpStyle.css";
 function SignUp() {
 
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedUserType, setSelectedUserType] = useState('User Type');
+    const [selectedUserType, setSelectedUserType] = useState('Roles');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -167,7 +167,7 @@ function SignUp() {
                     theme: "colored",
                 });
 
-                setSelectedUserType('User Type');
+                setSelectedUserType('Roles');
                 setUsername('');
                 setEmail('');
                 setPassword('');
