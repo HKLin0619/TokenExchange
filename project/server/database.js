@@ -1,9 +1,6 @@
 const { Client } = require('pg');
 
-// const connectionString = 'postgres://rdpudmff:Q7YEDNlXwiRMLVUMDzRVqNXyGb4UV1Wx@rain.db.elephantsql.com/rdpudmff';
-
 const client = new Client({
-    // connectionString: connectionString
     user: 'postgres',
     database: 'postgres',
     password: '48da442a8944ea9a',

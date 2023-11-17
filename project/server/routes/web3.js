@@ -9,6 +9,7 @@ router.use((req, res, next) => {
   next();
 });
 
+// MintToken to remix
 router.post('/mintToken', async (req, res) => {
     const { tokenSymbol, noOfToken } = req.body;
     if (tokenSymbol === undefined || noOfToken === undefined || isNaN(noOfToken)) {
@@ -29,18 +30,19 @@ router.post('/mintToken', async (req, res) => {
         arguments: [tokenName.Name, tokenSymbol, noOfToken], // Use noOfToken as totalSupply
     })
     .send({
-        from: '0xff78d05053a75b6F0B209A0B9E362DCf0ae80E03',
+        from: '0x590294a04AdB1163Fb6AdB197b8DF6db02990d21',
         gas: 6721975,
         gasPrice: 20000000000,
     })
-    .on('receipt', (receipt) => {
+    .on('receipt',  (receipt) => {
         contractAddress = receipt.contractAddress; // Store the contract address here
         console.log('Contract deployed at address: ' + contractAddress);
         // You can now use 'contractAddress' for further interactions
+        
     });
 
     // insert to db
-
+    const contractID = await query('INSERT INTO "Contract" ("contractID") VALUES ($1);', [contractAddress]);
 
     return res.status(200).send({
         status: 200,
@@ -52,31 +54,34 @@ router.post('/mintToken', async (req, res) => {
 });
 
 
+//View Token
 router.get('/viewToken', async (req, res) => {
     try {
-        // From db get a list of contract address by admin
-        // select * from transciton 
+        // Fetch contractID from the database
+        const result = await query('SELECT "contractID" FROM "Contract";');
+        
+        if (result.rows.length === 0) {
+            return res.status(404).send({ status: 404, message: 'Contract not found.' });
+        }
 
-        // Contract address and ABI (replace with your contract details)
-        const contractAddress = '0x277091b0174e3b9e83d952607c7f76f7b183676c';
+        // Extract the contractID value
+        const contractID = result.rows[0].contractID;
 
         // Create a contract instance
-        const contract = new web3.eth.Contract(contractAbi, contractAddress);
-        // Call the contract's name() and symbol() functions
-        const name = await contract.methods.name().call()
+        const contract = new web3.eth.Contract(contractAbi, contractID);
 
-        const symbol = await contract.methods.symbol().call()
-        
-        const totalSupply  = await contract.methods.totalSupply().call()
-        
+        // Call the contract's name() and symbol() functions
+        const name = await contract.methods.name().call();
+        const symbol = await contract.methods.symbol().call();
+        const totalSupply = await contract.methods.totalSupply().call();
         const ethTotallySupply = Number(totalSupply) / 10**18;
 
-        // return res.status(200).send({name, symbol, totalSupply: JSON.stringify(totalSupply.toString())})
-        return res.status(200).send({name, symbol, ethTotallySupply})
+        return res.status(200).send({ name, symbol, ethTotallySupply });
     } catch (error) {
-        console.log(error)
-        return res.status(400).send({status: 400, message: error})
+        console.log(error);
+        return res.status(400).send({ status: 400, message: error.message });
     }
-})
+});
+
 
 module.exports = router;
