@@ -1,5 +1,5 @@
 import React from 'react'
-import "./BackgroudStyle.css";
+import "./SampleBackgroudStyle.css";
 
 export default function Background(props) {
   return (

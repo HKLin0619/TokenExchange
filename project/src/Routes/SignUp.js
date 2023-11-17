@@ -1,10 +1,10 @@
 import React from 'react'
-import Navbar from '../Components/Navbar/Navbar'
+import SignUpContent from '../Components/Content/SignUp/SignUp';
 
 function SignUp() {
   return (
     <>
-        <Navbar/>
+      <SignUpContent/>
     </>
   )
 }

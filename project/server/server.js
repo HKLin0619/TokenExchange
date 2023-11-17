@@ -2,10 +2,6 @@ const express = require('express')
 const app = express()
 const database = require('./database')
 
-// app.get("/", (req, res) => {
-//     res.json({"users": ["userOne", "userTwo", "userThree"]})
-// })
-
 app.use(express.static('public'));
 app.use(express.json());
 
@@ -14,17 +10,101 @@ app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    database.query('SELECT * FROM "User" WHERE "userName" = $1 AND "password" = $2', [username, password]).then(result => {
-        //const dbPassword = result.rows[0].password;
+    database.query('SELECT * FROM "User" WHERE "userName" = $1', [username]).then(result => {
+
         if (result.rows.length === 1) {
-            res.send('Login Successful !');
+
+            const dbPassword = result.rows[0].password;
+
+            if (dbPassword === password) {
+
+                const userData = result.rows[0]
+                res.json({ success: true, userData});
+
+            } else {
+
+                res.json({ success: false, errorType: 'password' });
+
+            }
+
         } else {
-            res.send('Login failed, please check username and password !');
+
+            res.json({ success: false, errorType: 'username' });
+
         }
+
     }).catch(error => {
+
         console.error('Database Error: ', error);
-        res.send('Login failed and a database error occurred !')
-    });
+        res.json({ success: false });
+
+    })
+
+});
+
+app.post('/signup', (req, res) => {
+
+    const userType = req.body.userType;
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+
+    database.query('SELECT * FROM "User" WHERE "userName" = $1', [username]).then(result => {
+
+        if (result.rows.length === 1) {
+
+            res.json({ success: false, errorType: 'usernameTaken' });
+
+        } else {
+
+            if (userType === 'Roles') {
+
+                res.json({ success: false, errorType: 'userType' });
+
+            } else if (!username) {
+
+                res.json({ success: false, errorType: 'username' });
+
+            } else if (!email) {
+
+                res.json({ success: false, errorType: 'email' });
+
+            } else if (!password) {
+
+                res.json({ success: false, errorType: 'password' });
+
+            } else if (!confirmPassword) {
+
+                res.json({ success: false, errorType: 'confirmPassword' });
+                   
+            } else if (password !== confirmPassword) {
+
+                res.json({ success: false, errorType: 'passwordInconsistency' });
+
+            } else {
+
+                database.query('INSERT INTO "User" ("userName", "email", "password", "userType") VALUES ($1, $2, $3, $4) RETURNING *', [username, email, password, userType.toLowerCase()]).then(result => {
+                
+                    res.json({ success: true });
+    
+                }).catch(error => {
+    
+                    console.error('Database Error: ', error);
+                    res.json({ success: false });
+            
+                })
+                
+            }
+
+        }
+
+    }).catch(error => {
+
+        console.error('Database Error: ', error);
+        res.json({ success: false });
+
+    })
 
 });
 
