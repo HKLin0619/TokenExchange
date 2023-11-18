@@ -36,7 +36,7 @@ function TokenMinting() {
 
                 console.log("tokenSymbol");
 
-                toast.error('Please enter token Nname !', {
+                toast.error('Please enter token Name !', {
                     position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
