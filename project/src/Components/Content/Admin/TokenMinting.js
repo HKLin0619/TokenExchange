@@ -67,6 +67,7 @@ function TokenMinting() {
                     progress: undefined,
                     theme: "colored",
                 });
+                setTokenName('');
 
             } else if (data.errorType === 'numberOfToken') {
 
@@ -99,6 +100,8 @@ function TokenMinting() {
                     theme: "colored",
                 });
 
+                setNumberOfToken('');
+
             } else {
 
                 console.log("tokenMintingFail");
@@ -113,6 +116,9 @@ function TokenMinting() {
                     progress: undefined,
                     theme: "colored",
                 });
+
+                setTokenName('');
+                setNumberOfToken('');
 
             }
 

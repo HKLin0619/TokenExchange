@@ -168,7 +168,7 @@ app.post('/tokenminting', async (req, res) => {
 app.get('/viewtoken', async (req, res) => {
     try {
         // Fetch contractID from the database
-        const result = await query('SELECT "contractID" FROM "Contract";');
+        const result = await database.query('SELECT "contractID" FROM "Contract";');
         
         if (result.rows.length === 0) {
             return res.status(404).send({ status: 404, message: 'Contract not found.' });

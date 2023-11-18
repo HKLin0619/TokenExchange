@@ -24,7 +24,8 @@ function Dashboard() {
             progress: undefined,
             theme: "colored",
         });
-    }
+    } 
+
   }, [location.search]);
 
   return (
