@@ -112,7 +112,52 @@ app.post('/signup', (req, res) => {
 
 });
 
-app.post('/tokenminting', (req, res) => {
+app.post('/tokenminting', async (req, res) => {
+
+    const tokenSymbol = req.body.tokenSymbol;
+    const numberOfToken = req.body.numberOfToken;
+    const tokenName = await database.query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol]).then((res) => res.rows[0]);
+ 
+    if (!tokenSymbol) {
+
+        res.json({ success: false, errorType: 'tokenSymbol' });
+        console.log('tokenSymbol');
+        
+    } else if (!tokenName) {
+
+        res.json({ success: false, errorType: 'tokenName' });
+        console.log('tokenName');
+
+    } else if (!numberOfToken) {
+
+        res.json({ success: false, errorType: 'numberOfToken' });
+        console.log('numberOfToken');
+
+    } else if (isNaN(numberOfToken)) {
+
+        res.json({ success: false, errorType: 'numberError' });
+        console.log('numberError');
+
+    }
+
+    let contractAddress;
+
+    const deployedContract = await tokenContract.deploy({
+        data: byteCode,
+        arguments: [tokenName.Name, tokenSymbol, numberOfToken],
+    })
+    .send({
+        from: '0x6FB82DFd1f770dc5cD7A135Eb12f01395e47eBA8',
+        gas: 6721975,
+        gasPrice: 20000000000,
+    })
+    .on ('receipt', (receipt) => {
+        contractAddress = receipt.contractAddress;
+        console.log('Contract deployed at address: ' + contractAddress);
+        res.json({ success: true });
+    });
+
+    const contractID = await database.query('INSERT INTO "Contract" ("contractID") VALUES ($1);', [contractAddress]);
 
 });
 
