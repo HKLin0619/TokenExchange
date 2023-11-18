@@ -8,13 +8,17 @@ function TokenMinting() {
 
     const handleSubmit = async () => {
 
-        // const response = await fetch('/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type' : 'application/json',
-        //     },
-        //     body: JSON.stringify({ username,password }),
-        // });
+        const response = await fetch('/tokenminting', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify({tokenName,numberOfToken}),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
 
     }
 
