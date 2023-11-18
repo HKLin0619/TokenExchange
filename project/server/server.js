@@ -162,7 +162,7 @@ app.post('/tokenminting', async (req, res) => {
 });
 
 // View Token
-router.get('/viewtoken', async (req, res) => {
+router.get('/viewToken', async (req, res) => {
     try {
         // Fetch contractID from the database
         const result = await query('SELECT "contractID" FROM "Contract";');
