@@ -122,21 +122,25 @@ app.post('/tokenminting', async (req, res) => {
 
         res.json({ success: false, errorType: 'tokenSymbol' });
         console.log('tokenSymbol');
+        return;
         
     } else if (!tokenName) {
 
         res.json({ success: false, errorType: 'tokenName' });
         console.log('tokenName');
+        return;
 
     } else if (!numberOfToken) {
 
         res.json({ success: false, errorType: 'numberOfToken' });
         console.log('numberOfToken');
+        return;
 
     } else if (isNaN(numberOfToken)) {
 
         res.json({ success: false, errorType: 'numberError' });
         console.log('numberError');
+        return;
 
     }
 
@@ -159,6 +163,34 @@ app.post('/tokenminting', async (req, res) => {
 
     const contractID = await database.query('INSERT INTO "Contract" ("contractID") VALUES ($1);', [contractAddress]);
 
+});
+
+app.get('/viewtoken', async (req, res) => {
+    try {
+        // Fetch contractID from the database
+        const result = await query('SELECT "contractID" FROM "Contract";');
+        
+        if (result.rows.length === 0) {
+            return res.status(404).send({ status: 404, message: 'Contract not found.' });
+        }
+
+        // Extract the contractID value
+        const contractID = result.rows[0].contractID;
+
+        // Create a contract instance
+        const contract = new web3.eth.Contract(contractABI, contractID);
+
+        // Call the contract's name() and symbol() functions
+        const name = await contract.methods.name().call();
+        const symbol = await contract.methods.symbol().call();
+        const totalSupply = await contract.methods.totalSupply().call();
+        const ethTotallySupply = Number(totalSupply) / 10**18;
+
+        return res.status(200).send({ name, symbol, ethTotallySupply });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({ status: 400, message: error.message });
+    }
 });
 
 app.listen(5000, () => { console.log("Server started on port 5000") })

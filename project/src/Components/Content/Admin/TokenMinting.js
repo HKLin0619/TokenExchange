@@ -11,6 +11,12 @@ function TokenMinting() {
     const navigate = useNavigate();
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
+    const handleBack = async () => {
+
+        navigate('/admindashboard');
+
+    }
+
     const handleSubmit = async () => {
 
         const response = await fetch('/tokenminting', {
@@ -161,6 +167,7 @@ function TokenMinting() {
             </div>
 
             <button className='tm-btn' onClick={handleSubmit}>Submit</button>
+            <button className='tm-btn' onClick={handleBack}>Back</button>
 
         </div>
        
