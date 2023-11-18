@@ -1,13 +1,25 @@
-import React from 'react';
-import "./ViewTokenStyle.css";
+import React, { useState, useEffect } from 'react';
+// import Navbar from '../../Components/Navbar/Admin/Navbar'
 
 function ViewToken() {
+    const [tokenData, setTokenData] = useState({});
 
-  return (
+    useEffect(() => {
+        fetch('/viewtoken')
+        .then(res => res.json())
+        .then(e => {
+            setTokenData(e)
+        })
+    },[])
     
-    <h1>View Token</h1>
-
-  )
+    return (
+        <div>
+            <h2>Token Details</h2>
+            <p>Name: {tokenData.name}</p>
+            <p>Symbol: {tokenData.symbol}</p>
+            <p>Total Supply: {tokenData.ethTotallySupply}</p>
+        </div>
+    );
 }
 
-export default ViewToken
+export default ViewToken;
