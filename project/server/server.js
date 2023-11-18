@@ -162,32 +162,32 @@ app.post('/tokenminting', async (req, res) => {
 });
 
 // View Token
-// router.get('/viewtoken', async (req, res) => {
-//     try {
-//         // Fetch contractID from the database
-//         const result = await query('SELECT "contractID" FROM "Contract";');
+router.get('/viewtoken', async (req, res) => {
+    try {
+        // Fetch contractID from the database
+        const result = await query('SELECT "contractID" FROM "Contract";');
         
-//         if (result.rows.length === 0) {
-//             return res.status(404).send({ status: 404, message: 'Contract not found.' });
-//         }
+        if (result.rows.length === 0) {
+            return res.status(404).send({ status: 404, message: 'Contract not found.' });
+        }
 
-//         // Extract the contractID value
-//         const contractID = result.rows[0].contractID;
+        // Extract the contractID value
+        const contractID = result.rows[0].contractID;
 
-//         // Create a contract instance
-//         const contract = new web3.eth.Contract(contractAbi, contractID);
+        // Create a contract instance
+        const contract = new web3.eth.Contract(contractABI, contractID);
 
-//         // Call the contract's name() and symbol() functions
-//         const name = await contract.methods.name().call();
-//         const symbol = await contract.methods.symbol().call();
-//         const totalSupply = await contract.methods.totalSupply().call();
-//         const ethTotallySupply = Number(totalSupply) / 10**18;
+        // Call the contract's name() and symbol() functions
+        const name = await contract.methods.name().call();
+        const symbol = await contract.methods.symbol().call();
+        const totalSupply = await contract.methods.totalSupply().call();
+        const ethTotallySupply = Number(totalSupply) / 10**18;
 
-//         return res.status(200).send({ name, symbol, ethTotallySupply });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(400).send({ status: 400, message: error.message });
-//     }
-// });
+        return res.status(200).send({ name, symbol, ethTotallySupply });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({ status: 400, message: error.message });
+    }
+});
 
 app.listen(5000, () => { console.log("Server started on port 5000") })
