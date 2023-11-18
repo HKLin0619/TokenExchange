@@ -80,8 +80,9 @@ function LoginSignUpContent() {
 
             if (data.success) {
                 const userData = data.userData;
+                localStorage.setItem("userData", JSON.stringify(userData));
                 const nextPage = `/${userData.userType}dashboard`;
-                navigate(nextPage, { state: { userData } });
+                navigate(nextPage);
             } else {
                 if (data.errorType === 'username') {
                     toast.error('Your username is incorrect !', {

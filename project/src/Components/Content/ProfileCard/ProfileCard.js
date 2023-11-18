@@ -1,11 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import "./ProfileCardStlye.css"
 
-function ProfileCard() {
-
-  const Location = useLocation();
-  const userData = Location.state && Location.state.userData;
+function ProfileCard({ userData }) {
 
   return (
 
