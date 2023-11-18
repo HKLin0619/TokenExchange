@@ -5,7 +5,7 @@ function ViewToken() {
     const [tokenData, setTokenData] = useState({});
 
     useEffect(() => {
-        fetch('/web3/viewToken')
+        fetch('web3/viewToken')
         .then(res => res.json())
         .then(e => {
             setTokenData(e)
