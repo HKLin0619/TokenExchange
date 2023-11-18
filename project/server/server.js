@@ -122,22 +122,25 @@ app.post('/tokenminting', async (req, res) => {
 
         res.json({ success: false, errorType: 'tokenSymbol' });
         console.log('tokenSymbol');
+        return;
         
     } else if (!tokenName) {
 
         res.json({ success: false, errorType: 'tokenName' });
         console.log('tokenName');
+        return;
 
     } else if (!numberOfToken) {
 
         res.json({ success: false, errorType: 'numberOfToken' });
         console.log('numberOfToken');
+        return;
 
     } else if (isNaN(numberOfToken)) {
 
         res.json({ success: false, errorType: 'numberError' });
         console.log('numberError');
-
+        return;
     }
 
     let contractAddress;
