@@ -47,7 +47,7 @@ function ViewToken() {
 
                 <div className='vt-show'>
                     <h3>Total Supply: </h3>
-                    <span>{tokenData.ethTotallySupply}</span>
+                    <span>{tokenData.ethTotallySupply.toLocaleString()}</span>
                 </div>
 
             </div>
