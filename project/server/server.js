@@ -164,19 +164,12 @@ app.post('/tokenminting', async (req, res) => {
 
 });
 
-<<<<<<< Updated upstream
 // View Token
 app.get('/viewtoken', async (req, res) => {
     try {
         // Fetch contractID from the database
         const result = await database.query('SELECT "contractID" FROM "Contract";');
-=======
-//View Token
-router.get('/viewToken', async (req, res) => {
-    try {
-        // Fetch contractID from the database
-        const result = await query('SELECT "contractID" FROM "Contract";');
->>>>>>> Stashed changes
+
         
         if (result.rows.length === 0) {
             return res.status(404).send({ status: 404, message: 'Contract not found.' });
@@ -186,11 +179,8 @@ router.get('/viewToken', async (req, res) => {
         const contractID = result.rows[0].contractID;
 
         // Create a contract instance
-<<<<<<< Updated upstream
         const contract = new web3.eth.Contract(contractABI, contractID);
-=======
-        const contract = new web3.eth.Contract(contractAbi, contractID);
->>>>>>> Stashed changes
+
 
         // Call the contract's name() and symbol() functions
         const name = await contract.methods.name().call();
