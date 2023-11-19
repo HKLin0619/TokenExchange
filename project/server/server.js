@@ -141,6 +141,10 @@ app.post('/tokenminting', async (req, res) => {
         res.json({ success: false, errorType: 'numberError' });
         console.log('numberError');
         return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> KangLin
     }
 
     let contractAddress;
@@ -164,7 +168,10 @@ app.post('/tokenminting', async (req, res) => {
 
 });
 
+<<<<<<< HEAD
 // View Token
+=======
+>>>>>>> KangLin
 app.get('/viewtoken', async (req, res) => {
     try {
         // Fetch contractID from the database
