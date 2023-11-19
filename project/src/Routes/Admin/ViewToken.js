@@ -7,7 +7,7 @@ function ViewToken() {
   const location = useLocation();
   return (
     <div className='main-content'>
-        {/* <Navbar currentPage={location.pathname}/>   */}
+        <Navbar currentPage={location.pathname}/>  
         <Content/>
     </div>
   )
