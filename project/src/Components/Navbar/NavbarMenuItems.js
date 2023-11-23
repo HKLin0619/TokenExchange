@@ -26,7 +26,7 @@ export const AdminMenuItems = [
 export const BuyerMenuItems = [
 
     {
-        title : "Buy Token",
+        title : "Purchase Token",
         url : "/buyerdashboard/purchasetoken",
         className : "nav-links",
         icon : "fa-regular fa-money-bill-1"
