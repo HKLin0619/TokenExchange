@@ -27,14 +27,14 @@ export const BuyerMenuItems = [
 
     {
         title : "Buy Token",
-        url : "/",
+        url : "/buyerdashboard/purchasetoken",
         className : "nav-links",
         icon : "fa-regular fa-money-bill-1"
     },
 
     {
         title : "Upload Tender Awards",
-        url : "/",
+        url : "/buyerdashboard/uploadtenderawards",
         className : "nav-links",
         icon : "fa-solid fa-arrow-up-from-bracket"
     },

@@ -7,6 +7,9 @@ import FinancierDashboard from './Routes/Financier/Dashboard'
 import TokenMinting from './Routes/Admin/TokenMinting';
 import ViewToken from './Routes/Admin/ViewToken';
 import SignUp from './Routes/SignUp';
+import PurchaseToken from './Routes/Buyer/PurchaseToken';
+import UploadTenderAwards from './Routes/Buyer/UploadTenderAward';
+
 
 function App() {
 
@@ -20,6 +23,8 @@ function App() {
         <Route path='/admindashboard/tokenminting' element={<TokenMinting/>}/>
         <Route path='/admindashboard/viewtoken' element={<ViewToken/>}/>
         <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/buyerdashboard/purchasetoken' element={<PurchaseToken/>}/>
+        <Route path='/buyerdashboard/uploadtenderawards' element={<UploadTenderAwards/>}/>
       </Routes>
     </>
   )
