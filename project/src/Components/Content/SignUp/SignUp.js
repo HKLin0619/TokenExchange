@@ -63,7 +63,7 @@ function SignUp() {
 
                 console.log("userType");
 
-                toast.error('Please select user type !', {
+                toast.error('Please select roles !', {
                     position: "top-center",
                     autoClose: 5000,
                     hideProgressBar: false,
