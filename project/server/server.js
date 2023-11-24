@@ -150,7 +150,7 @@ app.post('/tokenminting', async (req, res) => {
         arguments: [tokenName.Name, tokenSymbol, numberOfToken],
     })
     .send({
-        from: '0xFb2e5D724F4309077f3754B4516bbC4d686408a6',
+        from: '0xA8BC7a3159c85D3a139063894346858732195481',
         gas: 6721975,
         gasPrice: 20000000000,
     })
