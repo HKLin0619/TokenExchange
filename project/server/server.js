@@ -8,6 +8,7 @@ app.use(express.json());
 const { tokenContract, web3 } = require('../contract/Blockchain');
 const byteCode = require('../contract/Bytecode');
 const contractABI = require('../contract/ContractABI');
+const purchaseABI = require('../contract/PurchaseABI');
 
 app.post('/login', (req, res) => {
 
@@ -150,7 +151,7 @@ app.post('/tokenminting', async (req, res) => {
         arguments: [tokenName.Name, tokenSymbol, numberOfToken],
     })
     .send({
-        from: '0xA8BC7a3159c85D3a139063894346858732195481',
+        from: '0xfe06Ae5a9C362CC10493E43629c38E13599FB8e6',
         gas: 6721975,
         gasPrice: 20000000000,
     })
@@ -163,6 +164,41 @@ app.post('/tokenminting', async (req, res) => {
     const contractID = await database.query('INSERT INTO "Contract" ("contractID") VALUES ($1);', [contractAddress]);
 
 });
+
+app.get('/purchasetoken',async(req,res)=>{
+   // Extracting data from the request body
+   const tokenName = req.body.tokenName;
+   const amount = req.body.amount;
+
+   // Assuming you have the contract address from the previous deployment
+   const contractAddress = '0xd34e6294683cebb1de4998a4ed1df04f89a912d4';  // Replace with your actual contract address
+
+   // Constructing the contract instance based on the deployed address
+   const deployedContract = new tokenContract(contractAddress);
+
+   try {
+       // Calling the purchase function on the contract
+       const transactionReceipt = await deployedContract.methods.purchase(tokenName, amount)
+           .send({
+               from: '0xfe06Ae5a9C362CC10493E43629c38E13599FB8e6',
+               gas: 6721975,
+               gasPrice: 20000000000,
+               value: amount * 1e18, // Convert amount to wei
+           });
+
+       // If the transaction is successful, record the purchase in the database
+       const buyerAddress = '0xA4e0A797324ec440871210eFB57818BaF9c42e9e'; // Replace with the actual buyer's address
+       await database.query('INSERT INTO "TokenPurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3);',
+           [buyerAddress, tokenName, amount]);
+
+       // You can handle the receipt or send a response back
+       res.json({ success: true, receipt: transactionReceipt });
+   } catch (error) {
+       // Handle errors if the transaction fails
+       res.status(500).json({ success: false, error: error.message });
+   }
+}
+);
 
 
 // View Token
