@@ -86,6 +86,7 @@ app.post("/signup", (req, res) => {
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
+
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
     .then((res) => res.rows[0]);
@@ -116,7 +117,7 @@ app.post("/tokenminting", async (req, res) => {
       arguments: [tokenName.Name, tokenSymbol, numberOfToken],
     })
     .send({
-      from: "0xEe355eFf9Df88c4fEB6E6C0fa79dFE4Cc8390609",
+      from: "0xd1f3Ac0Aac26dfAB57cE95716368ED18684c9965",
       gas: 6721975,
       gasPrice: 20000000000,
     })
@@ -124,6 +125,14 @@ app.post("/tokenminting", async (req, res) => {
       contractAddress = receipt.contractAddress;
       console.log("Contract deployed at address: " + contractAddress);
       res.json({ success: true });
+    })
+    .on("error", (error) => {
+      console.error("Contract deployment error:", error.message);
+      res.json({
+        success: false,
+        errorType: "deploymentError",
+        errorMessage: error.message,
+      });
     });
 
   const contractID = await database.query(
@@ -186,7 +195,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Create a contract instance
     //const contract = new web3.eth.Contract(contractABI, contractID);
-    const contract = new web3.eth.Contract(contractABI, contractID);
+    const contract = new web3.eth.Contract(purchaseABI, contractID);
 
     // Call the contract's name() and symbol() functions
     const name = await contract.methods.name().call();
