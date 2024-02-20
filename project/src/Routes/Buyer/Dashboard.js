@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 import Navbar from '../../Components/Navbar/Buyer/Navbar'
 import ProfileCard from '../../Components/Content/ProfileCard/ProfileCard'
+import NotificationTable from '../../Components/Content/Buyer/NotificationTable'
+import "../../Routes/Buyer/DashboardStlye.css"
 import { ToastContainer, toast } from 'react-toastify';
 import { useLocation } from 'react-router-dom';
+
 
 function Dashboard() {
 
@@ -29,7 +32,7 @@ function Dashboard() {
   }, [location.search]);
 
   return (
-    <>
+    <div className='b-d-background'>
         <Navbar/> 
         <ToastContainer
             position="top-center"
@@ -45,7 +48,8 @@ function Dashboard() {
         />
          
         <ProfileCard userData={storedUserData}/>
-    </>
+        <NotificationTable/>
+    </div>
   )
 }
 

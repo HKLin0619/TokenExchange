@@ -8,27 +8,27 @@ function PurchaseToken() {
   
     const handleSubmit = async (e) => {
 
-        e.preventDefault();
+        // e.preventDefault();
 
-        const userData = JSON.parse(localStorage.getItem("userData"));
-        const url = new URL('/send-email', window.location.origin);
+        // const userData = JSON.parse(localStorage.getItem("userData"));
+        // const url = new URL('/send-email', window.location.origin);
 
-        url.searchParams.append('email', userData.email);
-        url.searchParams.append('username', userData.userName);
+        // url.searchParams.append('email', userData.email);
+        // url.searchParams.append('username', userData.userName);
 
-        const response = await fetch('/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        // const response = await fetch('/send-email', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // });
 
-        if (response.status === 200) {
-            console.log('Email sent successfully');
-        } else {
-            const error = await response.json();
-            console.log(error.message);
-        }
+        // if (response.status === 200) {
+        //     console.log('Email sent successfully');
+        // } else {
+        //     const error = await response.json();
+        //     console.log(error.message);
+        // }
     }
     
   return (
