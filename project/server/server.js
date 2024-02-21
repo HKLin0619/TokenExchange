@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const database = require('./database')
-// const nodemailer  = require('nodemailer')
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -9,15 +8,6 @@ app.use(express.json());
 const { tokenContract, web3 } = require('../contract/Blockchain');
 const byteCode = require('../contract/Bytecode');
 const contractABI = require('../contract/ContractABI');
-// const transporter = nodemailer.createTransport({
-//     host: 'smtp.gmail.com',
-//     port: 465,
-//     secure: true,
-//     auth: {
-//       user: 'erc20tokenexchange@gmail.com',
-//       pass: 'jprz tohv zgqk adcr',
-//     },
-//   });
   
 
 app.post('/login', (req, res) => {
@@ -204,43 +194,6 @@ app.get('/viewtoken', async (req, res) => {
     }
 });
 
-// app.post('/send-email', (req, res) => {
-    
-//     const email = req.query.email;
-//     const username = req.query.userName;
-
-//     console.log(username)
-  
-//     const options = {
-//       from: email,
-//       to: 'kanglin201@gmail.com',
-//       subject: 'Login Success',
-//       text: 
-//       `
-//       Dear Sir / Madam
-      
-//       contract ID is 123.
-
-//       Note:
-//       This is an automated email erc20tokenexchange@gmail.com 
-//       The sender of this email is ${username} (${email}) on behalf of abc@gmail.com.
-
-//       If you have any questions, please do not hesitate to contact us.
-
-//       Thank you,
-
-//       ERC 20 TOKEN EXCHANGE
-//       012-3456789`,
-//     };
-  
-//     transporter.sendMail(options, (err, info) => {
-//       if (err) {
-//         res.status(500).send({ error: err.message });
-//       } else {
-//         res.status(200).send({ message: 'Email sent successfully' });
-//       }
-//     });
-//   });
 
 
 app.listen(5000, () => { console.log("Server started on port 5000") })

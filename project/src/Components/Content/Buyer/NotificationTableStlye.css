@@ -13,9 +13,6 @@
     left: 5%;
 }
 
-.noti-title{
-
-}
 
 .noti-contant{
     width: 100%;
@@ -24,7 +21,7 @@
 }
 
 table {
-    padding: 10px;
+    padding: 0px 10px 10px 10px;
     position: absolute;
     left: 50%;
     width: 100%;
