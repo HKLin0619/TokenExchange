@@ -1,53 +1,57 @@
 .s-card{
     background: white;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     box-shadow: 0 5px 25px 2px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
     position: fixed;
-    flex-direction: column;
     width: 90%;
+    height: 40%;
     top: 55%;
     left: 5%;
 }
 
+.noti-title{
+
+}
+
+.noti-contant{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
 
 table {
-    border-collapse: collapse; /* 边框合并 */
-    border: 1px solid #ddd; /* 边框颜色和宽度 */
-    width: 100%; /* 宽度与搜索栏相同 */
-    height: 50px; /* 高度根据需要调整 */
-    background-color: #f2f2f2; /* 背景颜色与搜索栏相同 */
-    border-collapse: collapse; /* 边框合并 */
-    border: 1px solid #ddd; /* 边框颜色和宽度 */
+    padding: 10px;
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+    overflow-y: auto;
+    flex-grow: 0;   
+    text-align: center;
+
 }
+
   
 th, td {
-    padding: 8px; /* 单元格内边距 */
-    text-align: center; /* 文本对齐 */
-    font-family: Arial, sans-serif; /* 字体 */
-    font-size: 16px; /* 字号 */
     background-color: white;
     margin: 0;
-    border: none; /* 去除边框 */
-    padding: 0; /* 去除内边距 */
+    border: none;
+    padding: 0;
+    text-align: center; /* 新增 */
 }
-  
-tr:nth-child(even) {
-    background-color: #f2f2f2; /* 交替行颜色 */
-    text-align: left; /* 第一列文本左对齐 */
-}
+
+tr {
+    height: 30px; /* 新增 */
+    border-bottom: 1px solid #ddd; /* 新增 */
+    background-color: #333;
+  }
   
 th {
     background-color: #333; /* 表头颜色 */
     color: #fff; /* 表头文字颜色 */
     font-weight: bold; /* 表头文字加粗 */
-
-
-}
-
-.icon {
-     font-size: 18px;
-    color: #000;
 }
