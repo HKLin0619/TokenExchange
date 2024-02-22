@@ -2,14 +2,14 @@ export const AdminMenuItems = [
 
     {
         title : "Token Minting",
-        url : "/MintToken",
+        url : "/admindashboard/tokenminting",
         className : "nav-links",
         icon : "fa-solid fa-coins"
     },
 
     {
         title : "View Token",
-        url : "/viewToken",
+        url : "/admindashboard/viewtoken",
         className : "nav-links",
         icon : "fa-solid fa-gauge-high"
     },
@@ -26,15 +26,15 @@ export const AdminMenuItems = [
 export const BuyerMenuItems = [
 
     {
-        title : "Buy Token",
-        url : "/",
+        title : "Purchase Token",
+        url : "/buyerdashboard/purchasetoken",
         className : "nav-links",
         icon : "fa-regular fa-money-bill-1"
     },
 
     {
         title : "Upload Tender Awards",
-        url : "/",
+        url : "/buyerdashboard/uploadtenderawards",
         className : "nav-links",
         icon : "fa-solid fa-arrow-up-from-bracket"
     },
