@@ -13,9 +13,6 @@ import UploadTenderAwards from './Routes/Buyer/UploadTenderAward';
 
 function App() {
 
-  // return (
-  //   <LoginSignUp/>
-  // )
   return (
     <>
       <Routes>
