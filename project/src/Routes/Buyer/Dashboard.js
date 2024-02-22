@@ -48,7 +48,7 @@ function Dashboard() {
         />
          
         <ProfileCard userData={storedUserData}/>
-        <NotificationTable/>
+        <NotificationTable userData={storedUserData}/>
     </div>
   )
 }

@@ -194,6 +194,20 @@ app.get('/viewtoken', async (req, res) => {
     }
 });
 
+app.get('/notifications', async (req, res) => {
+    const userId = req.query.userId;
+    try {
+      const data = await database.query(`SELECT * FROM award WHERE userid = $1`, [userId]);
+    
+      const notifications = data.rows;
+      res.json(notifications);
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+
+      res.status(500).json({ message: 'Error fetching notifications' });
+    }
+});
+
 
 
 app.listen(5000, () => { console.log("Server started on port 5000") })
