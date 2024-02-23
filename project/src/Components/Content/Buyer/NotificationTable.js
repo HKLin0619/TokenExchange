@@ -14,22 +14,53 @@ function NotificationTable({ userData }) {
           .catch((error) => {
             console.error(error);
           });
-      }, []);
+      }, [userData.userID]);
 
-      const handleSendedClick = (notification) => {
-        // 更新数据库中的 `notification.emailsended` 或根据您的需求进行处理
-        console.log(`Sending email for notification: ${notification.id}`);
+    const handleSendedClick = async (userData, notification) => {
+        try {
+            
+            const awardID = notification.awardid; // Assuming this property exists in the notification object
       
-        // 模拟更新（替换为实际的数据库交互）
-        const updatedNotifications = notifications.map((item) =>
-          item.id === notification.id
-            ? { ...item, emailsended: 'sended' }
-            : item
-        );
+            const response = await fetch('/api/update-notification', {
+                method: 'POST',
+                body: JSON.stringify({ userID: userData.userID, awardID }),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to update notification');
+            }
       
-        setNotifications(updatedNotifications);
+          // Optionally update local state to reflect the change (e.g., set notification.emailsended = 'sended')
+            } catch (error) {
+                console.error('Error sending email:', error);
+          // Display an error message to the user
+            }
       };
 
+    //   const handleSendedClick = async (userData, notification) => {
+    //     try {
+    //       const awardID = notification.awardID;
+    //       const response = await fetch('/api/update-notification', {
+    //         method: 'POST',
+    //         headers: {
+    //           'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //           userID: userData.userID,
+    //           awardID,
+    //         }),
+    //       });
+      
+    //       if (!response.ok) {
+    //         throw new Error('Failed to update notification');
+    //       }
+      
+    //       // Optionally update local state to reflect the change (e.g., set notification.emailsended = 'sended')
+    //     } catch (error) {
+    //       console.error('Error sending email:', error);
+    //       // Display an error message to the user
+    //     }
+    //   };
 
     return (
 
@@ -58,14 +89,18 @@ function NotificationTable({ userData }) {
                             <td>{index + 1}</td>
                             <td>{notification.supplierName}</td>
                             <td>{notification.supplierEmail}</td>
-                            <td>{notification.status}</td>
+                            {notification.emailsended === 'sended' ? (
+                                <td>You already send email</td>
+                                ) : (
+                                <td>Please send the email</td>
+                            )}
                             {notification.emailsended === 'sended' ? (
                                 <td>Done</td>
                                 ) : (
                                 <td>
-                                    <button onClick={() => handleSendedClick(notification)}>Sended</button>
+                                    <button onClick={() => handleSendedClick(userData, notification)}>Sended</button>
                                 </td>
-                                )}
+                            )}
                         </tr>
                     ))}
                     </tbody>            

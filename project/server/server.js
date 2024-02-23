@@ -208,6 +208,24 @@ app.get('/notifications', async (req, res) => {
     }
 });
 
+app.post('/api/update-notification', async (req, res) => {
+    const { userID, awardID } = req.body;
+  
+    try {
+      // Update `emailsended` in your database using `id` (replace with actual logic)
+
+      await database.query('UPDATE award SET emailsended = $1 WHERE userid = $2 AND awardid = $3', ["sended", userID, awardID]);
+        console.log(awardID, userID)
+        console.log(database.query('UPDATE award SET emailsended = $1 WHERE userid = $2 AND awardid = $3', ["sended", userID, awardID]))
+  
+      res.json({ message: 'Notification updated successfully'});
+    } catch (error) {
+      console.error('Error updating notification:', error);
+      res.status(500).json({ message: 'Error updating notification' });
+    }
+});
+
+  
 
 
 app.listen(5000, () => { console.log("Server started on port 5000") })
