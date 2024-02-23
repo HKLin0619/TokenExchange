@@ -209,14 +209,16 @@ app.get('/notifications', async (req, res) => {
 });
 
 app.post('/api/update-notification', async (req, res) => {
-    const { userID, awardID } = req.body;
+
+    const userID = req.body.userID;
+    const awardID = req.body.awardID;
   
     try {
       // Update `emailsended` in your database using `id` (replace with actual logic)
 
       await database.query('UPDATE award SET emailsended = $1 WHERE userid = $2 AND awardid = $3', ["sended", userID, awardID]);
         console.log(awardID, userID)
-        console.log(database.query('UPDATE award SET emailsended = $1 WHERE userid = $2 AND awardid = $3', ["sended", userID, awardID]))
+        //console.log(database.query('UPDATE award SET emailsended = $1 WHERE userid = $2 AND awardid = $3', ["sended", userID, awardID]))
   
       res.json({ message: 'Notification updated successfully'});
     } catch (error) {

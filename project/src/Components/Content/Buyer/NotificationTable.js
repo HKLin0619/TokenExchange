@@ -14,18 +14,23 @@ function NotificationTable({ userData }) {
           .catch((error) => {
             console.error(error);
           });
-      }, [userData.userID]);
+    }, [userData.userID]);
+
 
     const handleSendedClick = async (userData, notification) => {
         try {
             
-            const awardID = notification.awardid; // Assuming this property exists in the notification object
-      
             const response = await fetch('/api/update-notification', {
                 method: 'POST',
-                body: JSON.stringify({ userID: userData.userID, awardID }),
-            });
-            
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  userID: userData.userID,
+                  awardID: notification.awardid
+                })
+              });
+              
             if (!response.ok) {
                 throw new Error('Failed to update notification');
             }
@@ -37,30 +42,6 @@ function NotificationTable({ userData }) {
             }
       };
 
-    //   const handleSendedClick = async (userData, notification) => {
-    //     try {
-    //       const awardID = notification.awardID;
-    //       const response = await fetch('/api/update-notification', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //           userID: userData.userID,
-    //           awardID,
-    //         }),
-    //       });
-      
-    //       if (!response.ok) {
-    //         throw new Error('Failed to update notification');
-    //       }
-      
-    //       // Optionally update local state to reflect the change (e.g., set notification.emailsended = 'sended')
-    //     } catch (error) {
-    //       console.error('Error sending email:', error);
-    //       // Display an error message to the user
-    //     }
-    //   };
 
     return (
 
