@@ -111,34 +111,39 @@ app.post("/tokenminting", async (req, res) => {
 
   let contractAddress;
 
-  const deployedContract = await tokenContract
-    .deploy({
-      data: byteCode,
-      arguments: [tokenName.Name, tokenSymbol, numberOfToken],
-    })
-    .send({
-      from: "0xd1f3Ac0Aac26dfAB57cE95716368ED18684c9965",
-      gas: 6721975,
-      gasPrice: 20000000000,
-    })
-    .on("receipt", (receipt) => {
-      contractAddress = receipt.contractAddress;
-      console.log("Contract deployed at address: " + contractAddress);
-      res.json({ success: true });
-    })
-    .on("error", (error) => {
-      console.error("Contract deployment error:", error.message);
-      res.json({
-        success: false,
-        errorType: "deploymentError",
-        errorMessage: error.message,
+  try {
+    const deployedContract = await tokenContract
+      .deploy({
+        data: byteCode,
+        arguments: [tokenName.Name, tokenSymbol, numberOfToken],
+      })
+      .send({
+        from: "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2",
+        gas: 6721975,
+        gasPrice: 20000000000,
+      })
+      .on("receipt", (receipt) => {
+        contractAddress = receipt.contractAddress;
+        console.log("Contract deployed at address: " + contractAddress);
+        res.json({ success: true });
+      })
+      .on("error", (error) => {
+        console.error("Contract deployment error:", error.message);
+        res.json({
+          success: false,
+          errorType: "deploymentError",
+          errorMessage: error.message,
+        });
       });
-    });
 
-  const contractID = await database.query(
-    'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-    [contractAddress]
-  );
+    await database.query(
+      'INSERT INTO "Contract" ("contractID") VALUES ($1);',
+      [contractAddress]
+    );
+  } catch (error) {
+    console.error("Error in tokenminting:", error);
+    res.status(500).json({ success: false, errorType: "serverError", errorMessage: error.message });
+  }
 });
 
 app.get("/purchasetoken", async (req, res) => {

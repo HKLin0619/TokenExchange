@@ -40,7 +40,7 @@ function TokenMinting() {
 
             if (data.errorType === 'tokenSymbol') {
 
-                console.log("tokenSymbol");
+                console.log("tokenName");
 
                 toast.error('Please enter token Name !', {
                     position: "top-center",
