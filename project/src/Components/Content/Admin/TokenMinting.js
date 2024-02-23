@@ -29,7 +29,12 @@ function TokenMinting() {
 
         const data = await response.json();
 
-        console.log(data);
+        console.log(data); // Log the entire data object
+
+        // Access specific attributes of the data object
+        console.log('Success:', data.success);
+        console.log('Error Type:', data.errorType);
+        console.log('Error Message:', data.errorMessage)
 
         if (data.success) {
 
