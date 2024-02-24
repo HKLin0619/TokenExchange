@@ -151,6 +151,10 @@ app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
 
+  console.log("ASDASDASDSAD");
+  console.log(tokenSymbol);
+  console.log(numberOfToken);
+
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
     .then((res) => res.rows[0]);
@@ -177,13 +181,12 @@ app.post("/tokenminting", async (req, res) => {
 
   const deployedContract = await tokenContract
     .deploy({
-      
       data: byteCode,
       arguments: [tokenName.Name, numberOfToken]
     })
     .send({
-      from: "0xCAc9Ae3424E15997ffba5D99E0A0b0266D5f732E",
-      gas: 6721975,
+      from: "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2",
+      gas: 3000000,
       gasPrice: 20000000000,
     }, function(error, transactionHash){
       if(error) {
