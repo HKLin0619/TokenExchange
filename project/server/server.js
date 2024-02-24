@@ -19,7 +19,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-
+        console.log(purchaseABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -177,18 +177,20 @@ app.post("/tokenminting", async (req, res) => {
 
   const deployedContract = await tokenContract
     .deploy({
+      
       data: byteCode,
-      arguments: [tokenName.Name, tokenSymbol, numberOfToken],
+      arguments: [tokenName.Name, numberOfToken]
     })
     .send({
-      from: "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2",
+      from: "0xCAc9Ae3424E15997ffba5D99E0A0b0266D5f732E",
       gas: 6721975,
       gasPrice: 20000000000,
-    })
-    .on("receipt", (receipt) => {
-      contractAddress = receipt.contractAddress;
-      console.log("Contract deployed at address: " + contractAddress);
-      res.json({ success: true });
+    }, function(error, transactionHash){
+      if(error) {
+        console.error("Error generating transaction hash:", error);
+      } else {
+        console.log("Transaction hash:", transactionHash);
+      }
     })
     .on("error", (error) => {
       console.error("Contract deployment error:", error.message);
@@ -197,7 +199,23 @@ app.post("/tokenminting", async (req, res) => {
         errorType: "deploymentError",
         errorMessage: error.message,
       });
-    });
+    })
+    .on('transactionHash', function(transactionHash){
+
+    })
+    .on("receipt", (receipt) => {
+      contractAddress = receipt.contractAddress;
+      console.log("Contract deployed at address: " + contractAddress);
+      res.json({ success: true });
+    })
+    // .on("error", (error) => {
+    //   console.error("Contract deployment error:", error.message);
+    //   res.json({
+    //     success: false,
+    //     errorType: "deploymentError",
+    //     errorMessage: error.message,
+    //   });
+    // });
 
   const contractID = await database.query(
     'INSERT INTO "Contract" ("contractID") VALUES ($1);',
