@@ -5,9 +5,13 @@ const database = require("./database");
 app.use(express.static("public"));
 app.use(express.json());
 
+
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
 const purchaseABI = require("../contract/PurchaseABI");
+
+// const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
+// const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -93,7 +97,7 @@ app.post("/tokenminting", async (req, res) => {
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
     .then((res) => res.rows[0]);
-
+    
   if (!tokenSymbol) {
     res.json({ success: false, errorType: "tokenSymbol" });
     console.log("tokenSymbol");
@@ -111,18 +115,18 @@ app.post("/tokenminting", async (req, res) => {
     console.log("numberError");
     return;
   }
-
-  let contractAddress;
-
+  
+  
+  
   const deployedContract = await tokenContract
     .deploy({
       data: byteCode,
     })
     .send({
-      from: "0xbeCC3Df791D54F2d273c77A614731954efB04640",
+      from: "0xb6855A9d4A393D7b4f1a5823edC1f7141ac0147A",
       gas: 3000000,
       gasPrice: 20000000000,
-    }, function(error, transactionHash){
+    }, async function(error, transactionHash){
       if(error) {
         console.error("Error generating transaction hash:", error);
       } else {
@@ -140,17 +144,99 @@ app.post("/tokenminting", async (req, res) => {
     .on('transactionHash', function(transactionHash){
 
     })
-    .on("receipt", (receipt) => {
-      contractAddress = receipt.contractAddress;
-      console.log("Contract deployed at address: " + contractAddress);
-      res.json({ success: true });
-    })
+    .on("receipt", async (receipt) => {
+      try {
+          const contractAddress = receipt.contractAddress;
+          console.log("Contract deployed at address: " + contractAddress);
+          console.log(receipt);
 
-  const contractID = await database.query(
-    'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-    [contractAddress]
-  );
+          // Perform minting operation
+          const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+          const mintAmount = numberOfToken; // Specify the amount to mint
+          const mintTokenName = "KDX"; // Specify the token name
+          await contractInstance.methods.mint(mintTokenName, mintAmount).send({
+              from: "0xb6855A9d4A393D7b4f1a5823edC1f7141ac0147A",
+              gas: 3000000,
+              gasPrice: 20000000000,
+          });
+
+          // Insert contract address into the database
+          await database.query(
+            'INSERT INTO "Contract" ("contractID") VALUES ($1);',
+            [contractAddress]
+          );
+
+          res.json({ success: true });
+      } catch (error) {
+          console.error("Minting error:", error.message);
+          res.json({
+              success: false,
+              errorType: "mintingError",
+              errorMessage: error.message,
+          });
+      }
+  });
 });
+
+
+// View Token
+// router.get('/viewtoken', async (req, res) => {
+//   try {
+//     // Call the contract's myFunction() method to get token information
+//     const [totalSupply, tokenName] = await contract.methods.myFunction().call();
+
+//     // Call the contract's getTotalSupply() method to get the total supply
+//     const totalSupplyEth = await contract.methods.getTotalSupply().call();
+
+//     // Return the token information
+//     res.status(200).json({
+//       totalSupply: totalSupply,
+//       tokenName: tokenName,
+//       totalSupplyEth: totalSupplyEth,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+// app.get("/viewtoken", async (req, res) => {
+//   try {
+//     // Fetch contractID from the database
+//     const result = await database.query('SELECT "contractID" FROM "Contract";');
+
+//     if (result.rows.length === 0) {
+//       return res
+//         .status(404)
+//         .send({ status: 404, message: "Contract not found." });
+//     }
+
+//     // Extract the contractID value
+//     const contractID = result.rows[0].contractID;
+
+//     // Create a contract instance
+//     const contract = new web3.eth.Contract(purchaseABI, contractID);
+
+//     console.log(contract.methods);
+//     // contract.methods.myFunction().call()
+//     // .then(console.log);
+
+    
+//     // Call the contract's name() and symbol() functions
+//     const name = await contract.methods.myFunction().call();
+//     console.log(name);
+//     const symbol = await contract.methods.symbol().call();
+//     const totalSupply = await contract.methods.totalSupply().call();
+//     const ethTotallySupply = Number(totalSupply) / 10 ** 18;
+
+//     return res.status(200).send({ name, symbol, ethTotallySupply });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).send({ status: 400, message: error.message });
+//   }
+// });
+
+
+
 
 app.get("/purchasetoken", async (req, res) => {
   // Extracting data from the request body
@@ -168,7 +254,7 @@ app.get("/purchasetoken", async (req, res) => {
     const transactionReceipt = await deployedContract.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0x9Ac5711c50e9f8752Ff3FCC55F0750E96d450407",
+        from: "0xfd9dede1172cdcd7c8346e83509d420051fd88cf",
         gas: 6721975,
         gasPrice: 20000000000,
         value: amount * 1e18, // Convert amount to wei
@@ -186,43 +272,6 @@ app.get("/purchasetoken", async (req, res) => {
   } catch (error) {
     // Handle errors if the transaction fails
     res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-// View Token
-app.get("/viewtoken", async (req, res) => {
-  try {
-    // Fetch contractID from the database
-    const result = await database.query('SELECT "contractID" FROM "Contract";');
-
-    if (result.rows.length === 0) {
-      return res
-        .status(404)
-        .send({ status: 404, message: "Contract not found." });
-    }
-
-    // Extract the contractID value
-    const contractID = result.rows[0].contractID;
-
-    // Create a contract instance
-    const contract = new web3.eth.Contract(purchaseABI, contractID);
-
-    console.log(contract.methods);
-    // contract.methods.myFunction().call()
-    // .then(console.log);
-
-    
-    // Call the contract's name() and symbol() functions
-    const name = await contract.methods.getNumber().call();
-    console.log(name);
-    const symbol = await contract.methods.symbol().call();
-    const totalSupply = await contract.methods.totalSupply().call();
-    const ethTotallySupply = Number(totalSupply) / 10 ** 18;
-
-    return res.status(200).send({ name, symbol, ethTotallySupply });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send({ status: 400, message: error.message });
   }
 });
 
