@@ -107,7 +107,23 @@ function TokenMinting() {
 
                 setNumberOfToken('');
 
-            } else {
+            } else if (data.errorType > 1000000){
+                console.log("numberError");
+
+                toast.error('Only Provide 1 Million token to mint!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+
+                setNumberOfToken('');
+            }
+            else {
 
                 console.log("tokenMintingFail");
 
