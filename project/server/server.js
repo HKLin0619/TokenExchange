@@ -8,7 +8,7 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const purchaseABI = require("../contract/PurchaseABI");
+const purchaseABI = require("../contract/ContractABI");
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
