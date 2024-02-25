@@ -1,20 +1,38 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./PurchaseTokenStyle.css";
 
 function PurchaseToken() {
 
-    const [tokenName, setTokenName] = useState('');
+    const [tokenSymbol, setTokenName] = useState('');
     const [numberOfToken, setNumberOfToken] = useState('');
+    const navigate = useNavigate();
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+
+    const handleBack = async()=>{
+        navigate('/buyerdashboard');
+    }
 
     const handleSubmit = async () => {
 
-        // const response = await fetch('/login', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type' : 'application/json',
-        //     },
-        //     body: JSON.stringify({ username,password }),
-        // });
+        const response = await fetch('/purchasetoken', {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json',
+            },
+            body: JSON.stringify({tokenSymbol,numberOfToken}),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (data.success) {
+
+            console.log("tokenPurchasedSuccessfully");
+            navigate('/buyerdashboard?success=true', storedUserData);
+            
+        }
 
     }
     
@@ -36,7 +54,7 @@ function PurchaseToken() {
                         type="text" 
                         placeholder="Token Name (ERC20)" 
                         className="pt-name"
-                        value={tokenName}
+                        value={tokenSymbol}
                         onChange={(e) => setTokenName(e.target.value)}/>
                 </div>
 

@@ -5,7 +5,7 @@ import AdminDashboard from './Routes/Admin/Dashboard';
 import BuyerDashboard from './Routes/Buyer/Dashboard';
 import FinancierDashboard from './Routes/Financier/Dashboard'
 import TokenMinting from './Routes/Admin/TokenMinting';
-import ViewToken from './Routes/Admin/ViewToken';
+import ViewToken from './Routes/Admin/viewToken';
 import SignUp from './Routes/SignUp';
 import PurchaseToken from './Routes/Buyer/PurchaseToken';
 import UploadTenderAwards from './Routes/Buyer/UploadTenderAward';
