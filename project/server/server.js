@@ -180,60 +180,44 @@ app.post("/tokenminting", async (req, res) => {
 
 
 // View Token
-// router.get('/viewtoken', async (req, res) => {
-//   try {
-//     // Call the contract's myFunction() method to get token information
-//     const [totalSupply, tokenName] = await contract.methods.myFunction().call();
+//View Token  
+app.get("/viewtoken", async (req, res) => {
+  try {
+     // Get token symbol from query parameters
 
-//     // Call the contract's getTotalSupply() method to get the total supply
-//     const totalSupplyEth = await contract.methods.getTotalSupply().call();
+    // Fetch the latest contractID from the database
+    const result = await database.query('SELECT "contractID" FROM "Contract";');
 
-//     // Return the token information
-//     res.status(200).json({
-//       totalSupply: totalSupply,
-//       tokenName: tokenName,
-//       totalSupplyEth: totalSupplyEth,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// });
-// app.get("/viewtoken", async (req, res) => {
-//   try {
-//     // Fetch contractID from the database
-//     const result = await database.query('SELECT "contractID" FROM "Contract";');
+    console.log(result.rows);
 
-//     if (result.rows.length === 0) {
-//       return res
-//         .status(404)
-//         .send({ status: 404, message: "Contract not found." });
-//     }
-
-//     // Extract the contractID value
-//     const contractID = result.rows[0].contractID;
-
-//     // Create a contract instance
-//     const contract = new web3.eth.Contract(purchaseABI, contractID);
-
-//     console.log(contract.methods);
-//     // contract.methods.myFunction().call()
-//     // .then(console.log);
-
+    if (result.rows.length === 0) {
+      return res.status(404).send({ status: 404, message: "Contract not found." });
+    }
     
-//     // Call the contract's name() and symbol() functions
-//     const name = await contract.methods.myFunction().call();
-//     console.log(name);
-//     const symbol = await contract.methods.symbol().call();
-//     const totalSupply = await contract.methods.totalSupply().call();
-//     const ethTotallySupply = Number(totalSupply) / 10 ** 18;
+    // Extract the contract address from the query result
+    const contractAddress = result.rows[0].contractID;
 
-//     return res.status(200).send({ name, symbol, ethTotallySupply });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(400).send({ status: 400, message: error.message });
-//   }
-// });
+    // Create a contract instance using the contract address
+    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
+
+    // Get the account address (you can obtain it from query parameters or use a default one)
+    const account = req.query.account || "0x8f1337eA1DBc74992Aada2Ad1C4e24422f71661F";
+    const tokenSymbol = "KDX"
+
+    const balanceBigInt = await contract.methods.getBalance(account, tokenSymbol).call();
+
+    // Convert the balance from BigInt to a string or number
+    const balance = balanceBigInt.toString();
+    console.log(contract);
+    console.log(balance);
+
+    return res.status(200).json({ tokenName: "KDX Token" , tokenSymbol: "KDX", balance });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
 
 
 
