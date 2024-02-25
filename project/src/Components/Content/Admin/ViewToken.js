@@ -37,17 +37,20 @@ function ViewToken() {
 
                 <div className='vt-show'>
                     <h3>Token Name: </h3>
-                    <span>{tokenData.name}</span>
+                    {/* <span>{tokenData.name}</span> */}
+                    <span>KDX</span>
                 </div>
 
                 <div className='vt-show'>
                     <h3>Token Symbol: </h3>
-                    <span>{tokenData.symbol}</span>
+                    {/* <span>{tokenData.symbol}</span> */}
+                    <span>100</span>
                 </div>
 
                 <div className='vt-show'>
                     <h3>Total Supply: </h3>
-                    <span>{tokenData.ethTotallySupply ? tokenData.ethTotallySupply.toLocaleString() : 'Loading...'}</span>
+                    {/* <span>{tokenData.ethTotallySupply ? tokenData.ethTotallySupply.toLocaleString() : 'Loading...'}</span> */}
+                    <span>100000</span>
                 </div>
 
             </div>
