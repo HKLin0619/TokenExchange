@@ -182,10 +182,10 @@ app.post("/tokenminting", async (req, res) => {
   const deployedContract = await tokenContract
     .deploy({
       data: byteCode,
-      arguments: [tokenName.Name, numberOfToken]
+      // arguments: [tokenName.Name, numberOfToken]
     })
     .send({
-      from: "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2",
+      from: "0xbeCC3Df791D54F2d273c77A614731954efB04640",
       gas: 3000000,
       gasPrice: 20000000000,
     }, function(error, transactionHash){
