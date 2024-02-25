@@ -68,8 +68,8 @@ function NotificationTable({ userData }) {
                     {notifications.map((notification, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{notification.supplierName}</td>
-                            <td>{notification.supplierEmail}</td>
+                            <td>{notification.suppliername}</td>
+                            <td>{notification.supplieremail}</td>
                             {notification.emailsended === 'sended' ? (
                                 <td>You already send email</td>
                                 ) : (
