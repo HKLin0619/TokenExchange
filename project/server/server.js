@@ -7,7 +7,6 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const contractABI = require("../contract/ContractABI");
 const purchaseABI = require("../contract/PurchaseABI");
 
 app.post("/login", (req, res) => {
@@ -83,70 +82,6 @@ app.post("/signup", (req, res) => {
     });
 });
 
-
-// app.post("/tokenminting", async (req, res) => {
-//   const tokenSymbol = req.body.tokenSymbol;
-//   const numberOfToken = req.body.numberOfToken;
-
-//   const tokenName = await database
-//     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
-//     .then((res) => res.rows[0]);
-
-//   if (!tokenSymbol) {
-//     res.json({ success: false, errorType: "tokenSymbol" });
-//     console.log("tokenSymbol");
-//     return;
-//   } else if (!tokenName) {
-//     res.json({ success: false, errorType: "tokenName" });
-//     console.log("tokenName");
-//     return;
-//   } else if (!numberOfToken) {
-//     res.json({ success: false, errorType: "numberOfToken" });
-//     console.log("numberOfToken");
-//     return;
-//   } else if (isNaN(numberOfToken)) {
-//     res.json({ success: false, errorType: "numberError" });
-//     console.log("numberError");
-//     return;
-//   }
-
-//   let contractAddress;
-
-//   try {
-//     const deployedContract = await tokenContract
-//         .deploy({
-//             data: byteCode,
-//         })
-//         .send({
-//             from: "0x8CeE6b0077025762C1d1e7b2Def86B01c45A1960",
-//             gas: 6721975,
-//             gasPrice: 20000000000,
-//         })
-//         .on("receipt", (receipt) => {
-//             contractAddress = receipt.contractAddress;
-//             console.log("Contract deployed at address: " + contractAddress);
-//             res.json({ success: true });
-//         })
-//         .on("error", (error) => {
-//             console.error("Contract deployment error:", error.message);
-//             res.json({
-//                 success: false,
-//                 errorType: "deploymentError",
-//                 errorMessage: error.message,
-//             });
-//         });
-
-//     await database.query(
-//         'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-//         [contractAddress]
-//     );
-    
-//   } catch (error) {
-//       console.error("Error in tokenminting:", error);
-//       res.status(500).json({ success: false, errorType: "serverError", errorMessage: error.message });
-//   }
-// });
-
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
@@ -182,7 +117,6 @@ app.post("/tokenminting", async (req, res) => {
   const deployedContract = await tokenContract
     .deploy({
       data: byteCode,
-      // arguments: [tokenName.Name, numberOfToken]
     })
     .send({
       from: "0xbeCC3Df791D54F2d273c77A614731954efB04640",
@@ -211,14 +145,6 @@ app.post("/tokenminting", async (req, res) => {
       console.log("Contract deployed at address: " + contractAddress);
       res.json({ success: true });
     })
-    // .on("error", (error) => {
-    //   console.error("Contract deployment error:", error.message);
-    //   res.json({
-    //     success: false,
-    //     errorType: "deploymentError",
-    //     errorMessage: error.message,
-    //   });
-    // });
 
   const contractID = await database.query(
     'INSERT INTO "Contract" ("contractID") VALUES ($1);',
@@ -279,11 +205,16 @@ app.get("/viewtoken", async (req, res) => {
     const contractID = result.rows[0].contractID;
 
     // Create a contract instance
-    //const contract = new web3.eth.Contract(contractABI, contractID);
     const contract = new web3.eth.Contract(purchaseABI, contractID);
 
+    console.log(contract.methods);
+    // contract.methods.myFunction().call()
+    // .then(console.log);
+
+    
     // Call the contract's name() and symbol() functions
-    const name = await contract.methods.name().call();
+    const name = await contract.methods.getNumber().call();
+    console.log(name);
     const symbol = await contract.methods.symbol().call();
     const totalSupply = await contract.methods.totalSupply().call();
     const ethTotallySupply = Number(totalSupply) / 10 ** 18;
