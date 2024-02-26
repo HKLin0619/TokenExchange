@@ -38,13 +38,13 @@ function ViewToken() {
                 <div className='vt-show'>
                     <h3>Token Name: </h3>
                     {/* <span>{tokenData.name}</span> */}
-                    <span>KDX</span>
+                    <span>KDX Token</span>
                 </div>
 
                 <div className='vt-show'>
                     <h3>Token Symbol: </h3>
                     {/* <span>{tokenData.symbol}</span> */}
-                    <span>100</span>
+                    <span>KDX</span>
                 </div>
 
                 <div className='vt-show'>
