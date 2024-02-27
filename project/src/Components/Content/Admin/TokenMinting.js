@@ -29,7 +29,12 @@ function TokenMinting() {
 
         const data = await response.json();
 
-        console.log(data);
+        console.log(data); // Log the entire data object
+
+        // Access specific attributes of the data object
+        console.log('Success:', data.success);
+        console.log('Error Type:', data.errorType);
+        console.log('Error Message:', data.errorMessage)
 
         if (data.success) {
 
@@ -40,7 +45,7 @@ function TokenMinting() {
 
             if (data.errorType === 'tokenSymbol') {
 
-                console.log("tokenSymbol");
+                console.log("tokenName");
 
                 toast.error('Please enter token Name !', {
                     position: "top-center",
