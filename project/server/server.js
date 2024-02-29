@@ -7,7 +7,7 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const contractABI = require("../contract/ContractABI");
+const purchaseABI = require("../contract/ContractABI");
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -21,7 +21,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(contractABI);
+        console.log(purchaseABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -150,7 +150,7 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          contractABI,
+          purchaseABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
@@ -179,7 +179,6 @@ app.post("/tokenminting", async (req, res) => {
     });
 });
 
-// View Token
 //View Token
 app.get("/viewtoken", async (req, res) => {
   try {
@@ -200,7 +199,7 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
@@ -226,44 +225,24 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-// const cors = require("cors");
-// app.use(cors());
-
-app.post("/purchasetoken", async (req, res) => {
-  console.log("Received a purchase token request:", req.body);
+app.get("/purchasetoken", async (req, res) => {
   // Extracting data from the request body
   const tokenName = req.body.tokenName;
   const amount = req.body.amount;
 
-  console.log("AAAAAAAAAAAAAAAAAAAAAA");
-  console.log(contractABI);
-
-  const result = await database.query('SELECT "contractID" FROM "Contract";');
-
-  console.log(result.rows);
-
   // Assuming you have the contract address from the previous deployment
-  const contractAddress = result.rows[0].contractID; // Replace with your actual contract address
+  const contractAddress = "0x5e582bcc1a2ef3926e3ff3c43722e33d1da00bbd"; // Replace with your actual contract address
 
   // Constructing the contract instance based on the deployed address
-  //const deployedContract = new tokenContract(contractAddress);
-
-  const contractInstance = new web3.eth.Contract(contractABI, contractAddress);
+  const deployedContract = new tokenContract(contractAddress);
 
   try {
-    console.log(
-      "Calling purchase function with tokenName:",
-      tokenName,
-      "and amount:",
-      amount
-    );
-
     // Calling the purchase function on the contract
-    const transactionReceipt = await contractInstance.methods
+    const transactionReceipt = await deployedContract.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0xC8c51FfF37c6F0A4Dd20D81f7fd4AfEE37b8eEca",
-        gas: 3000000,
+        from: "0xaCc7C09193Dc0e2c621CE998B01eF9e1a78881b8",
+        gas: 6721975,
         gasPrice: 20000000000,
         value: amount * 1e18, // Convert amount to wei
       });
@@ -271,27 +250,15 @@ app.post("/purchasetoken", async (req, res) => {
     // If the transaction is successful, record the purchase in the database
     const buyerAddress = "0xC8c51FfF37c6F0A4Dd20D81f7fd4AfEE37b8eEca"; // Replace with the actual buyer's address
     await database.query(
-      'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
+      'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3);',
       [buyerAddress, tokenName, amount]
     );
 
-    console.log("Transaction Receipt:", transactionReceipt);
     // You can handle the receipt or send a response back
     res.json({ success: true, receipt: transactionReceipt });
   } catch (error) {
-    // Log more information about the error
-    console.error("Error in token purchase:", error);
-
-    // Check if it's a specific type of error
-    if (error.code === 4001) {
-      // User rejected transaction
-      res
-        .status(400)
-        .json({ success: false, error: "Transaction rejected by user" });
-    } else {
-      // Handle other errors
-      res.status(500).json({ success: false, error: "Internal server error" });
-    }
+    // Handle errors if the transaction fails
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
