@@ -113,8 +113,12 @@ app.post("/tokenminting", async (req, res) => {
     res.json({ success: false, errorType: "numberError" });
     console.log("numberError");
     return;
-  }
-
+  } else if (numberOfToken > 1000000) {
+    res.json({ success: false, errorType: "overNumberError" });
+    console.log("overNumberError");
+    return;
+  };
+  
   const deployedContract = await tokenContract
     .deploy({
       data: byteCode,
@@ -204,7 +208,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294";
+      req.query.account || "0xaBd215e387BF27b993c3a57f39E199552334EC59";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
