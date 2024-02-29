@@ -36,6 +36,10 @@ contract TokenSaleContract {
         balances[owner]["default"] = totalSupply;
     }
 
+    function myFunction() public view returns (uint256, string memory) {
+        return (totalSupply, "KDX");
+    }
+
     function mint(string calldata tokenName, uint256 amount) external onlyOwner {
         require(tokensAvailable >= amount, "Not enough tokens available for minting");
         
