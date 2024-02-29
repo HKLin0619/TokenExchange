@@ -79,7 +79,7 @@ function NotificationTable({ userData }) {
                                 <td>Done</td>
                                 ) : (
                                 <td>
-                                    <button onClick={() => handleSendedClick(userData, notification)}>Sended</button>
+                                    <button onClick={() => handleSendedClick(userData, notification)}>Send</button>
                                 </td>
                             )}
                         </tr>
