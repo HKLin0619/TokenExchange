@@ -1,16 +1,5 @@
 module.exports = [
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_totalSupply",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -162,6 +151,83 @@ module.exports = [
     inputs: [
       {
         internalType: "string",
+        name: "awardID",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "thirdPerson",
+        type: "address",
+      },
+    ],
+    name: "designateThirdPerson",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "tokenName",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "mint",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "tokenName",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "purchase",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "tokenName",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "awardID",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "newFundedInt",
+        type: "uint256",
+      },
+    ],
+    name: "updateFundedInt",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
         name: "tokenName",
         type: "string",
       },
@@ -210,6 +276,11 @@ module.exports = [
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
     inputs: [
@@ -324,24 +395,6 @@ module.exports = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "awardID",
-        type: "string",
-      },
-      {
-        internalType: "address",
-        name: "thirdPerson",
-        type: "address",
-      },
-    ],
-    name: "designateThirdPerson",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -503,24 +556,6 @@ module.exports = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "tokenName",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "mint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "owner",
     outputs: [
@@ -550,24 +585,6 @@ module.exports = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "tokenName",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "purchase",
-    outputs: [],
-    stateMutability: "payable",
     type: "function",
   },
   {
@@ -637,29 +654,6 @@ module.exports = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "tokenName",
-        type: "string",
-      },
-      {
-        internalType: "string",
-        name: "awardID",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "newFundedInt",
-        type: "uint256",
-      },
-    ],
-    name: "updateFundedInt",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
 ];

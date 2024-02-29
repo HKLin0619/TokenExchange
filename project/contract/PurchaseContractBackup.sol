@@ -28,12 +28,12 @@ contract TokenSaleContract {
         _;
     }
 
-    constructor(uint256 _totalSupply) {
+    constructor() {
         owner = msg.sender;
-        totalSupply = _totalSupply;
-        tokensAvailable = _totalSupply;
+        totalSupply = 1000000;
+        tokensAvailable = totalSupply;
         ownersByTokenName["default"] = owner;
-        balances[owner]["default"] = _totalSupply;
+        balances[owner]["default"] = totalSupply;
     }
 
     function mint(string calldata tokenName, uint256 amount) external onlyOwner {
