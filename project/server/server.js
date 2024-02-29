@@ -226,10 +226,10 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-const cors = require("cors");
-app.use(cors());
+// const cors = require("cors");
+// app.use(cors());
 
-app.post("/purchasetoken", cors, async (req, res) => {
+app.post("/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
   const tokenName = req.body.tokenName;
