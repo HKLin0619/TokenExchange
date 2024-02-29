@@ -55,6 +55,15 @@ contract TokenSaleContract {
         emit TokensMinted(ownersByTokenName[tokenName], tokenName, amount);
     }
 
+    function callFunction() public view returns (string memory, uint256) {
+        (uint256 amount, string memory tokenName) = myFunction();
+        return (tokenName, amount);
+    }
+
+    function getNumber() public pure returns (uint256) {
+        return 1;
+    }
+
     function purchase(string calldata tokenName, uint256 amount) external payable {
         require(amount > 0, "Purchase amount must be greater than 0");
         require(balances[ownersByTokenName[tokenName]][tokenName] >= amount, "Not enough tokens available for purchase");
