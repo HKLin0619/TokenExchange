@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B",
+        from: "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B",
+          from: "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B";
+      req.query.account || "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -262,14 +262,14 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0x098C74d5146cc724e18B4039ce8a4c1D33b8A840",
+        from: "0x09D1b9b3a312eBE6519D1f40d3373535bCd0629f",
         gas: 3000000,
         gasPrice: 20000000000,
         value: amount * 1e18, // Convert amount to wei
       });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x098C74d5146cc724e18B4039ce8a4c1D33b8A840"; // Replace with the actual buyer's address
+    const buyerAddress = "0x09D1b9b3a312eBE6519D1f40d3373535bCd0629f"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
