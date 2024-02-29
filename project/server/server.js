@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x282Ab178f168359efe5a4007a30dD49453da35DD",
+        from: "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x282Ab178f168359efe5a4007a30dD49453da35DD",
+          from: "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x282Ab178f168359efe5a4007a30dD49453da35DD";
+      req.query.account || "0xEC579f9cA9854cE96Dc2969f7A2e2841182F5D4B";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -226,10 +226,10 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-const cors = require("cors");
-app.use(cors());
+// const cors = require("cors");
+// app.use(cors());
 
-app.post("/purchasetoken", cors, async (req, res) => {
+app.post("/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
   const tokenName = req.body.tokenName;
