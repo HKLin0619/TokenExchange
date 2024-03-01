@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294",
+        from: "0xE6fA309a2478ac4b76eC1823e771e97314dAdF95",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294",
+          from: "0xE6fA309a2478ac4b76eC1823e771e97314dAdF95",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xD2DF3Eda665cC1e9c2C844f8eB841f1123Fe2294";
+      req.query.account || "0xE6fA309a2478ac4b76eC1823e771e97314dAdF95";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -226,10 +226,7 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-// const cors = require("cors");
-// app.use(cors());
-
-app.post("/purchasetoken", async (req, res) => {
+app.post("/buyerdashboard/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
   const tokenName = req.body.tokenName;
@@ -250,6 +247,9 @@ app.post("/purchasetoken", async (req, res) => {
 
   const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
 
+  //const amountBigInt = bigInt(req.body.amount);
+  const amountWei = web3.utils.toWei(amount.toString(), "ether");
+
   try {
     console.log(
       "Calling purchase function with tokenName:",
@@ -262,14 +262,19 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0x09D1b9b3a312eBE6519D1f40d3373535bCd0629f",
+        from: "0xd8BEe5fCF0338109A65c6614DC2D9823Da7f0f4C",
         gas: 3000000,
         gasPrice: 20000000000,
-        value: amount * 1e18, // Convert amount to wei
+        value: amountWei, //* 1e18, // Convert amount to wei
       });
 
+    const balanceAfter = await contractInstance.methods
+      .getBalance("0xd8BEe5fCF0338109A65c6614DC2D9823Da7f0f4C", "KDX") //remember to change to buyer address
+      .call();
+    console.log("Balance after purchase:", balanceAfter.toString());
+
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x09D1b9b3a312eBE6519D1f40d3373535bCd0629f"; // Replace with the actual buyer's address
+    const buyerAddress = "0xd8BEe5fCF0338109A65c6614DC2D9823Da7f0f4C"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
