@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x0D10948E5a3fEc63364F6d622FAE8Efae1b10c98",
+        from: "0x755d071eADCB96C54f16626e181942aEE09CA373",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x0D10948E5a3fEc63364F6d622FAE8Efae1b10c98",
+          from: "0x755d071eADCB96C54f16626e181942aEE09CA373",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x0D10948E5a3fEc63364F6d622FAE8Efae1b10c98";
+      req.query.account || "0x755d071eADCB96C54f16626e181942aEE09CA373";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -240,7 +240,7 @@ app.post("/buyerdashboard/purchasetoken", async (req, res) => {
 
   // Assuming you have the contract address from the previous deployment
   const contractAddress = result.rows[0].contractID; // Replace with your actual contract address
-  console.log(contractAddress)
+  console.log(contractAddress);
 
   // Constructing the contract instance based on the deployed address
   //const deployedContract = new tokenContract(contractAddress);
@@ -262,19 +262,19 @@ app.post("/buyerdashboard/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0x181CcF07ec58cc92B4690484892efd73A312285F", //
+        from: "0xC490b4952C233148FC8633F80751f8522820Aa96", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: amountWei, //* 1e18, // Convert amount to wei
       });
 
     const balanceAfter = await contractInstance.methods
-      .getBalance("0x181CcF07ec58cc92B4690484892efd73A312285F", "KDX") //remember to change to buyer address
+      .getBalance("0xC490b4952C233148FC8633F80751f8522820Aa96", "KDX") //remember to change to buyer address
       .call();
     console.log("Balance after purchase:", balanceAfter.toString());
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x181CcF07ec58cc92B4690484892efd73A312285F"; // Replace with the actual buyer's address
+    const buyerAddress = "0xC490b4952C233148FC8633F80751f8522820Aa96"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
