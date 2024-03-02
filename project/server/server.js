@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xAdDF68C8bba680eA26c7698d18E5d60867f7E769",
+        from: "0xb6Aa4C8f462827f062730f2fdCEeA982Eff807F0",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xAdDF68C8bba680eA26c7698d18E5d60867f7E769",
+          from: "0xb6Aa4C8f462827f062730f2fdCEeA982Eff807F0",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xAdDF68C8bba680eA26c7698d18E5d60867f7E769";
+      req.query.account || "0xb6Aa4C8f462827f062730f2fdCEeA982Eff807F0";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -226,61 +226,60 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-app.post("/buyerdashboard/purchasetoken", async (req, res) => {
+app.post("/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
   const tokenName = req.body.tokenName;
   const amount = req.body.amount;
 
-  console.log("AAAAAAAAAAAAAAAAAAAAAA");
-  // console.log(purchaseABI);
+  console.log("Token Name:", tokenName);
+  console.log("Amount:", amount);
+
+  // Ensure that amount is a valid number
+  if (typeof amount !== 'number' || isNaN(amount)) {
+    return res.status(400).json({ success: false, error: "Invalid amount" });
+  }
+
+  // Convert amount to string before passing it to web3.utils.toWei
+  const amountString = amount.toString();
+
+  console.log("Amount (String):", amountString);
+
+  // Query to retrieve contract address from the database
   const result = await database.query('SELECT "contractID" FROM "Contract";');
-
-  console.log(result.rows);
-
-  // Assuming you have the contract address from the previous deployment
-  const contractAddress = result.rows[0].contractID; // Replace with your actual contract address
-  console.log(contractAddress);
+  const contractAddress = result.rows[0].contractID;
 
   // Constructing the contract instance based on the deployed address
-  //const deployedContract = new tokenContract(contractAddress);
-
   const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
-
-  //const amountBigInt = bigInt(req.body.amount);
-  const amountWei = web3.utils.toWei(amount.toString(), "ether");
 
   try {
     console.log(
       "Calling purchase function with tokenName:",
       tokenName,
       "and amount:",
-      amount
+      amountString
     );
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
-      .purchase(tokenName, amount)
+      .purchase(tokenName, amountString)
       .send({
-        from: "0xb52092bec8c9509B96668DAdeDB591551fdEc593", //
+        from: "0x8ADfFb4E214D1D4466759d60611F926b00D130E3", //
         gas: 3000000,
         gasPrice: 20000000000,
-        value: amountWei, //* 1e18, // Convert amount to wei
+        value: web3.utils.toWei(amountString, "ether"),
       });
 
-    const balanceAfter = await contractInstance.methods
-      .getBalance("0xb52092bec8c9509B96668DAdeDB591551fdEc593", "KDX") //remember to change to buyer address
-      .call();
-    console.log("Balance after purchase:", balanceAfter.toString());
+    // Log transaction receipt
+    console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0xb52092bec8c9509B96668DAdeDB591551fdEc593"; // Replace with the actual buyer's address
+    const buyerAddress = "0x8ADfFb4E214D1D4466759d60611F926b00D130E3"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
     );
 
-    console.log("Transaction Receipt:", transactionReceipt);
     // You can handle the receipt or send a response back
     res.json({ success: true, receipt: transactionReceipt });
   } catch (error) {
@@ -290,15 +289,14 @@ app.post("/buyerdashboard/purchasetoken", async (req, res) => {
     // Check if it's a specific type of error
     if (error.code === 4001) {
       // User rejected transaction
-      res
-        .status(400)
-        .json({ success: false, error: "Transaction rejected by user" });
+      res.status(400).json({ success: false, error: "Transaction rejected by user" });
     } else {
       // Handle other errors
       res.status(500).json({ success: false, error: "Internal server error" });
     }
   }
 });
+
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
