@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PurchaseTokenStyle.css";
+import bigInt from "big-integer";
 
 function PurchaseToken() {
   const [tokenName, setTokenName] = useState("");
@@ -17,7 +18,6 @@ function PurchaseToken() {
       console.error("Token name and token number have to be provided.");
       return;
     }
-    //const amount = amount.toString;
 
     const response = await fetch(
       "http://localhost:3000/buyerdashboard/purchasetoken",
@@ -34,11 +34,12 @@ function PurchaseToken() {
     try {
       // Check if the response status is in the 2xx range for success
       if (response.ok) {
-        console.log("Proceed to next step");
+        console.log("Purchase Successful!");
 
         // Handle the response data if needed
         const data = await response.json();
         console.log("Response Data:", data);
+        navigate("/buyerdashboard?success=true", storedUserData);
       } else {
         // If the response status is not in the 2xx range, log the error
         console.error(`HTTP error! Status: ${response.status}`);
