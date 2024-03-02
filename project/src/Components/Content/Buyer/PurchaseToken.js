@@ -8,26 +8,19 @@ function PurchaseToken() {
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
-  console.log(amount)
-  const amountNumber = parseFloat(amount);
-
-  const handleBack = async () => {
-    navigate("/buyerdashboard");
-  };
-  
-
   const handleSubmit = async () => {
     if (!tokenName || !amount) {
       console.error("Token name and token number have to be provided.");
       return;
     }
-    else if (isNaN(amountNumber)) {
-      console.error("Invalid amount");
+
+    // Check if amount has a value before parsing
+    if (!amount.trim()) {
+      console.error("Invalid amount: Please enter a number");
       return;
     }
 
-    console.log("Amount:", amount);
-    console.log("Amount (Number):", amountNumber);
+    const amountNumber = parseFloat(amount);
 
     const response = await fetch(
       "/purchasetoken",
@@ -36,19 +29,19 @@ function PurchaseToken() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({tokenName, amount})
-        
+        body: JSON.stringify({ tokenName, amount: amountNumber }) // Send amount as a number
       }
     );
-    console.log("Request Body:", JSON.stringify({ tokenName, amount }));
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    console.log(tokenName);
-    console.log(amount);
 
     const data = await response.json();
-
     console.log(data);
+    
+    if (data.success) {
 
+      console.log("successfullyPurchasedToken");
+      navigate('/buyerdashboard?success=true', storedUserData);
+    }
+    
   };
 
   return (
