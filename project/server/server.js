@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x755d071eADCB96C54f16626e181942aEE09CA373",
+        from: "0x8F4C0c7548BBB5c6F6aCBebfc6035618a2346Ef8",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x755d071eADCB96C54f16626e181942aEE09CA373",
+          from: "0x8F4C0c7548BBB5c6F6aCBebfc6035618a2346Ef8",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,7 +204,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x755d071eADCB96C54f16626e181942aEE09CA373";
+      req.query.account || "0x8F4C0c7548BBB5c6F6aCBebfc6035618a2346Ef8";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -262,19 +262,19 @@ app.post("/buyerdashboard/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amount)
       .send({
-        from: "0x755d071eADCB96C54f16626e181942aEE09CA373", //
+        from: "0x39d850Eea98D614170Ea8F5ccC5160b3551ff23b", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: amountWei, //* 1e18, // Convert amount to wei
       });
 
     const balanceAfter = await contractInstance.methods
-      .getBalance("0x755d071eADCB96C54f16626e181942aEE09CA373", "KDX") //remember to change to buyer address
+      .getBalance("0x39d850Eea98D614170Ea8F5ccC5160b3551ff23b", "KDX") //remember to change to buyer address
       .call();
     console.log("Balance after purchase:", balanceAfter.toString());
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x755d071eADCB96C54f16626e181942aEE09CA373"; // Replace with the actual buyer's address
+    const buyerAddress = "0x39d850Eea98D614170Ea8F5ccC5160b3551ff23b"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
