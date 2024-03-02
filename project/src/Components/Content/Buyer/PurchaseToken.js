@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PurchaseTokenStyle.css";
-import bigInt from "big-integer";
 
 function PurchaseToken() {
   const [tokenName, setTokenName] = useState("");
@@ -9,59 +8,40 @@ function PurchaseToken() {
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
-  const handleBack = async () => {
-    navigate("/buyerdashboard");
-  };
-
   const handleSubmit = async () => {
     if (!tokenName || !amount) {
       console.error("Token name and token number have to be provided.");
       return;
     }
 
+    // Check if amount has a value before parsing
+    if (!amount.trim()) {
+      console.error("Invalid amount: Please enter a number");
+      return;
+    }
+
+    const amountNumber = parseFloat(amount);
+
     const response = await fetch(
-      "http://localhost:3000/buyerdashboard/purchasetoken",
+      "/purchasetoken",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tokenName, amount }),
-        timeout: 60000,
+        body: JSON.stringify({ tokenName, amount: amountNumber }) // Send amount as a number
       }
     );
 
-    try {
-      // Check if the response status is in the 2xx range for success
-      if (response.ok) {
-        console.log("Purchase Successful!");
-
-        // Handle the response data if needed
-        const data = await response.json();
-        console.log("Response Data:", data);
-        navigate("/buyerdashboard?success=true", storedUserData);
-      } else {
-        // If the response status is not in the 2xx range, log the error
-        console.error(`HTTP error! Status: ${response.status}`);
-      }
-    } catch (error) {
-      // Handle any other errors that might occur during the fetch
-      console.error("Error during fetch:", error);
-    }
-
     const data = await response.json();
-
     console.log(data);
-
+    
     if (data.success) {
-      console.log("tokenPurchasedSuccessfully");
-      navigate("/buyerdashboard?success=true", storedUserData);
-    }
 
-    if (!data.success) {
-      console.error("Token purchase failed:", data.error);
-      return;
+      console.log("successfullyPurchasedToken");
+      navigate('/buyerdashboard?success=true', storedUserData);
     }
+    
   };
 
   return (
