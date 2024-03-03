@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import "./PurchaseTokenStyle.css";
+
 
 function PurchaseToken() {
   const [tokenName, setTokenName] = useState("");
@@ -9,16 +12,6 @@ function PurchaseToken() {
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
   const handleSubmit = async () => {
-    if (!tokenName || !amount) {
-      console.error("Token name and token number have to be provided.");
-      return;
-    }
-
-    // Check if amount has a value before parsing
-    if (!amount.trim()) {
-      console.error("Invalid amount: Please enter a number");
-      return;
-    }
 
     const amountNumber = parseFloat(amount);
 
@@ -41,11 +34,75 @@ function PurchaseToken() {
       console.log("successfullyPurchasedToken");
       navigate('/buyerdashboard?success=true', storedUserData);
     }
+    else {
+
+      if (data.errorType === 'validationSymbol') {
+
+          console.log("validationSymbol!");
+
+          toast.error('Token Name cannot empty!', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+
+      } else if (data.errorType === 'tokenName') {
+
+          console.log("tokenName");
+
+          toast.error('Token Name not found !', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+          setTokenName('');
+
+      }
+      else if (data.errorType === 'amount') {
+
+        console.log("amount");
+
+        toast.error('Number of Token cannot be empty!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+        setTokenName('');
+
+    }
+    }
     
   };
 
   return (
     <div className="pt-main">
+      <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
       <div className="pt-sub-main">
         <div className="pt-title">
           <h1>Purchase Token</h1>
