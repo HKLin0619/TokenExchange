@@ -67,7 +67,9 @@ contract TokenSaleContract {
     function purchase(string calldata tokenName, uint256 amount) external payable {
         require(amount > 0, "Purchase amount must be greater than 0");
         require(balances[ownersByTokenName[tokenName]][tokenName] >= amount, "Not enough tokens available for purchase");
-        require(msg.value == amount * 1 ether, "Incorrect Ether amount sent");
+        //Remember to change back to 1 ether
+        // require(msg.value == amount * 1 ether, "Incorrect Ether amount sent");
+        require(msg.value == amount * 100000000 gwei, "Incorrect Ether amount sent");
         require(tokensAvailable >= amount, "Not enough tokens available for purchase");
 
 

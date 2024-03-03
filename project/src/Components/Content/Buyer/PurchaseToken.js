@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import "./PurchaseTokenStyle.css";
+
 
 function PurchaseToken() {
   const [tokenName, setTokenName] = useState("");
@@ -8,63 +11,98 @@ function PurchaseToken() {
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
-  const handleBack = async () => {
-    navigate("/buyerdashboard");
-  };
-
   const handleSubmit = async () => {
-    if (!tokenName || !amount) {
-      console.error("Token name and token number have to be provided.");
-      return;
-    }
-    //const amount = amount.toString;
+
+    const amountNumber = parseFloat(amount);
 
     const response = await fetch(
-      "http://localhost:3000/buyerdashboard/purchasetoken",
+      "/purchasetoken",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tokenName, amount }),
-        timeout: 60000,
+        body: JSON.stringify({ tokenName, amount: amountNumber }) // Send amount as a number
       }
     );
 
-    try {
-      // Check if the response status is in the 2xx range for success
-      if (response.ok) {
-        console.log("Proceed to next step");
-
-        // Handle the response data if needed
-        const data = await response.json();
-        console.log("Response Data:", data);
-      } else {
-        // If the response status is not in the 2xx range, log the error
-        console.error(`HTTP error! Status: ${response.status}`);
-      }
-    } catch (error) {
-      // Handle any other errors that might occur during the fetch
-      console.error("Error during fetch:", error);
-    }
-
     const data = await response.json();
-
     console.log(data);
-
+    
     if (data.success) {
-      console.log("tokenPurchasedSuccessfully");
-      navigate("/buyerdashboard?success=true", storedUserData);
-    }
 
-    if (!data.success) {
-      console.error("Token purchase failed:", data.error);
-      return;
+      console.log("successfullyPurchasedToken");
+      navigate('/buyerdashboard?success=true', storedUserData);
     }
+    else {
+
+      if (data.errorType === 'validationSymbol') {
+
+          console.log("validationSymbol!");
+
+          toast.error('Token Name cannot empty!', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+
+      } else if (data.errorType === 'tokenName') {
+
+          console.log("tokenName");
+
+          toast.error('Token Name not found !', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+          setTokenName('');
+
+      }
+      else if (data.errorType === 'amount') {
+
+        console.log("amount");
+
+        toast.error('Number of Token cannot be empty!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        });
+        setTokenName('');
+
+    }
+    }
+    
   };
 
   return (
     <div className="pt-main">
+      <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
       <div className="pt-sub-main">
         <div className="pt-title">
           <h1>Purchase Token</h1>
