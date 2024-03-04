@@ -13,15 +13,15 @@ contract TokenSaleContract {
 
     event TokensMinted(address indexed owner, string tokenName, uint256 amount);
     event TokensPurchased(address indexed buyer, string tokenName, uint256 amount);
-    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID,string supplierID,uint256 awardAmount,uint256 award_Doc_Hash,string financerID,uint256 funded_int);
+    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID,string supplierID,uint256 awardAmount,string award_Doc_Hash,string financerID,string funded_int);
     
     // Assume you have additional mappings to store buyerID, supplierID, awardAmount, awardDocHash, financerID, and fundedInt
     mapping(string => mapping(string => string)) public buyerIDs;
     mapping(string => mapping(string => string)) public supplierIDs;
     mapping(string => mapping(string => uint256)) public awardAmounts;
-    mapping(string => mapping(string => uint256)) public awardDocHashes;
+    mapping(string => mapping(string => string)) public awardDocHashes;
     mapping(string => mapping(string => string)) public financerIDs;
-    mapping(bytes32 => mapping(string => uint256)) public fundedInt;
+    mapping(bytes32 => mapping(string => string)) public fundedInt;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only the owner can call this function");
@@ -95,7 +95,7 @@ contract TokenSaleContract {
     }
 
     // New function to burn tokens and write data to the blockchain
-    function WriteData(string calldata tokenName, uint256 amount, string memory awardID, string memory buyerID,string memory supplierID,uint256 awardAmount,uint256 award_Doc_Hash,string memory financerID,uint256 funded_int) external {
+    function WriteData(string calldata tokenName, uint256 amount, string memory awardID, string memory buyerID,string memory supplierID,uint256 awardAmount,string memory award_Doc_Hash,string memory financerID,string memory funded_int) external {
         // Hash awardID to bytes32
         bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
 
@@ -121,9 +121,9 @@ contract TokenSaleContract {
     string memory buyerID,
     string memory supplierID,
     uint256 awardAmount,
-    uint256 award_Doc_Hash,
+    string memory award_Doc_Hash,
     string memory financerID,
-    uint256 funded_int
+    string memory funded_int
     ) {
     //hash awardID to bytes32
     bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
@@ -141,7 +141,7 @@ contract TokenSaleContract {
     
 
 
-    function updateFundedInt(string calldata tokenName, string calldata awardID, uint256 newFundedInt) external {
+    function updateFundedInt(string calldata tokenName, string calldata awardID, string calldata newFundedInt) external {
     bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
 
     require(
@@ -157,7 +157,7 @@ contract TokenSaleContract {
 
     mapping(bytes32 => address) public thirdPersonByAwardID;
 
-    event FundedIntUpdated(address indexed updater, string tokenName, uint256 newFundedInt, bytes32 hashedAwardID);
+    event FundedIntUpdated(address indexed updater, string tokenName, string newFundedInt, bytes32 hashedAwardID);
     
     function designateThirdPerson(string calldata awardID, address thirdPerson) external onlyOwner {
     bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
