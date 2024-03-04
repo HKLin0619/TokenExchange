@@ -15,7 +15,7 @@ function SearchAwardID() {
     const location = useLocation();
 
     const handleBack = async () => {
-        navigate("/financierdashboard/searchawards");
+        navigate("/financierdashboard/searchaward");
       };
     
     useEffect(() => {
