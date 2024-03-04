@@ -288,10 +288,6 @@ app.post("/purchasetoken", async (req, res) => {
       purchaseABI,
       contractAddress
     );
-    const contractInstance = new web3.eth.Contract(
-      purchaseABI,
-      contractAddress
-    );
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
@@ -331,6 +327,57 @@ app.post("/purchasetoken", async (req, res) => {
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
+
+app.get("/searchUserID", async (req, res) => {
+  try {
+    // Get current username
+    const userName = req.query.userName;
+
+    console.log("current user:" + userName);
+    // Fetch the userID from the database based on the userName
+    const userIdResult = await database.query(
+      'SELECT "userID" FROM "User" WHERE "userName"=$1;',
+      [userName]
+    );
+
+    console.log("current user:" + userName);
+
+    if (userIdResult.rows.length === 0) {
+      return res.status(404).send({ status: 404, message: "User not found." });
+    }
+
+    // Extract the userID from the query result
+    const currentUserId = userIdResult.rows[0].userID;
+    // Generate the next awardID asynchronously
+    const nextAwardId = generateNextAwardIdFromDatabase();
+
+    return res
+      .status(200)
+      .json({ userId: currentUserId, awardId: nextAwardId });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
+async function generateNextAwardIdFromDatabase() {
+  // Fetch the latest awardID from the database
+  const latestAwardResult = await database.query(
+    'SELECT "awardid" FROM "award" DESC LIMIT 1;'
+  );
+
+  let nextAwardId;
+
+  if (latestAwardResult.rows.length === 0) {
+    // If no previous awardID found, start from 1 or any initial value you prefer
+    nextAwardId = 1;
+  } else {
+    // Increment the latest awardID by 1
+    nextAwardId = latestAwardResult.rows[0].awardId + 1;
+  }
+
+  return nextAwardId;
+}
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
