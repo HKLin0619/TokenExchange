@@ -238,6 +238,8 @@ app.post("/purchasetoken", async (req, res) => {
   console.log("Token Name:", tokenName);
   console.log("Amount:", amount);
 
+
+
   const validationSymbol = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
