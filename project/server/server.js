@@ -114,6 +114,7 @@ app.post("/tokenminting", async (req, res) => {
     console.log("numberError");
     return;
   } else if (numberOfToken > 1000000) {
+  } else if (numberOfToken > 1000000) {
     res.json({ success: false, errorType: "overNumberError" });
     console.log("numberError");
     return;
@@ -255,6 +256,19 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("tokenName");
     return;
   }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -270,6 +284,10 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
     const contractInstance = new web3.eth.Contract(
       purchaseABI,
       contractAddress
@@ -308,6 +326,7 @@ app.post("/purchasetoken", async (req, res) => {
     // Log more information about the error
     console.error("Error in token purchase:", error);
 
+    // Handle other errors
     // Handle other errors
     res.status(500).json({ success: false, error: "Internal server error" });
   }
