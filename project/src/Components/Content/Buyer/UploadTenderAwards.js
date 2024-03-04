@@ -8,15 +8,35 @@ function PurchaseToken() {
   const [awardamount, setAwardAmount] = useState("");
   const [document, setDocument] = useState("");
   const [documenthash, setDocumentHash] = useState("");
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("Usernanme:" + storedUserData.userName);
       try {
-        const response = await fetch("/searchUserID");
-        const data = await response.json();
+        // Check if storedUserData is an object and has a username property
+        if (
+          storedUserData &&
+          typeof storedUserData === "object" &&
+          storedUserData.userName
+        ) {
+          const { userName } = storedUserData;
 
-        setUserID(data.userid);
-        setAwardID(data.awardid);
+          const response = await fetch(`/searchUserID?userName=${userName}`);
+          if (!response.ok) {
+            throw new Error(
+              `Error: ${response.status} - ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+
+          setUserID(data.userId);
+          setAwardID(data.awardId);
+          // Set other state values if needed
+          console.log("UserID and AwardID:", data.userId, data.awardId);
+        } else {
+          console.error("Invalid storedUserData:", storedUserData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -25,13 +45,34 @@ function PurchaseToken() {
   }, []);
 
   const handleSubmit = async () => {
-    // const response = await fetch('/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type' : 'application/json',
-    //     },
-    //     body: JSON.stringify({ username,password }),
-    // });
+    try {
+      const response = await fetch("/writeData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userid,
+          awardid,
+          supplierid,
+          awardamount,
+          document,
+          documenthash,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      // Optionally handle the response from the server, if needed
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
+
+      // You can also redirect or perform other actions after a successful request
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
   };
 
   return (
@@ -51,7 +92,7 @@ function PurchaseToken() {
               className="uta-name"
               value={userid}
               onChange={(e) => setUserID(e.target.value)}
-              //disabled="true"
+              disabled="true"
             />
           </div>
 
@@ -63,7 +104,7 @@ function PurchaseToken() {
               className="uta-name"
               value={awardid}
               onChange={(e) => setAwardID(e.target.value)}
-              //disabled="true"
+              disabled="true"
             />
           </div>
 

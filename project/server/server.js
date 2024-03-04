@@ -333,14 +333,11 @@ app.get("/searchUserID", async (req, res) => {
     // Get current username
     const userName = req.query.userName;
 
-    console.log("current user:" + userName);
     // Fetch the userID from the database based on the userName
     const userIdResult = await database.query(
       'SELECT "userID" FROM "User" WHERE "userName"=$1;',
       [userName]
     );
-
-    console.log("current user:" + userName);
 
     if (userIdResult.rows.length === 0) {
       return res.status(404).send({ status: 404, message: "User not found." });
@@ -349,7 +346,7 @@ app.get("/searchUserID", async (req, res) => {
     // Extract the userID from the query result
     const currentUserId = userIdResult.rows[0].userID;
     // Generate the next awardID asynchronously
-    const nextAwardId = generateNextAwardIdFromDatabase();
+    const nextAwardId = await generateNextAwardIdFromDatabase();
 
     return res
       .status(200)
@@ -360,11 +357,32 @@ app.get("/searchUserID", async (req, res) => {
   }
 });
 
+app.post("/writeData", async (req, res) => {
+  console.log("Received a writeData request:", req.body);
+
+  //extract data from req.body
+  const userid = req.body.userid;
+  const awardid = req.body.awardid;
+  const supplierid = req.body.supplierid;
+  const awardamount = req.body.awardamount;
+  const document = req.body.document;
+  const documenthash = req.body.documenthash;
+
+
+});
+
 async function generateNextAwardIdFromDatabase() {
   // Fetch the latest awardID from the database
   const latestAwardResult = await database.query(
-    'SELECT "awardid" FROM "award" DESC LIMIT 1;'
+    'SELECT "awardid" FROM "award" ORDER BY "awardid" DESC LIMIT 1;'
   );
+
+  if (latestAwardResult.rows.length > 0) {
+    const awardId = latestAwardResult.rows[0].awardid;
+    console.log("awardId:", awardId);
+  } else {
+    console.log("No award found");
+  }
 
   let nextAwardId;
 
@@ -373,7 +391,7 @@ async function generateNextAwardIdFromDatabase() {
     nextAwardId = 1;
   } else {
     // Increment the latest awardID by 1
-    nextAwardId = latestAwardResult.rows[0].awardId + 1;
+    nextAwardId = latestAwardResult.rows[0].awardid + 1;
   }
 
   return nextAwardId;
