@@ -22,26 +22,21 @@ function PurchaseToken() {
 
     const amountNumber = parseFloat(amount);
 
-    const response = await fetch(
-      "/purchasetoken",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ tokenName, amount: amountNumber }) // Send amount as a number
-      }
-    );
+    const response = await fetch("/purchasetoken", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tokenName, amount: amountNumber }), // Send amount as a number
+    });
 
     const data = await response.json();
     console.log(data);
-    
-    if (data.success) {
 
+    if (data.success) {
       console.log("successfullyPurchasedToken");
-      navigate('/buyerdashboard?success=true', storedUserData);
+      navigate("/buyerdashboard?success=true", storedUserData);
     }
-    
   };
 
   return (
