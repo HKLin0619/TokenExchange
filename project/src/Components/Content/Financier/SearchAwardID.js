@@ -34,7 +34,7 @@ function SearchAwardID() {
 
         if (response.status === 200) {
             const awardData = result.data[0];
-            setUserID(awardData.buyerid || ''); // Use 'buyerid' instead of 'userid'
+            setUserID(awardData.buyerid || ''); 
             setAwardID(awardData.awardid || '');
             setSupplierID(awardData.supplierid || '');
             setAwardAmount(awardData.awardamount || '');
