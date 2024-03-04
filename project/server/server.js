@@ -113,8 +113,7 @@ app.post("/tokenminting", async (req, res) => {
     res.json({ success: false, errorType: "numberError" });
     console.log("numberError");
     return;
-  }
-  else if (numberOfToken > 1000000) {
+  } else if (numberOfToken > 1000000) {
     res.json({ success: false, errorType: "overNumberError" });
     console.log("numberError");
     return;
@@ -126,7 +125,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+        from: "0xb16e6bC278573D650eC0679AE89de169b3652d99",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +160,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+          from: "0xb16e6bC278573D650eC0679AE89de169b3652d99",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -208,7 +207,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477";
+      req.query.account || "0xb16e6bC278573D650eC0679AE89de169b3652d99";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -243,20 +242,19 @@ app.post("/purchasetoken", async (req, res) => {
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-    if (!validationSymbol) {
-      res.json({ success: false, errorType: "validationSymbol" });
-      console.log("tokenSymbol");
-      return;
-    } else if (!tokenName) {
-      res.json({ success: false, errorType: "tokenName" });
-      console.log("tokenName");
-      return;
-    }
-    else if (!amount) {
-      res.json({ success: false, errorType: "amount" });
-      console.log("tokenName");
-      return;
-    }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -272,13 +270,16 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-    const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
+        from: "0x2F348D1194501eB27aB1F974F2Ed589Dc3C93929", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -288,7 +289,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
+    const buyerAddress = "0x2F348D1194501eB27aB1F974F2Ed589Dc3C93929"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -307,7 +308,7 @@ app.post("/purchasetoken", async (req, res) => {
     // Log more information about the error
     console.error("Error in token purchase:", error);
 
-    // Handle other errors  
+    // Handle other errors
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
