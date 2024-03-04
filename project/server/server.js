@@ -315,6 +315,42 @@ app.post("/purchasetoken", async (req, res) => {
   }
 });
 
+//Search Award
+app.post("/searchaward", async (req, res) => {
+  try {
+    const awardID = req.body.awardID;
+    const result = await database.query('SELECT "awardid" FROM "award" WHERE "awardid" = $1;', [awardID]);
+
+    if (result.rows.length > 0) {
+      const matchingAwardID = result.rows[0].awardid;
+      console.log("Matching Award ID:", matchingAwardID);
+      
+      // Redirect to the "/searchawardid" route passing the awardID as a query parameter
+      // res.redirect(`/searchawardid?awardID=${matchingAwardID}`);
+      return res.status(200).send({ status: 200, message: "Matching with the awardID" });
+    } else {
+      console.log("No matching awardID found.");
+      // Handle the case where no matching awardID is found, e.g., return an error response
+      return res.status(404).send({ status: 404, message: "No matching awardID found." });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
+app.get("/searchawardid", async (req, res) =>{
+  const awardID = req.query.awardid;
+  const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
+  
+  console.log(awardID);
+  console.log(result.rows);
+
+  // Send the fetched data back in the response
+  return res.status(200).send({ status: 200, data: result.rows});
+});
+
+
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });

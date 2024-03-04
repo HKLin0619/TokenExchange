@@ -59,14 +59,14 @@ export const FinancierMenuItems = [
 
     {
         title : "Search AwardID",
-        url : "/",
+        url : "/financierdashboard/searchaward",
         className : "nav-links",
         icon : "fa-solid fa-magnifying-glass"
     },
 
     {
         title : "Update Funding Status",
-        url : "/",
+        url : "/financierdashboard/updatefundstatus",
         className : "nav-links",
         icon : "fa-solid fa-pen-to-square"
     },
