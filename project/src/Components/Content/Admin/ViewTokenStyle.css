@@ -4,9 +4,6 @@
     display: flex; 
     width: 100%;
     height: 100vh;
-    background: url("https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    background-size: cover;
-    background-position: center;
   }
   
   .vt-sub-main {
@@ -18,79 +15,80 @@
     transform: translate(-50%, -50%);
     padding-top: 30px;
     padding: 0px 30px;
-    border: 2px solid rgba(255, 255, 255, .5);
-    border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
+    background: white;
+    align-items: center;
+    width: 30%;
   }
   
   .vt-title {
-    margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
   
   .vt-title h1{
-    font-size: 30px;
-    color: white;
+    font-size: 2rem;
+    color: black;
+    padding-bottom: 10px;
   }
   
   .vt-underline {
-    width: 61px;
+    width: 60px;
     height: 6px;
-    background: white;
+    background: black;
     border-radius: 9px;
+    transform: translate(0,-10px);
   }
   
   .vt-shows {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    align-items: center;
-    margin-bottom: 30px; 
-  }
-  
-  .vt-show{
-    display: flex;
-    justify-content: space-between;
-    width: 350px;
-    height: 50px;
-    align-items: center;
-  } 
-  
-  
-  .vt-show h3{
-    color: white;
-    font-size: 18px;
-    font-weight: 800;
-    margin-left: 30px;
-  }
-
-  .vt-show span{
-    color: white;
-    font-size: 18px;
-    font-weight: 600;
-    margin-right: 40px;
-  }
-    
+    text-align: start;
+    width: 90%;
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 20px;
+  }   
   
   .vt-btn {
     width: 100%;
     height: 45px;
-    background: black;
-    border: 2px solid white;
-    outline: none;
+    border: 2px solid black;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
-    color: white;
+    color: black;
     font-weight:600;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 0.5rem 1rem;
+    transition-duration: 0.5s;
+    animation: ease-in-out;
   }
   
   .vt-btn:hover {
-    background: #00FF7F;
-    color: black;
+    background: black;
+    color: white;
   }
+
+  @media screen and (max-width: 850px) {
+
+    .vt-sub-main{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background: #F5F5F5;
+        width: 95%;
+        height: auto;
+        position: absolute;
+        box-shadow: 0 5px 15px 0 rgb(0, 0, 0, 0.25);
+        border-radius: 16px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
     

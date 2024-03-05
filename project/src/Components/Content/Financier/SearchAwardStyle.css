@@ -1,4 +1,4 @@
-.tm-main {
+.sa-main {
     text-align: center;
     justify-content: center;
     display: flex; 
@@ -9,7 +9,7 @@
     background-position: center;
   }
   
-  .tm-sub-main {
+  .sa-sub-main {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -24,33 +24,33 @@
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
   }
   
-  .tm-title {
+  .sa-title {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  .tm-title h1{
+  .sa-title h1{
     font-size: 30px;
     color: white;
   }
   
-  .tm-underline {
+  .sa-underline {
     width: 61px;
     height: 6px;
     background: white;
     border-radius: 9px;
   }
   
-  .tm-inputs {
+  .sa-inputs {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
     align-items: center;
   }
   
-  .tm-input{
+  .sa-input{
     display: flex;
     align-items: center;
     margin-top: 20px;
@@ -61,7 +61,7 @@
   } 
   
   
-  .tm-input input{
+  .sa-input input{
     height: 100%;
     width: 100%;
     background: transparent;
@@ -73,18 +73,18 @@
     padding: 0 20px 0 5px;
   }
   
-  .tm-input input::placeholder{
+  .sa-input input::placeholder{
     color: #808080;
     font-weight: 600;
   }
   
-  .tm-input i{
+  .sa-input i{
     color: white;
     margin: 0px 20px;
   }
   
   
-  .tm-btn {
+  .sa-btn {
     width: 100%;
     height: 45px;
     background: black;
@@ -99,7 +99,7 @@
     margin-top: 50px;
   }
   
-  .tm-btn:hover {
+  .sa-btn:hover {
     background: white;
     color: black;
   }

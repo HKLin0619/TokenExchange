@@ -1,4 +1,4 @@
-.tm-main {
+.ufs-main {
     text-align: center;
     justify-content: center;
     display: flex; 
@@ -9,7 +9,7 @@
     background-position: center;
   }
   
-  .tm-sub-main {
+  .ufs-sub-main {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -24,33 +24,33 @@
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
   }
   
-  .tm-title {
+  .ufs-title {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  .tm-title h1{
+  .ufs-title h1{
     font-size: 30px;
     color: white;
   }
   
-  .tm-underline {
+  .ufs-underline {
     width: 61px;
     height: 6px;
     background: white;
     border-radius: 9px;
   }
   
-  .tm-inputs {
+  .ufs-inputs {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
     align-items: center;
   }
   
-  .tm-input{
+  .ufs-input{
     display: flex;
     align-items: center;
     margin-top: 20px;
@@ -61,7 +61,7 @@
   } 
   
   
-  .tm-input input{
+  .ufs-input input{
     height: 100%;
     width: 100%;
     background: transparent;
@@ -73,18 +73,18 @@
     padding: 0 20px 0 5px;
   }
   
-  .tm-input input::placeholder{
+  .ufs-input input::placeholder{
     color: white;
     font-weight: 600;
   }
   
-  .tm-input i{
+  .ufs-input i{
     color: white;
     margin: 0px 20px;
   }
   
   
-  .tm-btn {
+  .ufs-btn {
     width: 100%;
     height: 45px;
     background: black;
@@ -99,7 +99,7 @@
     margin-top: 50px;
   }
   
-  .tm-btn:hover {
+  .ufs-btn:hover {
     background: #00FF7F;
     color: black;
   }

@@ -55,15 +55,15 @@ function SearchAward() {
     }, [location.search]);
 
     return (
-        <div className="tm-main">
-            <div className="tm-sub-main">
-                <div className='tm-title'>
+        <div className="sa-main">
+            <div className="sa-sub-main">
+                <div className='sa-title'>
                     <h1>Search Award</h1>
-                    <div className='tm-underline'></div>
+                    <div className='sa-underline'></div>
                 </div>
-                <div className='tm-inputs'>
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-coins"/>
+                <div className='sa-inputs'>
+                    <div className='sa-input'>
+                        <i className="sa-solid sa-coins"/>
                         <input
                             type="text"
                             placeholder="AwardID"

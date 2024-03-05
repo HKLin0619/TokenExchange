@@ -19,87 +19,87 @@ function UpdateFundStatus() {
     }
     
   return (
-    <div className="tm-main">
-        <div className="tm-sub-main">
-            <div className='tm-title'>
+    <div className="ufs-main">
+        <div className="ufs-sub-main">
+            <div className='ufs-title'>
                 <h1>Update Fund Status</h1>
-                <div className='tm-underline'></div>
+                <div className='ufs-underline'></div>
             </div>
 
-            <div className='tm-inputs'>
+            <div className='ufs-inputs'>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-user"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-user"/>
                     <input
                         type="text" 
                         placeholder="UserID" 
-                        className="tm-name"
+                        className="ufs-name"
                         value={userid}
                         onChange={(e) => setUserID(e.target.value)}
                         disabled="true"/>
                 </div>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-award"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-award"/>
                     <input 
                         type="text" 
                         placeholder="AwardID" 
-                        className="tm-name"
+                        className="ufs-name"
                         value={awardid}
                         onChange={(e) => setAwardID(e.target.value)}
                         disabled="true"/>
                 </div>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-user"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-user"/>
                     <input 
                         type="text" 
                         placeholder="SupplierID" 
-                        className="tm-name"
+                        className="ufs-name"
                         value={supplierid}
                         onChange={(e) => setSupplierID(e.target.value)}
                         disabled="true"/>
                 </div>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-usd"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-usd"/>
                     <input 
                         type="text" 
                         placeholder="RM..." 
-                        className="tm-name"
+                        className="ufs-name"
                         value={awardamount}
                         onChange={(e) => setAwardAmount(e.target.value)}
                         disabled="true"/>
                 </div>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-file"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-file"/>
                     <input 
                         type="text" 
                         placeholder="https://ipfs.io/..." 
-                        className="tm-name"
+                        className="ufs-name"
                         value={document}
                         onChange={(e) => setDocument(e.target.value)}
                         disabled="true"/>
                 </div>
 
                 <div className='tm-input'>
-                    <i className="fa-solid fa-link"/>
+                    <i className="ufs-solid ufs-link"/>
                     <input 
                         type="text" 
                         placeholder="0x7be3b5f0f43b3ef1f14d26a66997" 
-                        className="tm-name"
+                        className="ufs-name"
                         value={documenthash}
                         onChange={(e) => setDocumentHash(e.target.value)}
                         disabled="true"/>
                 </div>
 
-                <div className='tm-input'>
-                    <i className="fa-solid fa-balance-scale"/>
+                <div className='ufs-input'>
+                    <i className="ufs-solid ufs-balance-scale"/>
                     <input 
                         type="text" 
                         placeholder="False" 
-                        className="tm-name"
+                        className="ufs-name"
                         value={fundstatus}
                         onChange={(e) => setFundStatus(e.target.value)}/>
                 </div>

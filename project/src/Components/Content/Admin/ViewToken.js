@@ -33,23 +33,11 @@ function ViewToken() {
                 <div className='vt-underline'></div>
             </div>
 
-            <div className='vt-shows'>
 
-                <div className='vt-show'>
-                    <h3>Token Name: </h3>
-                    <span>{tokenData.tokenName}</span>
-                </div>
-
-                <div className='vt-show'>
-                    <h3>Token Symbol: </h3>
-                    <span>{tokenData.tokenSymbol}</span>
-                </div>
-
-                <div className='vt-show'>
-                    <h3>Total Supply: </h3>
-                    <span>{tokenData.balance ? tokenData.balance.toLocaleString() : 'Loading...'}</span>
-                </div>
-
+            <div className="vt-shows">
+                <p><strong>Token Name</strong> <span style={{marginLeft: "21px"}}>: {tokenData.tokenName}</span></p>
+                <p><strong>Token Symbol</strong> <span style={{marginLeft: "10px"}}>: {tokenData.tokenSymbol}</span></p>
+                <p><strong>Total Supply</strong> <span style={{marginLeft: "22px"}}>: {tokenData.balance ? tokenData.balance.toLocaleString() : 'Loading...'}</span></p>
             </div>
 
             <button className='vt-btn' onClick={handleBack}>Back</button>
