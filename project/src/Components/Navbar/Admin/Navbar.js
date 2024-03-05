@@ -1,10 +1,10 @@
 import  { Component } from 'react';
-import React, { useState, useEffect } from 'react';
 import "../NavbarStyle.css";
 import { AdminMenuItems } from "../NavbarMenuItems";
 import { Link } from 'react-router-dom';
 
 class Navbar extends Component{
+
 
     state = { clicked: false };
     handleClick = () =>{
@@ -29,6 +29,7 @@ class Navbar extends Component{
                                     <i className={item.icon}></i>{item.title}
                                 </Link>
                             </li>
+
                         );
                     })}
                 </ul>

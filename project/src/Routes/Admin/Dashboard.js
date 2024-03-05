@@ -13,6 +13,8 @@ function Dashboard() {
     const queryParams = new URLSearchParams(location.search);
     const successParam = queryParams.get('success');
 
+
+
     if (successParam === 'true') {
         toast.success('Token Minting Successfully !', {
             position: "top-center",
