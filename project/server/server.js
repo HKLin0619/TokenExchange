@@ -386,6 +386,7 @@ app.post("/writeData", async (req, res) => {
   const useridString = userid.toString();
   const awardidString = awardid.toString();
   const supplieridString = supplierid.toString();
+  const documentString = document.toString();
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -408,7 +409,7 @@ app.post("/writeData", async (req, res) => {
         funded_int
       )
       .send({
-        from: "0x0284d840eBb7497730815083b232657cA5932E6C",
+        from: "0x0284d840eBb7497730815083b232657cA5932E6C", //buyer address
         gas: 3000000,
         gasPrice: 20000000000,
         //value: web3.utils.toWei(amount, "ether"),
@@ -416,9 +417,9 @@ app.post("/writeData", async (req, res) => {
 
     console.log("Transaction Receipt:", transactionReceipt);
 
-    const buyerAddress = "0x0284d840eBb7497730815083b232657cA5932E6C";
+    //const buyerAddress = "0x0284d840eBb7497730815083b232657cA5932E6C";
     await database.query(
-      'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind) VALUES ($1,$2,$3,$4,$5,$6);',
+      'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
       [
         awardidString,
         useridString,
@@ -426,6 +427,7 @@ app.post("/writeData", async (req, res) => {
         awardamount,
         documenthash,
         funded_int,
+        documentString,
       ]
     );
 

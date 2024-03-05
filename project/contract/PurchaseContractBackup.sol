@@ -141,7 +141,7 @@ contract TokenSaleContract {
     
 
 
-    function updateFundedInt(string calldata tokenName, string calldata awardID, string calldata newFundedInt) external {
+    function updateFundedInt(string calldata tokenName, string calldata awardID, string calldata newFundedInt,string calldata newFinancerID) external {
     bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
 
     require(
@@ -151,6 +151,8 @@ contract TokenSaleContract {
     );
     
     fundedInt[hashedAwardID][tokenName] = newFundedInt;
+    //update financerID with new value
+    financerIDs[tokenName][awardID] = newFinancerID;
 
     emit FundedIntUpdated(msg.sender, tokenName, newFundedInt, hashedAwardID);
     }
