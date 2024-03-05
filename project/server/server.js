@@ -113,8 +113,7 @@ app.post("/tokenminting", async (req, res) => {
     res.json({ success: false, errorType: "numberError" });
     console.log("numberError");
     return;
-  }
-  else if (numberOfToken > 1000000) {
+  } else if (numberOfToken > 1000000) {
     res.json({ success: false, errorType: "overNumberError" });
     console.log("numberError");
     return;
@@ -126,7 +125,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+        from: "0x813182a18408a834Ef44aD1F05c05c33d19e1d12",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +160,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+          from: "0x813182a18408a834Ef44aD1F05c05c33d19e1d12",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -208,7 +207,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477";
+      req.query.account || "0x813182a18408a834Ef44aD1F05c05c33d19e1d12";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -239,24 +238,25 @@ app.post("/purchasetoken", async (req, res) => {
   console.log("Token Name:", tokenName);
   console.log("Amount:", amount);
 
+
+
   const validationSymbol = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-    if (!validationSymbol) {
-      res.json({ success: false, errorType: "validationSymbol" });
-      console.log("tokenSymbol");
-      return;
-    } else if (!tokenName) {
-      res.json({ success: false, errorType: "tokenName" });
-      console.log("tokenName");
-      return;
-    }
-    else if (!amount) {
-      res.json({ success: false, errorType: "amount" });
-      console.log("tokenName");
-      return;
-    }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -272,13 +272,16 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-    const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
+        from: "0x96F258AAAAF04b1C32530207666C9d3843C41A6A", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -288,7 +291,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
+    const buyerAddress = "0x96F258AAAAF04b1C32530207666C9d3843C41A6A"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -307,10 +310,46 @@ app.post("/purchasetoken", async (req, res) => {
     // Log more information about the error
     console.error("Error in token purchase:", error);
 
-    // Handle other errors  
+    // Handle other errors
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
+
+//Search Award
+app.post("/searchaward", async (req, res) => {
+  try {
+    const awardID = req.body.awardID;
+    const result = await database.query('SELECT "awardid" FROM "award" WHERE "awardid" = $1;', [awardID]);
+
+    if (result.rows.length > 0) {
+      const matchingAwardID = result.rows[0].awardid;
+      console.log("Matching Award ID:", matchingAwardID);
+      
+      // Redirect to the "/searchawardid" route passing the awardID as a query parameter
+      // res.redirect(`/searchawardid?awardID=${matchingAwardID}`);
+      return res.status(200).send({ status: 200, message: "Matching with the awardID" });
+    } else {
+      console.log("No matching awardID found.");
+      // Handle the case where no matching awardID is found, e.g., return an error response
+      return res.status(404).send({ status: 404, message: "No matching awardID found." });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
+app.get("/searchawardid", async (req, res) =>{
+  const awardID = req.query.awardid;
+  const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
+  
+  console.log(awardID);
+  console.log(result.rows);
+
+  // Send the fetched data back in the response
+  return res.status(200).send({ status: 200, data: result.rows});
+});
+
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
