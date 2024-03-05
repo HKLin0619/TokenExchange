@@ -7,7 +7,6 @@ function SearchAwardID() {
     const [awardid, setAwardID] = useState('');
     const [supplierid, setSupplierID] = useState('');
     const [awardamount, setAwardAmount] = useState('');
-    const [document, setDocument] = useState('');
     const [documenthash, setDocumentHash] = useState('');
     const [fundstatus, setFundStatus] = useState('');
     const navigate = useNavigate();
@@ -38,7 +37,6 @@ function SearchAwardID() {
             setAwardID(awardData.awardid || '');
             setSupplierID(awardData.supplierid || '');
             setAwardAmount(awardData.awardamount || '');
-            setDocument(awardData.document || '');
             setDocumentHash(awardData.award_doc_hash || '');
             setFundStatus(awardData.funded_ind || '');
         } else {
