@@ -195,9 +195,9 @@ module.exports =  [
 		  type: "string",
 		},
 		{
-		  internalType: "uint256",
+		  internalType: "string",
 		  name: "funded_int",
-		  type: "uint256",
+		  type: "string",
 		},
 	  ],
 	  name: "WriteData",
