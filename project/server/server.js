@@ -7,10 +7,8 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const purchaseABI = require("../contract/ContractABI");
+const contractABI = require("../contract/ContractABI");
 
-// const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
-// const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -21,7 +19,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(purchaseABI);
+        console.log(contractABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -125,7 +123,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x813182a18408a834Ef44aD1F05c05c33d19e1d12",
+        from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -154,13 +152,13 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          purchaseABI,
+          contractABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x813182a18408a834Ef44aD1F05c05c33d19e1d12",
+          from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -203,11 +201,11 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x813182a18408a834Ef44aD1F05c05c33d19e1d12";
+      req.query.account || "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -273,7 +271,7 @@ app.post("/purchasetoken", async (req, res) => {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      purchaseABI,
+      contractABI,
       contractAddress
     );
 

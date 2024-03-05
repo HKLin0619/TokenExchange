@@ -698,6 +698,11 @@ module.exports = [
 				"internalType": "string",
 				"name": "newFundedInt",
 				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "newFinancerID",
+				"type": "string"
 			}
 		],
 		"name": "updateFundedInt",
