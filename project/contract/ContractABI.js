@@ -21,9 +21,9 @@ module.exports = [
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "newFundedInt",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"indexed": false,
@@ -82,9 +82,9 @@ module.exports = [
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "award_Doc_Hash",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"indexed": false,
@@ -94,9 +94,9 @@ module.exports = [
 			},
 			{
 				"indexed": false,
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "funded_int",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"name": "TokensBurned",
@@ -185,9 +185,9 @@ module.exports = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "award_Doc_Hash",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -195,9 +195,9 @@ module.exports = [
 				"type": "string"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "funded_int",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"name": "WriteData",
@@ -245,9 +245,9 @@ module.exports = [
 		"name": "awardDocHashes",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -396,9 +396,9 @@ module.exports = [
 		"name": "fundedInt",
 		"outputs": [
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -464,9 +464,9 @@ module.exports = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "award_Doc_Hash",
-				"type": "string"
+				"type": "uint256"
 			},
 			{
 				"internalType": "string",
@@ -474,9 +474,9 @@ module.exports = [
 				"type": "string"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "funded_int",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -695,14 +695,9 @@ module.exports = [
 				"type": "string"
 			},
 			{
-				"internalType": "string",
+				"internalType": "uint256",
 				"name": "newFundedInt",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "newFinancerID",
-				"type": "string"
+				"type": "uint256"
 			}
 		],
 		"name": "updateFundedInt",
@@ -710,4 +705,4 @@ module.exports = [
 		"stateMutability": "nonpayable",
 		"type": "function"
 	}
-];
+]
