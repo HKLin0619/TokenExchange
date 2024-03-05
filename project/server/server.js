@@ -8,6 +8,7 @@ app.use(express.json());
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
 const purchaseABI = require("../contract/ContractABI");
+const contractABI = require("./assets/contractABI");
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -126,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x12ff9e288D511108749474E2864d32CB6E7Db311",
+        from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,11 +162,11 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x12ff9e288D511108749474E2864d32CB6E7Db311",
+          from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
           gas: 3000000,
           gasPrice: 20000000000,
         });
-
+        console.log(contractABI);
         // Insert contract address into the database
         await database.query(
           'INSERT INTO "Contract" ("contractID") VALUES ($1);',
@@ -208,7 +209,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x8a76D342c82f71D3c0CB7593Ddb9E9d5d7c27012";
+      req.query.account || "0x87e6fA887D99d7CE540F5694eB4B404043a37A31";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -321,7 +322,7 @@ app.post("/searchaward", async (req, res) => {
     if (result.rows.length > 0) {
       const matchingAwardID = result.rows[0].awardid;
       console.log("Matching Award ID:", matchingAwardID);
-      
+
       // Redirect to the "/searchawardid" route passing the awardID as a query parameter
       // res.redirect(`/searchawardid?awardID=${matchingAwardID}`);
       return res.status(200).send({ status: 200, message: "Matching with the awardID" });
@@ -339,7 +340,7 @@ app.post("/searchaward", async (req, res) => {
 app.get("/searchawardid", async (req, res) =>{
   const awardID = req.query.awardid;
   const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
-  
+
   console.log(awardID);
   console.log(result.rows);
 

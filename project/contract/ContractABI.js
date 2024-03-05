@@ -695,10 +695,15 @@ module.exports =  [
 		  type: "string",
 		},
 		{
-		  internalType: "uint256",
+		  internalType: "string",
 		  name: "newFundedInt",
-		  type: "uint256",
+		  type: "string",
 		},
+		{
+			internalType: "string",
+			name: "newFinancerID",
+			type: "string"
+		}
 	  ],
 	  name: "updateFundedInt",
 	  outputs: [],
