@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x00aB3A8575DF84933e30AEBE44A87e8e521692db",
+        from: "0xB11DA8d943c0821A81d764b51782016f91D6Ca21",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +161,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x00aB3A8575DF84933e30AEBE44A87e8e521692db",
+          from: "0xB11DA8d943c0821A81d764b51782016f91D6Ca21",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -208,7 +208,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x00aB3A8575DF84933e30AEBE44A87e8e521692db";
+      req.query.account || "0xB11DA8d943c0821A81d764b51782016f91D6Ca21";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -293,7 +293,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x66Aad86bF08CDbDc2d978AFf6C7a358f603bCA98", //
+        from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -303,10 +303,17 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x66Aad86bF08CDbDc2d978AFf6C7a358f603bCA98"; // Replace with the actual buyer's address
+    const buyerAddress = "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
+    );
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
     );
 
     // Convert transactionReceipt values to strings before sending in response
@@ -372,7 +379,7 @@ app.post("/writeData", async (req, res) => {
   const tokenName = "KDX";
   const amount = "1";
   const financerid = "none";
-  const funded_int = "False";
+  const funded_int = "0"; //"False";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
@@ -382,11 +389,17 @@ app.post("/writeData", async (req, res) => {
   console.log("documenthash:" + documenthash);
   console.log("tokenName:" + tokenName);
   console.log("amount:" + amount);
+  console.log("funded_int:" + funded_int);
 
   const useridString = userid.toString();
   const awardidString = awardid.toString();
   const supplieridString = supplierid.toString();
   const documentString = document.toString();
+  const funded_intString = funded_int.toString();
+  const financerIDString = financerid.toString();
+  const documenthashString = documenthash.toString();
+
+  const buyerAddress = "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -394,6 +407,13 @@ app.post("/writeData", async (req, res) => {
     const contractInstance = new web3.eth.Contract(
       purchaseABI,
       contractAddress
+    );
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
     );
 
     const transactionReceipt = await contractInstance.methods
@@ -404,20 +424,18 @@ app.post("/writeData", async (req, res) => {
         useridString,
         supplieridString,
         awardamount,
-        documenthash,
-        financerid,
-        funded_int
+        documenthashString,
+        financerIDString,
+        funded_intString
       )
       .send({
-        from: "0x66Aad86bF08CDbDc2d978AFf6C7a358f603bCA98", //buyer address
+        from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //buyer address
         gas: 3000000,
         gasPrice: 20000000000,
-        //value: web3.utils.toWei(amount, "ether"),
       });
 
     console.log("Transaction Receipt:", transactionReceipt);
 
-    //const buyerAddress = "0x0284d840eBb7497730815083b232657cA5932E6C";
     await database.query(
       'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
       [
@@ -426,7 +444,7 @@ app.post("/writeData", async (req, res) => {
         supplieridString,
         awardamount,
         documenthash,
-        funded_int,
+        funded_intString,
         documentString,
       ]
     );
