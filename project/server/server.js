@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+        from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +161,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477",
+          from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
           gas: 3000000,
           gasPrice: 20000000000,
         });
