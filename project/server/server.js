@@ -7,8 +7,10 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const contractABI = require("../contract/ContractABI");
+const purchaseABI = require("../contract/ContractABI");
 
+// const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
+// const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -19,7 +21,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(contractABI);
+        console.log(purchaseABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -111,7 +113,8 @@ app.post("/tokenminting", async (req, res) => {
     res.json({ success: false, errorType: "numberError" });
     console.log("numberError");
     return;
-  } else if (numberOfToken > 1000000) {
+  }
+  else if (numberOfToken > 1000000) {
     res.json({ success: false, errorType: "overNumberError" });
     console.log("numberError");
     return;
@@ -123,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
+        from: "0x8a76D342c82f71D3c0CB7593Ddb9E9d5d7c27012",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -152,13 +155,13 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          contractABI,
+          purchaseABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e",
+          from: "0x8a76D342c82f71D3c0CB7593Ddb9E9d5d7c27012",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -201,11 +204,11 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x27B7C8A8BBFc198cD4609e084eBF23ba6A5dd51e";
+      req.query.account || "0xDc59f076ef4cD84D10C6F89FC0f7F2fe81a70477";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -236,25 +239,24 @@ app.post("/purchasetoken", async (req, res) => {
   console.log("Token Name:", tokenName);
   console.log("Amount:", amount);
 
-
-
   const validationSymbol = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-  if (!validationSymbol) {
-    res.json({ success: false, errorType: "validationSymbol" });
-    console.log("tokenSymbol");
-    return;
-  } else if (!tokenName) {
-    res.json({ success: false, errorType: "tokenName" });
-    console.log("tokenName");
-    return;
-  } else if (!amount) {
-    res.json({ success: false, errorType: "amount" });
-    console.log("tokenName");
-    return;
-  }
+    if (!validationSymbol) {
+      res.json({ success: false, errorType: "validationSymbol" });
+      console.log("tokenSymbol");
+      return;
+    } else if (!tokenName) {
+      res.json({ success: false, errorType: "tokenName" });
+      console.log("tokenName");
+      return;
+    }
+    else if (!amount) {
+      res.json({ success: false, errorType: "amount" });
+      console.log("tokenName");
+      return;
+    }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -270,16 +272,13 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-    const contractInstance = new web3.eth.Contract(
-      contractABI,
-      contractAddress
-    );
+    const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x96F258AAAAF04b1C32530207666C9d3843C41A6A", //
+        from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -289,7 +288,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x96F258AAAAF04b1C32530207666C9d3843C41A6A"; // Replace with the actual buyer's address
+    const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -308,7 +307,7 @@ app.post("/purchasetoken", async (req, res) => {
     // Log more information about the error
     console.error("Error in token purchase:", error);
 
-    // Handle other errors
+    // Handle other errors  
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
