@@ -416,25 +416,31 @@ app.post("/writeData", async (req, res) => {
       `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
     );
 
-    const transactionReceipt = await contractInstance.methods
-      .WriteData(
-        tokenName,
-        amount,
-        awardidString,
-        useridString,
-        supplieridString,
-        awardamount,
-        documenthashString,
-        financerIDString,
-        funded_intString
-      )
-      .send({
-        from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //buyer address
-        gas: 3000000,
-        gasPrice: 20000000000,
-      });
+    try {
+      const transactionReceipt = await contractInstance.methods
+        .WriteData(
+          tokenName,
+          amount,
+          awardidString,
+          useridString,
+          supplieridString,
+          awardamount,
+          documenthashString,
+          financerIDString,
+          funded_intString
+        )
+        .send({
+          from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //buyer address
+          gas: 3000000,
+          gasPrice: 20000000000,
+        });
 
-    console.log("Transaction Receipt:", transactionReceipt);
+      console.log("Transaction Receipt:", transactionReceipt);
+    } catch (error) {
+      console.error("Error during contract method execution:", error);
+    }
+
+    //console.log("Transaction Receipt:", transactionReceipt);
 
     await database.query(
       'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
@@ -449,12 +455,13 @@ app.post("/writeData", async (req, res) => {
       ]
     );
 
+    /*
     const serializedReceipt = {
       transactionHash: transactionReceipt.transactionHash,
       blockHash: transactionReceipt.blockHash,
-    };
+    };*/
 
-    res.json({ success: true, receipt: serializedReceipt });
+    res.json({ success: true /*receipt: serializedReceipt */ });
   } catch (error) {
     console.error("Error on write data:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
