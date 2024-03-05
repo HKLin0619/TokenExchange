@@ -127,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
+        from: "0x6200B4CAdcBb4Fd03421BAD9F4A099bC0c06F806",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -162,11 +162,13 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
+          from: "0x6200B4CAdcBb4Fd03421BAD9F4A099bC0c06F806",
           gas: 3000000,
           gasPrice: 20000000000,
         });
-        console.log(contractABI);
+        console.log("AAA");
+        console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
+        console.log("AAA");
         // Insert contract address into the database
         await database.query(
           'INSERT INTO "Contract" ("contractID") VALUES ($1);',

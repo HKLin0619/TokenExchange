@@ -82,9 +82,9 @@ module.exports =  [
 		},
 		{
 		  indexed: false,
-		  internalType: "uint256",
+		  internalType: "string",
 		  name: "award_Doc_Hash",
-		  type: "uint256",
+		  type: "string",
 		},
 		{
 		  indexed: false,
@@ -185,9 +185,9 @@ module.exports =  [
 		  type: "uint256",
 		},
 		{
-		  internalType: "uint256",
+		  internalType: "string",
 		  name: "award_Doc_Hash",
-		  type: "uint256",
+		  type: "string",
 		},
 		{
 		  internalType: "string",
@@ -245,9 +245,9 @@ module.exports =  [
 	  name: "awardDocHashes",
 	  outputs: [
 		{
-		  internalType: "uint256",
+		  internalType: "string",
 		  name: "",
-		  type: "uint256",
+		  type: "string",
 		},
 	  ],
 	  stateMutability: "view",
