@@ -23,13 +23,13 @@ class Navbar extends Component{
 
                 <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
                     {AdminMenuItems.map((item, index) => {
+
                         return(
                             <li key={index}>
                                 <Link className={`${item.className} ${this.props.currentPage === item.url ? 'active-link' : ''}`} to={item.url}>
                                     <i className={item.icon}></i>{item.title}
                                 </Link>
                             </li>
-
                         );
                     })}
                 </ul>
