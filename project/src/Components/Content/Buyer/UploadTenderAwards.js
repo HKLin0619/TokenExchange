@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./UploadTenderAwardsStyle.css";
+import { useNavigate } from "react-router-dom";
 
 function PurchaseToken() {
   const [userid, setUserID] = useState("");
@@ -9,6 +10,7 @@ function PurchaseToken() {
   const [document, setDocument] = useState("");
   const [documenthash, setDocumentHash] = useState("");
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +71,10 @@ function PurchaseToken() {
       const responseData = await response.json();
       console.log("Server response:", responseData);
 
+      if (responseData.success) {
+        console.log("successfullyWriteData");
+        navigate("/buyerdashboard?success=true", storedUserData);
+      }
       // You can also redirect or perform other actions after a successful request
     } catch (error) {
       console.error("Error submitting data:", error);

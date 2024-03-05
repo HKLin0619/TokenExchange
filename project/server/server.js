@@ -372,7 +372,7 @@ app.post("/writeData", async (req, res) => {
   const tokenName = "KDX";
   const amount = "1";
   const financerid = "none";
-  const funded_int = "False";
+  const funded_int = "0"; //"False";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
