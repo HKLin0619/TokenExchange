@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../../Components/Navbar/Admin/Navbar'
 import ProfileCard from '../../Components/Content/ProfileCard/ProfileCard'
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,15 +8,6 @@ function Dashboard() {
 
   const location = useLocation();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
-  const [tokenData, setTokenData] = useState({});
-
-  useEffect(() => {
-    fetch('/viewtoken')
-    .then(res => res.json())
-    .then(e => {
-        setTokenData(e)
-    })
-  },[])
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -39,7 +30,8 @@ function Dashboard() {
 
   return (
     <div className='content'>
-        <Navbar tokenData={tokenData}/> 
+        <Navbar/> 
+
         <ToastContainer
             position="top-center"
             autoClose={5000}

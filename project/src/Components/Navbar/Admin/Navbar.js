@@ -12,7 +12,6 @@ class Navbar extends Component{
     }
 
     render(){
-        const { tokenData } = this.props;
         return(
             <nav className='navbarIteams'>
 
@@ -26,22 +25,10 @@ class Navbar extends Component{
                     {AdminMenuItems.map((item, index) => {
 
                         return(
-                            // <li key={index}>
-                            //     <Link className={`${item.className} ${this.props.currentPage === item.url ? 'active-link' : ''}`} to={item.url}>
-                            //         <i className={item.icon}></i>{item.title}
-                            //     </Link>
-                            // </li>
-
                             <li key={index}>
-                                {item.url === "/admindashboard/viewtoken" && !tokenData.balance ? (
-                                    <span className="nav-disabled-link">
-                                        <i className={item.icon}></i>{item.title}
-                                    </span>
-                                ) : (
-                                    <Link className={`${item.className} ${this.props.currentPage === item.url ? 'active-link' : ''}`} to={item.url}>
-                                        <i className={item.icon}></i>{item.title}
-                                    </Link>
-                                )}
+                                <Link className={`${item.className} ${this.props.currentPage === item.url ? 'active-link' : ''}`} to={item.url}>
+                                    <i className={item.icon}></i>{item.title}
+                                </Link>
                             </li>
                         );
                     })}

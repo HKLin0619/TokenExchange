@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import "./UploadTenderAwardsStyle.css";
+import { useNavigate } from "react-router-dom";
 
-function PurchaseToken() {
+function UploadTenderAwards() {
 
     const [userid, awardid,supplierid,awardamount,document,documenthash] = useState('');
     const [setUserID,setAwardID,setSupplierID,setAwardAmount,setDocument,setDocumentHash] = useState('');
+    const navigate = useNavigate();
+    
+    const handleBack = async () => {
+        navigate("/buyerdashboard");
+    };
+    
 
     const handleSubmit = async () => {
 
@@ -23,7 +30,7 @@ function PurchaseToken() {
     <div className="uta-main">
         <div className="uta-sub-main">
             <div className='uta-title'>
-                <h1>UploadTenderAwards</h1>
+                <h1>Upload Tender Awards</h1>
                 <div className='uta-underline'></div>
             </div>
 
@@ -94,6 +101,7 @@ function PurchaseToken() {
             </div>
 
             <button className='uta-btn' onClick={handleSubmit}>Upload</button>
+            <button className='uta-btn' onClick={handleBack}>Back</button>
 
         </div>
        
@@ -101,4 +109,4 @@ function PurchaseToken() {
   )
 }
 
-export default PurchaseToken
+export default UploadTenderAwards
