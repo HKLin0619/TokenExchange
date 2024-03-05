@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x9c8f99124d59263e526A5B3d32834BD7fc665eB6",
+        from: "0xc1f57C2eccec2579A6c0Df39dEdF7E119eBAb02C",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +161,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x9c8f99124d59263e526A5B3d32834BD7fc665eB6",
+          from: "0xc1f57C2eccec2579A6c0Df39dEdF7E119eBAb02C",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -208,7 +208,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x9c8f99124d59263e526A5B3d32834BD7fc665eB6";
+      req.query.account || "0xc1f57C2eccec2579A6c0Df39dEdF7E119eBAb02C";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -293,7 +293,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x5465700C50410E7E49D7fe75c3F8E9D5B759b1c6", //
+        from: "0xF58f12B4CB6087Dc7a475173FC0Da0eA5c44c0a6", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -303,7 +303,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x5465700C50410E7E49D7fe75c3F8E9D5B759b1c6"; // Replace with the actual buyer's address
+    const buyerAddress = "0xF58f12B4CB6087Dc7a475173FC0Da0eA5c44c0a6"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -368,7 +368,77 @@ app.post("/writeData", async (req, res) => {
   const document = req.body.document;
   const documenthash = req.body.documenthash;
 
+  //fix tokenName to KDX and the spend 1 token per time
+  const tokenName = "KDX";
+  const amount = "1";
+  const financerid = "none";
+  const funded_int = "False";
 
+  console.log("Quick Check: userid:", userid);
+  console.log("awardid:" + awardid);
+  console.log("supplierid:" + supplierid);
+  console.log("awaramount:" + awardamount);
+  console.log("document:" + document);
+  console.log("documenthash:" + documenthash);
+  console.log("tokenName:" + tokenName);
+  console.log("amount:" + amount);
+
+  const useridString = userid.toString();
+  const awardidString = awardid.toString();
+  const supplieridString = supplierid.toString();
+
+  try {
+    const result = await database.query('SELECT "contractID" FROM "Contract";');
+    const contractAddress = result.rows[0].contractID;
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
+
+    const transactionReceipt = await contractInstance.methods
+      .WriteData(
+        tokenName,
+        amount,
+        awardidString,
+        useridString,
+        supplieridString,
+        awardamount,
+        documenthash,
+        financerid,
+        funded_int
+      )
+      .send({
+        from: "0xF58f12B4CB6087Dc7a475173FC0Da0eA5c44c0a6",
+        gas: 3000000,
+        gasPrice: 20000000000,
+        //value: web3.utils.toWei(amount, "ether"),
+      });
+
+    console.log("Transaction Receipt:", transactionReceipt);
+
+    const buyerAddress = "0xF58f12B4CB6087Dc7a475173FC0Da0eA5c44c0a6";
+    await database.query(
+      'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind) VALUES ($1,$2,$3,$4,$5,$6);',
+      [
+        awardidString,
+        useridString,
+        supplieridString,
+        awardamount,
+        documenthash,
+        funded_int,
+      ]
+    );
+
+    const serializedReceipt = {
+      transactionHash: transactionReceipt.transactionHash,
+      blockHash: transactionReceipt.blockHash,
+    };
+
+    res.json({ success: true, receipt: serializedReceipt });
+  } catch (error) {
+    console.error("Error on write data:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
 });
 
 async function generateNextAwardIdFromDatabase() {
