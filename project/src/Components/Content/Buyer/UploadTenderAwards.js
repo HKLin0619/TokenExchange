@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
 
-function PurchaseToken() {
+function UploadTenderAwards() {
   const [userid, setUserID] = useState("");
   const [awardid, setAwardID] = useState("");
   const [supplierid, setSupplierID] = useState("");
@@ -168,4 +168,4 @@ function PurchaseToken() {
   );
 }
 
-export default PurchaseToken;
+export default UploadTenderAwards;
