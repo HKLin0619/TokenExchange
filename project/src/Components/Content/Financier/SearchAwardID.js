@@ -1,145 +1,100 @@
-import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./SearchAwardIDStyle.css";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Space, Table, Tag } from 'antd';
 
 function SearchAwardID() {
-    const [userid, setUserID] = useState('');
-    const [awardid, setAwardID] = useState('');
-    const [supplierid, setSupplierID] = useState('');
-    const [awardamount, setAwardAmount] = useState('');
-    //const [document, setDocument] = useState('');
-    const [documenthash, setDocumentHash] = useState('');
-    const [fundstatus, setFundStatus] = useState('');
+
     const navigate = useNavigate();
-    
-    const location = useLocation();
 
     const handleBack = async () => {
-        navigate("/financierdashboard/searchaward");
-      };
-    
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const paramAwardID = searchParams.get("awardID");
-        fetchAwardID(paramAwardID);
-    }, [location.search]);
 
-   const fetchAwardID = async (paramAwardID) => {
-    try {
-        const response = await fetch("/searchawardid?awardid=" + paramAwardID, {
-            method: "GET",
-        });
-        const result = await response.json();
-        console.log(result);
+        navigate('/financierdashboard');
 
-        if (response.status === 200) {
-            const awardData = result.data[0];
-            setUserID(awardData.buyerid || ''); 
-            setAwardID(awardData.awardid || '');
-            setSupplierID(awardData.supplierid || '');
-            setAwardAmount(awardData.awardamount || '');
-            //setDocument(awardData.document || '');
-            setDocumentHash(awardData.award_doc_hash || '');
-            setFundStatus(awardData.funded_ind || '');
-        } else {
-            console.error("Failed to fetch award ID:", result.message);
-        }
-    } catch (error) {
-        console.error("Error fetching award ID:", error);
     }
-};
-    return (
-        <div className="said-main">
-            <div className="said-sub-main">
-                <div className='said-title'>
-                    <h1>Award ID Result</h1>
-                    <div className='said-underline'></div>
-                </div>
 
-                <div className='said-inputs'>
-                    <div className='said-input'>
-                        <i className="said-solid said-user"/>
-                        <input
-                            type="text" 
-                            // placeholder="UserID" 
-                            className="said-name"
-                            value={userid}
-                            disabled={true}
-                        />
-                    </div>
+    const handleSearch = async () => {
 
-                    <div className='said-input'>
-                        <i className="said-solid said-award"/>
-                        <input 
-                            type="text" 
-                            // placeholder="AwardID" 
-                            className="said-name"
-                            value={awardid}
-                            disabled={true}
-                        />
-                    </div>
+        navigate('/financierdashboard/fundingStatus');
 
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-user"/>
-                        <input 
-                            type="text" 
-                            // placeholder="SupplierID" 
-                            className="tm-name"
-                            value={supplierid}
-                            disabled={true}
-                        />
-                    </div>
+    }
 
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-usd"/>
-                        <input 
-                            type="text" 
-                            // placeholder="RM..." 
-                            className="tm-name"
-                            value={awardamount}
-                            disabled={true}
-                        />
-                    </div>
+    const columns = [
+        {
+          title: 'No.',
+          dataIndex: 'no',
+          key: 'no',
+          width: 70,
+          align: 'center',
+        },
+        {
+          title: <div style={{ textAlign: 'center' }}>Award ID</div>,
+          dataIndex: 'awardID',
+          key: 'awardID',
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (_, record) => (
+            <Space size="middle">
+              <button className='sa-btn-search' onClick={handleSearch}>Search</button>
+            </Space>
+          ),
+          align: 'center',
+          width: 150,
+        },
+      ];
+      const data = [
+        {
+            no: '1',
+            awardID: '123123123',
+        },
+        {
+            no: '2',
+            awardID: '12312312',
+        },
+        {
+            no: '3',
+            awardID: '14212412',
+        },
+        {
+            no: '4',
+            awardID: '14212412',
+        },
+        {
+            no: '5',
+            awardID: '14212412',
+        },
+        {
+            no: '6',
+            awardID: '14212412',
+        },
+      ];
 
-                    {/* <div className='tm-input'>
-                        <i className="fa-solid fa-file"/>
-                        <input 
-                            type="text" 
-                            // placeholder="https://ipfs.io/..." 
-                            className="tm-name"
-                            value={document}
-                            disabled={true}
-                        />
-                    </div> */}
+  return (
+    
+    <div className="sa-main">
 
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-link"/>
-                        <input 
-                            type="text" 
-                            // placeholder="0x7be3b5f0f43b3ef1f14d26a66997" 
-                            className="tm-name"
-                            value={documenthash}
-                            disabled={true}
-                        />
-                    </div>
+        <div className="sa-sub-main">
 
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-balance-scale"/>
-                        <input 
-                            type="text" 
-                            // placeholder="False" 
-                            className="tm-name"
-                            value={fundstatus}
-                            disabled={true}
-                        />
-                    </div>
-                </div>
-                <button className="tm-btn" onClick={handleBack}>
-                Back
-                </button>
+            <div className='sa-title'>
+                <h1>Search Award ID</h1>
+                <div className='sa-underline'></div>
             </div>
+
+
+            <div className="sa-table">
+
+                <Table columns={columns} dataSource={data} pagination = {{pageSize : 5}} bordered={true}/>
+
+            </div>
+
+            <button className='sa-btn' onClick={handleBack}>Back</button>
+
         </div>
-    );
+       
+    </div>
+  )
+
 }
 
 export default SearchAwardID;

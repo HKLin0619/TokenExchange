@@ -9,11 +9,9 @@ import ViewToken from "./Routes/Admin/viewToken";
 import SignUp from "./Routes/SignUp";
 import PurchaseToken from "./Routes/Buyer/PurchaseToken";
 import UploadTenderAwards from "./Routes/Buyer/UploadTenderAward";
-import SearchAward from "./Routes/Financier/SearchAward";
 import SearchAwardID from "./Routes/Financier/SearchAwardID";
-import UpdateFundStatus from "./Routes/Financier/UpdateFundStatus";
 import ViewAccount from "./Routes/Buyer/ViewAccount";
-
+import FundingStatus from "./Routes/Financier/FundingStatus";
 
 function App() {
   return (
@@ -38,16 +36,12 @@ function App() {
           element={<ViewAccount />}
         />
         <Route
-          path="/financierdashboard/searchaward"
-          element={<SearchAward />}
-        />
-        <Route
-          path="/financierdashboard/searchawardid"
+          path="/financierdashboard/searchAwardID"
           element={<SearchAwardID />}
         />
         <Route
-          path="/financierdashboard/updatefundstatus"
-          element={<UpdateFundStatus />}
+          path="/financierdashboard/fundingStatus"
+          element={<FundingStatus />}
         />
         <Route path="/signup" element={<SignUp />} />
       </Routes>

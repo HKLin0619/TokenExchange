@@ -1,4 +1,4 @@
-  .sa-main {
+.fa-main {
     text-align: center;
     justify-content: center;
     display: flex; 
@@ -6,11 +6,11 @@
     height: 100%;
   }
   
-  .sa-sub-main {
+  .fa-sub-main {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 57%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding-top: 30px;
@@ -20,11 +20,10 @@
     box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
     background: white;
     align-items: center;
-    width: 60%;
-    height: 70%;
+    width: 30%;
   }
   
-  .sa-title {
+  .fa-title {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,54 +31,30 @@
     padding-bottom: 20px;
   }
   
-  .sa-title h1{
+  .fa-title h1{
     font-size: 2rem;
     color: black;
     padding-bottom: 10px;
   }
   
-  .sa-underline {
+  .fa-underline {
     width: 60px;
     height: 6px;
     background: black;
     border-radius: 9px;
     transform: translate(0,-10px);
   }
-
-  .sa-table {
-    width: 100%;
-  }
-
-  .ant-table {
-    border: 1px solid black; 
-  }
-
-  .ant-table-thead > tr > th {
-      border: 1px solid black; 
-  }
   
-
-  .ant-table-tbody > tr > td {
-      border: 1px solid black; 
-  }
-
-  .sa-btn-search {
-    border: 1px solid black; 
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    background-color: black;
-    font-weight:600;
-    transition-duration: 0.5s;
-    animation: ease-in-out;
-  }
-
-  .sa-btn {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 95%;
+  .fa-shows {
+    text-align: start;
+    width: 90%;
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 20px;
+  }  
+  
+  .fa-btn {
+    width: 100%;
     height: 45px;
     border: 2px solid black;
     border-radius: 6px;
@@ -87,19 +62,16 @@
     font-size: 16px;
     color: black;
     font-weight:600;
+    margin-bottom: 20px;
     background-color: white;
     padding: 0.5rem 1rem;
     transition-duration: 0.5s;
     animation: ease-in-out;
   }
   
-  .sa-btn:hover {
+  .fa-btn:hover {
     background: black;
     color: white;
   }
 
-  .sa-btn-search:hover {
-    background: white;
-    color: black;
-  }
     

@@ -28,9 +28,9 @@ function ViewToken() {
 
         <div className="vt-sub-main">
 
-            <div className='vt-title'>
+            <div className='fa-title'>
                 <h1>View Token</h1>
-                <div className='vt-underline'></div>
+                <div className='fa-underline'></div>
             </div>
 
 
