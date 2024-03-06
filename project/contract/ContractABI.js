@@ -1,4 +1,4 @@
-module.exports =  [
+module.exports = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -321,24 +321,6 @@ module.exports =  [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "callFunction",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -450,11 +432,6 @@ module.exports =  [
 			},
 			{
 				"internalType": "string",
-				"name": "buyerID",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
 				"name": "supplierID",
 				"type": "string"
 			},
@@ -483,51 +460,6 @@ module.exports =  [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getNumber",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "tokenName",
-				"type": "string"
-			}
-		],
-		"name": "getOwnerByTokenName",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTotalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -543,24 +475,6 @@ module.exports =  [
 		"name": "mint",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "myFunction",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
