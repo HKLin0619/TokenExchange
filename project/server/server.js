@@ -127,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x6200B4CAdcBb4Fd03421BAD9F4A099bC0c06F806",
+        from: "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -162,7 +162,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x6200B4CAdcBb4Fd03421BAD9F4A099bC0c06F806",
+          from: "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -211,7 +211,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x87e6fA887D99d7CE540F5694eB4B404043a37A31";
+      req.query.account || "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -281,7 +281,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
+        from: "0x0fDDA18cd5FfBFa1e89F04F68864759f3da2a999", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -291,7 +291,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
+    const buyerAddress = "0x0fDDA18cd5FfBFa1e89F04F68864759f3da2a999"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
