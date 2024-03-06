@@ -233,87 +233,6 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
-// app.post("/purchasetoken", async (req, res) => {
-//   console.log("Received a purchase token request:", req.body);
-//   // Extracting data from the request body
-//   const tokenName = req.body.tokenName;
-//   const amount = req.body.amount;
-
-//   console.log("Token Name:", tokenName);
-//   console.log("Amount:", amount);
-
-//   const validationSymbol = await database
-//     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
-//     .then((res) => res.rows[0]);
-
-//     if (!validationSymbol) {
-//       res.json({ success: false, errorType: "validationSymbol" });
-//       console.log("tokenSymbol");
-//       return;
-//     } else if (!tokenName) {
-//       res.json({ success: false, errorType: "tokenName" });
-//       console.log("tokenName");
-//       return;
-//     }
-//     else if (!amount) {
-//       res.json({ success: false, errorType: "amount" });
-//       console.log("tokenName");
-//       return;
-//     }
-
-//   // Convert amount to string before passing it to web3.utils.toWei
-//   const amountString = amount.toString();
-
-//   console.log("Amount (String):", amountString);
-
-//   try {
-//     console.log(
-//       "Calling purchase function with tokenName:",
-//       tokenName,
-//       "and amount:",
-//       amountString
-//     );
-//     const result = await database.query('SELECT "contractID" FROM "Contract";');
-//     const contractAddress = result.rows[0].contractID;
-//     const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
-
-//     // Calling the purchase function on the contract
-//     const transactionReceipt = await contractInstance.methods
-//       .purchase(tokenName, amountString)
-//       .send({
-//         from: "0x2b026037e08339f9BB95D45365236AE1557afE4A", //
-//         gas: 3000000,
-//         gasPrice: 20000000000,
-//         value: web3.utils.toWei(amountString, "ether"),
-//       });
-
-//     // Log transaction receipt
-//     console.log("Transaction Receipt:", transactionReceipt);
-
-//     // If the transaction is successful, record the purchase in the database
-//     const buyerAddress = "0x2b026037e08339f9BB95D45365236AE1557afE4A"; // Replace with the actual buyer's address
-//     await database.query(
-//       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
-//       [buyerAddress, tokenName, amount]
-//     );
-
-//     // Convert transactionReceipt values to strings before sending in response
-//     const serializedReceipt = {
-//       transactionHash: transactionReceipt.transactionHash,
-//       blockHash: transactionReceipt.blockHash,
-//       // Add any other relevant properties here
-//     };
-
-//     // You can handle the receipt or send a response back
-//     res.json({ success: true, receipt: serializedReceipt });
-//   } catch (error) {
-//     // Log more information about the error
-//     console.error("Error in token purchase:", error);
-
-//     // Handle other errors  
-//     res.status(500).json({ success: false, error: "Internal server error" });
-//   }
-// });
 app.post("/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
@@ -327,19 +246,6 @@ app.post("/purchasetoken", async (req, res) => {
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-  if (!validationSymbol) {
-    res.json({ success: false, errorType: "validationSymbol" });
-    console.log("tokenSymbol");
-    return;
-  } else if (!tokenName) {
-    res.json({ success: false, errorType: "tokenName" });
-    console.log("tokenName");
-    return;
-  } else if (!amount) {
-    res.json({ success: false, errorType: "amount" });
-    console.log("tokenName");
-    return;
-  }
   if (!validationSymbol) {
     res.json({ success: false, errorType: "validationSymbol" });
     console.log("tokenSymbol");
@@ -414,11 +320,11 @@ app.post("/purchasetoken", async (req, res) => {
     console.error("Error in token purchase:", error);
 
     // Handle other errors
-    // Handle other errors
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
 
+//
 app.get("/searchUserID", async (req, res) => {
   try {
     // Get current username
@@ -448,6 +354,7 @@ app.get("/searchUserID", async (req, res) => {
   }
 });
 
+//Upload Tender Awards
 app.post("/writeData", async (req, res) => {
   console.log("Received a writeData request:", req.body);
 
@@ -538,12 +445,6 @@ app.post("/writeData", async (req, res) => {
         documentString,
       ]
     );
-
-    /*
-    const serializedReceipt = {
-      transactionHash: transactionReceipt.transactionHash,
-      blockHash: transactionReceipt.blockHash,
-    };*/
 
     res.json({ success: true /*receipt: serializedReceipt */ });
   } catch (error) {
