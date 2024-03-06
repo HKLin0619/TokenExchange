@@ -233,6 +233,87 @@ app.get("/viewtoken", async (req, res) => {
 });
 
 //Purchase Token
+// app.post("/purchasetoken", async (req, res) => {
+//   console.log("Received a purchase token request:", req.body);
+//   // Extracting data from the request body
+//   const tokenName = req.body.tokenName;
+//   const amount = req.body.amount;
+
+//   console.log("Token Name:", tokenName);
+//   console.log("Amount:", amount);
+
+//   const validationSymbol = await database
+//     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
+//     .then((res) => res.rows[0]);
+
+//     if (!validationSymbol) {
+//       res.json({ success: false, errorType: "validationSymbol" });
+//       console.log("tokenSymbol");
+//       return;
+//     } else if (!tokenName) {
+//       res.json({ success: false, errorType: "tokenName" });
+//       console.log("tokenName");
+//       return;
+//     }
+//     else if (!amount) {
+//       res.json({ success: false, errorType: "amount" });
+//       console.log("tokenName");
+//       return;
+//     }
+
+//   // Convert amount to string before passing it to web3.utils.toWei
+//   const amountString = amount.toString();
+
+//   console.log("Amount (String):", amountString);
+
+//   try {
+//     console.log(
+//       "Calling purchase function with tokenName:",
+//       tokenName,
+//       "and amount:",
+//       amountString
+//     );
+//     const result = await database.query('SELECT "contractID" FROM "Contract";');
+//     const contractAddress = result.rows[0].contractID;
+//     const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+
+//     // Calling the purchase function on the contract
+//     const transactionReceipt = await contractInstance.methods
+//       .purchase(tokenName, amountString)
+//       .send({
+//         from: "0x2b026037e08339f9BB95D45365236AE1557afE4A", //
+//         gas: 3000000,
+//         gasPrice: 20000000000,
+//         value: web3.utils.toWei(amountString, "ether"),
+//       });
+
+//     // Log transaction receipt
+//     console.log("Transaction Receipt:", transactionReceipt);
+
+//     // If the transaction is successful, record the purchase in the database
+//     const buyerAddress = "0x2b026037e08339f9BB95D45365236AE1557afE4A"; // Replace with the actual buyer's address
+//     await database.query(
+//       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
+//       [buyerAddress, tokenName, amount]
+//     );
+
+//     // Convert transactionReceipt values to strings before sending in response
+//     const serializedReceipt = {
+//       transactionHash: transactionReceipt.transactionHash,
+//       blockHash: transactionReceipt.blockHash,
+//       // Add any other relevant properties here
+//     };
+
+//     // You can handle the receipt or send a response back
+//     res.json({ success: true, receipt: serializedReceipt });
+//   } catch (error) {
+//     // Log more information about the error
+//     console.error("Error in token purchase:", error);
+
+//     // Handle other errors  
+//     res.status(500).json({ success: false, error: "Internal server error" });
+//   }
+// });
 app.post("/purchasetoken", async (req, res) => {
   console.log("Received a purchase token request:", req.body);
   // Extracting data from the request body
@@ -246,20 +327,32 @@ app.post("/purchasetoken", async (req, res) => {
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-    if (!validationSymbol) {
-      res.json({ success: false, errorType: "validationSymbol" });
-      console.log("tokenSymbol");
-      return;
-    } else if (!tokenName) {
-      res.json({ success: false, errorType: "tokenName" });
-      console.log("tokenName");
-      return;
-    }
-    else if (!amount) {
-      res.json({ success: false, errorType: "amount" });
-      console.log("tokenName");
-      return;
-    }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -275,7 +368,10 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-    const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
@@ -297,6 +393,13 @@ app.post("/purchasetoken", async (req, res) => {
       [buyerAddress, tokenName, amount]
     );
 
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
+    );
+
     // Convert transactionReceipt values to strings before sending in response
     const serializedReceipt = {
       transactionHash: transactionReceipt.transactionHash,
@@ -310,8 +413,38 @@ app.post("/purchasetoken", async (req, res) => {
     // Log more information about the error
     console.error("Error in token purchase:", error);
 
-    // Handle other errors  
+    // Handle other errors
+    // Handle other errors
     res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+app.get("/searchUserID", async (req, res) => {
+  try {
+    // Get current username
+    const userName = req.query.userName;
+
+    // Fetch the userID from the database based on the userName
+    const userIdResult = await database.query(
+      'SELECT "userID" FROM "User" WHERE "userName"=$1;',
+      [userName]
+    );
+
+    if (userIdResult.rows.length === 0) {
+      return res.status(404).send({ status: 404, message: "User not found." });
+    }
+
+    // Extract the userID from the query result
+    const currentUserId = userIdResult.rows[0].userID;
+    // Generate the next awardID asynchronously
+    const nextAwardId = await generateNextAwardIdFromDatabase();
+
+    return res
+      .status(200)
+      .json({ userId: currentUserId, awardId: nextAwardId });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
   }
 });
 
@@ -339,16 +472,47 @@ app.post("/searchaward", async (req, res) => {
   }
 });
 
-app.get("/searchawardid", async (req, res) =>{
+
+//Search Award ID
+app.get("/searchawardid", async (req, res) => {
   const awardID = req.query.awardid;
-  const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
+  const result = await database.query(
+    'SELECT * FROM "award" WHERE "awardid" = $1;',
+    [awardID]
+  );
 
   console.log(awardID);
   console.log(result.rows);
 
   // Send the fetched data back in the response
-  return res.status(200).send({ status: 200, data: result.rows});
+  return res.status(200).send({ status: 200, data: result.rows });
 });
+
+async function generateNextAwardIdFromDatabase() {
+  // Fetch the latest awardID from the database
+  const latestAwardResult = await database.query(
+    'SELECT "awardid" FROM "award" ORDER BY "awardid" DESC LIMIT 1;'
+  );
+
+  if (latestAwardResult.rows.length > 0) {
+    const awardId = latestAwardResult.rows[0].awardid;
+    console.log("awardId:", awardId);
+  } else {
+    console.log("No award found");
+  }
+
+  let nextAwardId;
+
+  if (latestAwardResult.rows.length === 0) {
+    // If no previous awardID found, start from 1 or any initial value you prefer
+    nextAwardId = 1;
+  } else {
+    // Increment the latest awardID by 1
+    nextAwardId = latestAwardResult.rows[0].awardid + 1;
+  }
+
+  return nextAwardId;
+}
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
