@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
-const database = require("./database.js");
+const database = require("./database");
 
 app.use(express.static("public"));
 app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain.js");
 const byteCode = require("../contract/Bytecode.js");
-const contractABI = require("../contract/ContractABI");
+const purchaseABI = require("../contract/ContractABI");
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -21,7 +21,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(contractABI);
+        console.log(purchaseABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23",
+        from: "0xB11DA8d943c0821A81d764b51782016f91D6Ca21",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -155,13 +155,13 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          contractABI,
+          purchaseABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23",
+          from: "0xB11DA8d943c0821A81d764b51782016f91D6Ca21",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -204,11 +204,11 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xBbeda2cea8eFBC3dfFd32Bdf2A47dcB6a7E43b23";
+      req.query.account || "0xB11DA8d943c0821A81d764b51782016f91D6Ca21";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -284,15 +284,17 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-    // const contractInstance = new web3.eth.Contract(purchaseABI,contractAddress);
-    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    const contractInstance = new web3.eth.Contract(
+      purchaseABI,
+      contractAddress
+    );
 
     // Calling the purchase function on the contract
-    const transactionReceipt = await contract.methods
+    const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0xA912dA08eae8b1abdbfE37C72f36679E649368Ef", //
-        gas: 6721975,
+        from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //
+        gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
       });
@@ -301,13 +303,13 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0xA912dA08eae8b1abdbfE37C72f36679E649368Ef"; // Replace with the actual buyer's address
+    const buyerAddress = "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
     );
 
-    const balanceInWei = await contract.methods
+    const balanceInWei = await contractInstance.methods
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
@@ -397,13 +399,13 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x00B1e0B01E960d438B5193d0cAE84Eb2603Acee9";
+  const buyerAddress = "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      contractABI,
+      purchaseABI,
       contractAddress
     );
 
@@ -414,33 +416,29 @@ app.post("/writeData", async (req, res) => {
       `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
     );
 
-    // console.log(contractInstance.methods.WriteData());
-
-    
+    try {
       const transactionReceipt = await contractInstance.methods
         .WriteData(
-          // tokenName,
-          // amount,
-          // awardidString,
-          // useridString,
-          // supplieridString,
-          // awardamount,
-          // documenthashString,
-          // financerIDString,
-          // funded_intString
-
-          "1","2","3","4","5","6","7","8","9"
+          tokenName,
+          amount,
+          awardidString,
+          useridString,
+          supplieridString,
+          awardamount,
+          documenthashString,
+          financerIDString,
+          funded_intString
         )
         .send({
-          from: "0x00B1e0B01E960d438B5193d0cAE84Eb2603Acee9", //buyer address
+          from: "0x874e537dCb12B86e27930F9d72C7DAF1378D3A76", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
 
       console.log("Transaction Receipt:", transactionReceipt);
-    // } catch (error) {
-    //   console.error("Error during contract method execution:", error);
-    // }
+    } catch (error) {
+      console.error("Error during contract method execution:", error);
+    }
 
     //console.log("Transaction Receipt:", transactionReceipt);
 
@@ -466,6 +464,24 @@ app.post("/writeData", async (req, res) => {
     res.json({ success: true /*receipt: serializedReceipt */ });
   } catch (error) {
     console.error("Error on write data:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
+
+app.post("/updateData", async (req, res) => {
+  try {
+    const tokenName = req.body.tokenName;
+    const awardId = req.body.awardid;
+    const financerId = req.body.financerid;
+    const funded_int = req.body.funded_int;
+
+    await database.query(
+      'UPDATE "award" SET "financerid" = $1 , "funded_int" = $2 WHERE "awardid" = $3;',
+      [financerId, funded_int, awardId]
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error on update data:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
