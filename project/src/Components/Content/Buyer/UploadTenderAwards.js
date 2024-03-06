@@ -100,8 +100,8 @@ function UploadTenderAwards() {
                 </div>
             </div>
 
-            <button className='uta-btn' onClick={handleSubmit}>Upload</button>
-            <button className='uta-btn' onClick={handleBack}>Back</button>
+            <button className='uta-btn-upload' onClick={handleSubmit}>Upload</button>
+            <button className='uta-btn-back' onClick={handleBack}>Back</button>
 
         </div>
        

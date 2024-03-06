@@ -12,6 +12,8 @@ import UploadTenderAwards from "./Routes/Buyer/UploadTenderAward";
 import SearchAward from "./Routes/Financier/SearchAward";
 import SearchAwardID from "./Routes/Financier/SearchAwardID";
 import UpdateFundStatus from "./Routes/Financier/UpdateFundStatus";
+import ViewAccount from "./Routes/Buyer/ViewAccount";
+
 
 function App() {
   return (
@@ -30,6 +32,10 @@ function App() {
         <Route
           path="/buyerdashboard/uploadtenderawards"
           element={<UploadTenderAwards />}
+        />
+        <Route
+          path="/buyerdashboard/ViewAccount"
+          element={<ViewAccount />}
         />
         <Route
           path="/financierdashboard/searchaward"
