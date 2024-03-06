@@ -15,6 +15,13 @@ export const AdminMenuItems = [
     },
 
     {
+        title : "Update Fund Status",
+        url : "/admindashboard/updateFundStatus",
+        className : "nav-links",
+        icon : "fa-solid fa-pen-to-square"
+    },
+
+    {
         title : "Logout",
         url : "/",
         className : "nav-links",
