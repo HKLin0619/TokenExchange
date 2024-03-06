@@ -7,6 +7,7 @@ function SearchAwardID() {
     const [awardid, setAwardID] = useState('');
     const [supplierid, setSupplierID] = useState('');
     const [awardamount, setAwardAmount] = useState('');
+    const [document, setDocument] = useState('');
     const [documenthash, setDocumentHash] = useState('');
     const [fundstatus, setFundStatus] = useState('');
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ function SearchAwardID() {
             setAwardAmount(awardData.awardamount || '');
             setDocumentHash(awardData.award_doc_hash || '');
             setFundStatus(awardData.funded_ind || '');
+            setDocument(awardData.document || '');
         } else {
             console.error("Failed to fetch award ID:", result.message);
         }
@@ -99,7 +101,7 @@ function SearchAwardID() {
                         />
                     </div>
 
-                    {/* <div className='tm-input'>
+                    <div className='tm-input'>
                         <i className="fa-solid fa-file"/>
                         <input 
                             type="text" 
@@ -108,7 +110,7 @@ function SearchAwardID() {
                             value={document}
                             disabled={true}
                         />
-                    </div> */}
+                    </div> 
 
                     <div className='tm-input'>
                         <i className="fa-solid fa-link"/>
