@@ -84,7 +84,7 @@ function SearchAwardID() {
 
             <div className="sa-table">
 
-                <Table columns={columns} dataSource={data} pagination = {{pageSize : 5}} bordered={true}/>
+                <Table columns={columns} dataSource={data} pagination = {{pageSize : 3}} bordered={true}/>
 
             </div>
 
