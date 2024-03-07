@@ -1,32 +1,100 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
 
 function UploadTenderAwards() {
-  const [userid, awardid, supplierid, awardamount, document, documenthash] =
-    useState("");
-  const [
-    setUserID,
-    setAwardID,
-    setSupplierID,
-    setAwardAmount,
-    setDocument,
-    setDocumentHash,
-  ] = useState("");
+  const [userid, setUserID] = useState("");
+  const [awardid, setAwardID] = useState("");
+  const [supplierid, setSupplierID] = useState("");
+  const [awardamount, setAwardAmount] = useState("");
+  const [document, setDocument] = useState("");
+  const [documenthash, setDocumentHash] = useState("");
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
+
+  // const [userid, awardid, supplierid, awardamount, document, documenthash] =
+  //   useState("");
+  // const [
+  //   setUserID,
+  //   setAwardID,
+  //   setSupplierID,
+  //   setAwardAmount,
+  //   setDocument,
+  //   setDocumentHash,
+  // ] = useState("");
+  // const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("Usernanme:" + storedUserData.userName);
+      try {
+        // Check if storedUserData is an object and has a username property
+        if (
+          storedUserData &&
+          typeof storedUserData === "object" &&
+          storedUserData.userName
+        ) {
+          const { userName } = storedUserData;
+
+          const response = await fetch(`/searchUserID?userName=${userName}`);
+          if (!response.ok) {
+            throw new Error(
+              `Error: ${response.status} - ${response.statusText}`
+            );
+          }
+          const data = await response.json();
+
+          setUserID(data.userId);
+          setAwardID(data.awardId);
+          // Set other state values if needed
+          console.log("UserID and AwardID:", data.userId, data.awardId);
+        } else {
+          console.error("Invalid storedUserData:", storedUserData);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("/writeData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userid,
+          awardid,
+          supplierid,
+          awardamount,
+          document,
+          documenthash,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+      // Optionally handle the response from the server, if needed
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
+
+      if (responseData.success) {
+        console.log("successfullyWriteData");
+        navigate("/buyerdashboard?success=true", storedUserData);
+      }
+      // You can also redirect or perform other actions after a successful request
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
 
   const handleBack = async () => {
     navigate("/buyerdashboard");
-  };
-
-  const handleSubmit = async () => {
-    // const response = await fetch('/login', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type' : 'application/json',
-    //     },
-    //     body: JSON.stringify({ username,password }),
-    // });
   };
 
   return (
