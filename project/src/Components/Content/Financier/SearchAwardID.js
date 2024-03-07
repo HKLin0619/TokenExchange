@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import "./SearchAwardIDStyle.css";
-import { Space, Table, Tag } from 'antd';
+import { Space, Table} from 'antd';
 
 function SearchAwardID() {
 
