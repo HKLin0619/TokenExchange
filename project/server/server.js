@@ -125,7 +125,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x5D9593A19A493264C7BB2d291F30019797C3d049",
+        from: "0x72767A8c71Df466FB391B4E24F2C6956Fcfc6B1F",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -160,7 +160,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "KDX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x5D9593A19A493264C7BB2d291F30019797C3d049",
+          from: "0x72767A8c71Df466FB391B4E24F2C6956Fcfc6B1F",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -207,7 +207,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x5D9593A19A493264C7BB2d291F30019797C3d049";
+      req.query.account || "0x72767A8c71Df466FB391B4E24F2C6956Fcfc6B1F";
     const tokenSymbol = "KDX";
 
     const balanceBigInt = await contract.methods
@@ -237,8 +237,6 @@ app.post("/purchasetoken", async (req, res) => {
 
   console.log("Token Name:", tokenName);
   console.log("Amount:", amount);
-
-
 
   const validationSymbol = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
@@ -281,8 +279,8 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x96F258AAAAF04b1C32530207666C9d3843C41A6A", //
-        gas: 3000000,
+        from: "0xDDb1360517E855F6D1359248c43E2C6C52AEdFC9", //
+        gas: 6721975,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
       });
@@ -291,10 +289,17 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x96F258AAAAF04b1C32530207666C9d3843C41A6A"; // Replace with the actual buyer's address
+    const buyerAddress = "0xDDb1360517E855F6D1359248c43E2C6C52AEdFC9"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
+    );
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
     );
 
     // Convert transactionReceipt values to strings before sending in response
