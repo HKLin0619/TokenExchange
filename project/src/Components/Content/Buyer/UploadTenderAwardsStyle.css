@@ -1,110 +1,151 @@
 .uta-main {
-    text-align: center;
-    justify-content: center;
-    display: flex; 
-    width: 100%;
-    height: 100vh;
-    background: url("https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .uta-sub-main {
+  text-align: center;
+  justify-content: center;
+  display: flex; 
+  width: 100%;
+  height: 100%;
+}
+
+.uta-sub-main {
+  display: grid;
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  grid-template-columns: repeat(2, 370px);
+  grid-gap: 10px;
+  padding-top: 30px;
+  padding: 0px 30px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
+}
+
+.uta-title {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: span 2;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.uta-title h1{
+  font-size: 30px;
+  color: black;
+}
+
+.uta-underline {
+  width: 61px;
+  height: 6px;
+  background: black;
+  border-radius: 9px;
+}
+
+.uta-inputs {
+  margin-top: 0px;
+  align-items: center;
+  margin-bottom: 0px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 50px;
+}
+
+.uta-input{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 350px;
+  height: 50px;
+  border-radius: 6px;
+  border-bottom: 2px solid black;
+} 
+
+
+.uta-input input{
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0 20px 0 5px;
+}
+
+.uta-input input::placeholder{
+  color: #808080;
+  font-weight: 600;
+}
+
+.uta-input i{
+  color: black;
+  margin: 0px 20px;
+}
+
+
+.uta-btn-upload {
+  width: 100%;
+  height: 45px;
+  background: white;
+  border: 2px solid black;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: black;
+  font-weight:600;
+  grid-column: span 2;
+}
+
+.uta-btn-back {
+  width: 100%;
+  height: 45px;
+  background: white;
+  border: 2px solid black;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  color: black;
+  font-weight:600;
+  margin-bottom: 20px;
+  grid-column: span 2;
+}
+
+.uta-btn-back:hover {
+  background: black;
+  color: white;
+}
+
+.uta-btn-upload:hover {
+  background: black;
+  color: white;
+}
+
+@media screen and (max-width: 850px) {
+
+  .uta-sub-main{
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 55%;
+    top: 58%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding-top: 100px;
+    padding-top: 30px;
     padding: 0px 30px;
-    border: 2px solid rgba(255, 255, 255, .5);
+    border: 2px solid rgb(0, 0, 0);
     border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
   }
-  
-  .uta-title {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .uta-title h1{
-    font-size: 30px;
-    color: white;
-  }
-  
-  .uta-underline {
-    width: 61px;
-    height: 6px;
-    background: white;
-    border-radius: 9px;
-  }
-  
+
   .uta-inputs {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
     align-items: center;
   }
   
-  .uta-input{
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    width: 350px;
-    height: 50px;
-    border-radius: 6px;
-    border-bottom: 2px solid white;
-  } 
-  
-  
-  .uta-input input{
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    padding: 0 20px 0 5px;
-  }
-  
-  .uta-input input::placeholder{
-    color: #808080;
-    font-weight: 600;
-  }
-  
-  .uta-input i{
-    color: white;
-    margin: 0px 20px;
-  }
-  
-  
-  .uta-btn {
-    width: 100%;
-    height: 45px;
-    background: black;
-    border: 2px solid white;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    color: white;
-    font-weight:600;
-    margin-bottom: 30px;
-    margin-top: 50px;
-  }
-  
-  .uta-btn:hover {
-    background: white;
-    color: black;
-  }
-
-  
-
-
-    
+}

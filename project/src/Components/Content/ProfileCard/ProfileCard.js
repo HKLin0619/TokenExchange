@@ -24,7 +24,7 @@ function ProfileCard({ userData }) {
       </div>
 
     </div>
-        
+
   )
 }
 
