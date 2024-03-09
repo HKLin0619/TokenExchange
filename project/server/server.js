@@ -86,10 +86,11 @@ app.post("/signup", (req, res) => {
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
+  const ethAddress = req.body.ethereumAddress;
 
-  console.log("ASDASDASDSAD");
   console.log(tokenSymbol);
   console.log(numberOfToken);
+  console.log(ethAddress);
 
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
