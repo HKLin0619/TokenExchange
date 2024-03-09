@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./SearchAwardIDStyle.css";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Space, Table} from 'antd';
 
 function SearchAwardID() {
+<<<<<<< HEAD
     const [userid, setUserID] = useState('');
     const [awardid, setAwardID] = useState('');
     const [supplierid, setSupplierID] = useState('');
     const [awardamount, setAwardAmount] = useState('');
     const [documenthash, setDocumentHash] = useState('');
     const [fundstatus, setFundStatus] = useState('');
+=======
+>>>>>>> KangLin
     const navigate = useNavigate();
-    
-    const location = useLocation();
+    const [awardIDs, setAwardIDs] = useState([]);
 
+<<<<<<< HEAD
     const handleBack = async () => {
         navigate("/financierdashboard/searchaward");
       };
@@ -44,97 +48,85 @@ function SearchAwardID() {
         }
     } catch (error) {
         console.error("Error fetching award ID:", error);
+=======
+    const handleBack = () => {
+        navigate('/financierdashboard');
+>>>>>>> KangLin
     }
-};
+
+    useEffect(() => {
+        fetchAwardIDs();
+    }, []);
+
+    const fetchAwardIDs = async () => {
+        try {
+            const response = await fetch("/searchAwardID", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Request failed with status: " + response.status);
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            if (data.status === 200) {
+                setAwardIDs(data.awardIDs); // Set award IDs in state
+            } else {
+                console.log("No matching awardID found.");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const handleSearch = (awardID) => {
+        navigate(`/financierdashboard/searchawardid?awardID=${awardID}`);
+    };
+
+    const columns = [
+        {
+          title: 'No.',
+          dataIndex: 'no',
+          key: 'no',
+          width: 70,
+          align: 'center',
+        },
+        {
+          title: <div style={{ textAlign: 'center' }}>Award ID</div>,
+          dataIndex: 'awardID',
+          key: 'awardID',
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (_, record) => (
+            <Space size="middle">
+              <button className='sa-btn-search' onClick={() => handleSearch(record.awardID)}>Search</button>
+            </Space>
+          ),
+          align: 'center',
+          width: 150,
+        },
+    ];
+
+    const data = awardIDs.map((awardID, index) => ({ no: index + 1, awardID }));
+
     return (
-        <div className="tm-main">
-            <div className="tm-sub-main">
-                <div className='tm-title'>
-                    <h1>Award ID Result</h1>
-                    <div className='tm-underline'></div>
+        <div className="sa-main">
+            <div className="sa-sub-main">
+                <div className='sa-title'>
+                    <h1>Search Award ID</h1>
+                    <div className='sa-underline'></div>
                 </div>
-
-                <div className='tm-inputs'>
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-user"/>
-                        <input
-                            type="text" 
-                            // placeholder="UserID" 
-                            className="tm-name"
-                            value={userid}
-                            disabled={true}
-                        />
-                    </div>
-
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-award"/>
-                        <input 
-                            type="text" 
-                            // placeholder="AwardID" 
-                            className="tm-name"
-                            value={awardid}
-                            disabled={true}
-                        />
-                    </div>
-
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-user"/>
-                        <input 
-                            type="text" 
-                            // placeholder="SupplierID" 
-                            className="tm-name"
-                            value={supplierid}
-                            disabled={true}
-                        />
-                    </div>
-
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-usd"/>
-                        <input 
-                            type="text" 
-                            // placeholder="RM..." 
-                            className="tm-name"
-                            value={awardamount}
-                            disabled={true}
-                        />
-                    </div>
-
-                    {/* <div className='tm-input'>
-                        <i className="fa-solid fa-file"/>
-                        <input 
-                            type="text" 
-                            // placeholder="https://ipfs.io/..." 
-                            className="tm-name"
-                            value={document}
-                            disabled={true}
-                        />
-                    </div> */}
-
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-link"/>
-                        <input 
-                            type="text" 
-                            // placeholder="0x7be3b5f0f43b3ef1f14d26a66997" 
-                            className="tm-name"
-                            value={documenthash}
-                            disabled={true}
-                        />
-                    </div>
-
-                    <div className='tm-input'>
-                        <i className="fa-solid fa-balance-scale"/>
-                        <input 
-                            type="text" 
-                            // placeholder="False" 
-                            className="tm-name"
-                            value={fundstatus}
-                            disabled={true}
-                        />
-                    </div>
+                <div className="sa-table">
+                    <Table columns={columns} dataSource={data} pagination={{ pageSize: 4 }} bordered={true} />
                 </div>
-                <button className="tm-btn" onClick={handleBack}>
-                Back
-                </button>
+                <button className='sa-btn' onClick={handleBack}>Back</button>
             </div>
         </div>
     );

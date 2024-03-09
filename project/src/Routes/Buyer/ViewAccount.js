@@ -1,9 +1,9 @@
 import React from 'react'
-import Navbar from '../../Components/Navbar/Financier/Navbar'
-import Content from '../../Components/Content/Financier/SearchAward'
+import Navbar from '../../Components/Navbar/Buyer/Navbar'
+import Content from '../../Components/Content/Buyer/ViewAccount'
 import { useLocation } from 'react-router-dom';
 
-function SearchAward() {
+function ViewAccount() {
   const location = useLocation();
   return (
     <div className='main-content'>
@@ -13,4 +13,4 @@ function SearchAward() {
   )
 }
 
-export default SearchAward
+export default ViewAccount

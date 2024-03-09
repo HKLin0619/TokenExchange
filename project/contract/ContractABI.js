@@ -321,6 +321,7 @@ module.exports =  [
 	  type: "function",
 	},
 	{
+<<<<<<< HEAD
 	  inputs: [],
 	  name: "callFunction",
 	  outputs: [
@@ -355,6 +356,24 @@ module.exports =  [
 	  outputs: [],
 	  stateMutability: "nonpayable",
 	  type: "function",
+=======
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "awardID",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "thirdPerson",
+				"type": "address"
+			}
+		],
+		"name": "designateThirdPerson",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+>>>>>>> KangLin
 	},
 	{
 	  inputs: [
@@ -429,6 +448,7 @@ module.exports =  [
 	  type: "function",
 	},
 	{
+<<<<<<< HEAD
 	  inputs: [
 		{
 		  internalType: "string",
@@ -575,6 +595,86 @@ module.exports =  [
 	  ],
 	  stateMutability: "view",
 	  type: "function",
+=======
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tokenName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "awardID",
+				"type": "string"
+			}
+		],
+		"name": "getData",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "supplierID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "awardAmount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "award_Doc_Hash",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "financerID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "funded_int",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tokenName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+>>>>>>> KangLin
 	},
 	{
 	  inputs: [
@@ -683,6 +783,7 @@ module.exports =  [
 	  type: "function",
 	},
 	{
+<<<<<<< HEAD
 	  inputs: [
 		{
 		  internalType: "string",
@@ -710,4 +811,33 @@ module.exports =  [
 	  stateMutability: "nonpayable",
 	  type: "function",
 	},
+=======
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "tokenName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "awardID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "newFundedInt",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "newFinancerID",
+				"type": "string"
+			}
+		],
+		"name": "updateFundedInt",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+>>>>>>> KangLin
 ];

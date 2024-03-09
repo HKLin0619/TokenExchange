@@ -29,8 +29,9 @@ function Dashboard() {
   }, [location.search]);
 
   return (
-    <>
+    <div className='content'>
         <Navbar/> 
+
         <ToastContainer
             position="top-center"
             autoClose={5000}
@@ -45,7 +46,7 @@ function Dashboard() {
         />
          
         <ProfileCard userData={storedUserData}/>
-    </>
+    </div>
   )
 }
 

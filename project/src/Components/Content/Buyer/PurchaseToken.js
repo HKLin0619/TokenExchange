@@ -11,6 +11,10 @@ function PurchaseToken() {
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
+  const handleBack = async () => {
+    navigate("/buyerdashboard");
+  };
+
   const handleSubmit = async () => {
 
     const amountNumber = parseFloat(amount);
@@ -135,6 +139,9 @@ function PurchaseToken() {
 
         <button className="pt-btn" onClick={handleSubmit}>
           Purchase
+        </button>
+        <button className="pt-btn" onClick={handleBack}>
+          Back
         </button>
       </div>
     </div>

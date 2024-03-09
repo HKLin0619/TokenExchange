@@ -15,6 +15,13 @@ export const AdminMenuItems = [
     },
 
     {
+        title : "Update Fund Status",
+        url : "/admindashboard/updateFundStatus",
+        className : "nav-links",
+        icon : "fa-solid fa-pen-to-square"
+    },
+
+    {
         title : "Logout",
         url : "/",
         className : "nav-links",
@@ -41,7 +48,7 @@ export const BuyerMenuItems = [
 
     {
         title : "View Account",
-        url : "/",
+        url : "/buyerdashboard/ViewAccount",
         className : "nav-links",
         icon : "fa-solid fa-gauge-high"
     },
@@ -59,16 +66,9 @@ export const FinancierMenuItems = [
 
     {
         title : "Search AwardID",
-        url : "/financierdashboard/searchaward",
+        url : "/financierdashboard/searchAwardID",
         className : "nav-links",
         icon : "fa-solid fa-magnifying-glass"
-    },
-
-    {
-        title : "Update Funding Status",
-        url : "/financierdashboard/updatefundstatus",
-        className : "nav-links",
-        icon : "fa-solid fa-pen-to-square"
     },
 
     {

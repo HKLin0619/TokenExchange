@@ -7,8 +7,13 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
+<<<<<<< HEAD
 const purchaseABI = require("../contract/ContractABI");
 const contractABI = require("./assets/contractABI");
+=======
+const contractABI = require("../contract/ContractABI");
+// const contractABI = require("../assets/ContractABI");
+>>>>>>> KangLin
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -22,7 +27,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(purchaseABI);
+        console.log(contractABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -127,7 +132,11 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
+<<<<<<< HEAD
         from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
+=======
+        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+>>>>>>> KangLin
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,17 +165,27 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          purchaseABI,
+          contractABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
-        const mintTokenName = "KDX"; // Specify the token name
+        const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
+<<<<<<< HEAD
           from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
           gas: 3000000,
           gasPrice: 20000000000,
         });
         console.log(contractABI);
+=======
+          from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+          gas: 6721975,
+          gasPrice: 20000000000,
+        });
+        console.log("AAA");
+        console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
+        console.log("AAA");
+>>>>>>> KangLin
         // Insert contract address into the database
         await database.query(
           'INSERT INTO "Contract" ("contractID") VALUES ($1);',
@@ -205,12 +224,17 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
+<<<<<<< HEAD
       req.query.account || "0x87e6fA887D99d7CE540F5694eB4B404043a37A31";
     const tokenSymbol = "KDX";
+=======
+      req.query.account || "0x5C244c22379dCf4b7A02546973D42df433A18b06";
+    const tokenSymbol = "DBX";
+>>>>>>> KangLin
 
     const balanceBigInt = await contract.methods
       .getBalance(account, tokenSymbol)
@@ -223,7 +247,7 @@ app.get("/viewtoken", async (req, res) => {
 
     return res
       .status(200)
-      .json({ tokenName: "KDX Token", tokenSymbol: "KDX", balance });
+      .json({ tokenName: "DBX Token", tokenSymbol: "DBX", balance });
   } catch (error) {
     console.log(error);
     return res.status(400).send({ status: 400, message: error.message });
@@ -273,13 +297,25 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
+<<<<<<< HEAD
     const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
+=======
+    const contractInstance = new web3.eth.Contract(
+      contractABI,
+      contractAddress
+    );
+>>>>>>> KangLin
+
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
+<<<<<<< HEAD
         from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
+=======
+        from: "0xc49C1F24ad9561D6827342F3294eeb7A427D1572", //
+>>>>>>> KangLin
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -289,10 +325,21 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
+<<<<<<< HEAD
     const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
+=======
+    const buyerAddress = "0xc49C1F24ad9561D6827342F3294eeb7A427D1572"; // Replace with the actual buyer's address
+>>>>>>> KangLin
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
+    );
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
     );
 
     // Convert transactionReceipt values to strings before sending in response
@@ -305,30 +352,164 @@ app.post("/purchasetoken", async (req, res) => {
     // You can handle the receipt or send a response back
     res.json({ success: true, receipt: serializedReceipt });
   } catch (error) {
-    // Log more information about the error
-    console.error("Error in token purchase:", error);
+    console.error("Error in /purchasetoken endpoint:", error);
+    res.status(500).json({ success: false, error: "Internal server error" });
+  }
+});
 
+<<<<<<< HEAD
     // Handle other errors  
+=======
+//
+app.get("/searchUserID", async (req, res) => {
+  try {
+    // Get current username
+    const userName = req.query.userName;
+
+    // Fetch the userID from the database based on the userName
+    const userIdResult = await database.query(
+      'SELECT "userID" FROM "User" WHERE "userName"=$1;',
+      [userName]
+    );
+
+    if (userIdResult.rows.length === 0) {
+      return res.status(404).send({ status: 404, message: "User not found." });
+    }
+
+    // Extract the userID from the query result
+    const currentUserId = userIdResult.rows[0].userID;
+    // Generate the next awardID asynchronously
+    const nextAwardId = await generateNextAwardIdFromDatabase();
+
+    return res
+      .status(200)
+      .json({ userId: currentUserId, awardId: nextAwardId });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
+//Upload Tender Awards
+app.post("/writeData", async (req, res) => {
+  console.log("Received a writeData request:", req.body);
+
+  //extract data from req.body
+  const userid = req.body.userid;
+  const awardid = req.body.awardid;
+  const supplierid = req.body.supplierid;
+  const awardamount = req.body.awardamount;
+  const document = req.body.document;
+  const documenthash = req.body.documenthash;
+
+  //fix tokenName to KDX and the spend 1 token per time
+  const tokenName = "DBX";
+  const amount = "1";
+  const financerid = "none";
+  const funded_int = "0"; //"False";
+
+  console.log("Quick Check: userid:", userid);
+  console.log("awardid:" + awardid);
+  console.log("supplierid:" + supplierid);
+  console.log("awaramount:" + awardamount);
+  console.log("document:" + document);
+  console.log("documenthash:" + documenthash);
+  console.log("tokenName:" + tokenName);
+  console.log("amount:" + amount);
+  console.log("funded_int:" + funded_int);
+
+  const useridString = userid.toString();
+  const awardidString = awardid.toString();
+  const supplieridString = supplierid.toString();
+  const documentString = document.toString();
+  const funded_intString = funded_int.toString();
+  const financerIDString = financerid.toString();
+  const documenthashString = documenthash.toString();
+
+  const buyerAddress = "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8";
+
+  try {
+    const result = await database.query('SELECT "contractID" FROM "Contract";');
+    const contractAddress = result.rows[0].contractID;
+    const contractInstance = new web3.eth.Contract(
+      contractABI,
+      contractAddress
+    );
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
+    );
+
+    try {
+      const transactionReceipt = await contractInstance.methods
+        .WriteData(
+          tokenName,
+          amount,
+          awardidString,
+          useridString,
+          supplieridString,
+          awardamount,
+          documenthashString,
+          financerIDString,
+          funded_intString
+        )
+        .send({
+          from: "0x7903402c65aA8e880B5903996B8D1F602c408afd", //buyer address
+          gas: 3000000,
+          gasPrice: 20000000000,
+        });
+
+      console.log("Transaction Receipt:", transactionReceipt);
+    } catch (error) {
+      console.error("Error during contract method execution:", error);
+    }
+
+    //console.log("Transaction Receipt:", transactionReceipt);
+
+    await database.query(
+      'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
+      [
+        awardidString,
+        useridString,
+        supplieridString,
+        awardamount,
+        documenthash,
+        funded_intString,
+        documentString,
+      ]
+    );
+
+    res.json({ success: true /*receipt: serializedReceipt */ });
+  } catch (error) {
+    console.error("Error on write data:", error);
+>>>>>>> KangLin
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
 
 //Search Award
-app.post("/searchaward", async (req, res) => {
+app.post("/searchAwardID", async (req, res) => {
   try {
-    const awardID = req.body.awardID;
-    const result = await database.query('SELECT "awardid" FROM "award" WHERE "awardid" = $1;', [awardID]);
+    const result = await database.query('SELECT "awardid" FROM "award"');
+    console.log(result.rows);
 
     if (result.rows.length > 0) {
+<<<<<<< HEAD
       const matchingAwardID = result.rows[0].awardid;
       console.log("Matching Award ID:", matchingAwardID);
 
       // Redirect to the "/searchawardid" route passing the awardID as a query parameter
       // res.redirect(`/searchawardid?awardID=${matchingAwardID}`);
       return res.status(200).send({ status: 200, message: "Matching with the awardID" });
+=======
+      const awardIDs = result.rows.map(row => row.awardid); // Extract award IDs from result
+      return res.status(200).send({ status: 200, message: "Success", awardIDs });
+>>>>>>> KangLin
     } else {
       console.log("No matching awardID found.");
-      // Handle the case where no matching awardID is found, e.g., return an error response
       return res.status(404).send({ status: 404, message: "No matching awardID found." });
     }
   } catch (error) {
@@ -337,17 +518,62 @@ app.post("/searchaward", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 app.get("/searchawardid", async (req, res) =>{
   const awardID = req.query.awardid;
   const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
 
   console.log(awardID);
   console.log(result.rows);
+=======
+>>>>>>> KangLin
 
-  // Send the fetched data back in the response
-  return res.status(200).send({ status: 200, data: result.rows});
-});
 
+<<<<<<< HEAD
+=======
+
+//Search Award ID
+// app.get("/searchawardid", async (req, res) => {
+//   const awardID = req.query.awardid;
+//   const result = await database.query(
+//     'SELECT * FROM "award" WHERE "awardid" = $1;',
+//     [awardID]
+//   );
+
+//   console.log(awardID);
+//   console.log(result.rows);
+
+//   // Send the fetched data back in the response
+//   return res.status(200).send({ status: 200, data: result.rows });
+// });
+
+async function generateNextAwardIdFromDatabase() {
+  // Fetch the latest awardID from the database
+  const latestAwardResult = await database.query(
+    'SELECT "awardid" FROM "award" ORDER BY "awardid" DESC LIMIT 1;'
+  );
+
+  if (latestAwardResult.rows.length > 0) {
+    const awardId = latestAwardResult.rows[0].awardid;
+    console.log("awardId:", awardId);
+  } else {
+    console.log("No award found");
+  }
+
+  let nextAwardId;
+
+  if (latestAwardResult.rows.length === 0) {
+    // If no previous awardID found, start from 1 or any initial value you prefer
+    nextAwardId = 1;
+  } else {
+    // Increment the latest awardID by 1
+    nextAwardId = latestAwardResult.rows[0].awardid + 1;
+  }
+
+  return nextAwardId;
+}
+
+>>>>>>> KangLin
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
