@@ -7,8 +7,8 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const purchaseABI = require("../contract/ContractABI");
-const contractABI = require("./assets/contractABI");
+const contractABI = require("../contract/ContractABI");
+// const contractABI = require("../assets/ContractABI");
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -22,7 +22,7 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(purchaseABI);
+        console.log(contractABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -127,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xf15eD819347b862a20f28fF59853D077214950E7",
+        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,13 +156,13 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          purchaseABI,
+          contractABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xf15eD819347b862a20f28fF59853D077214950E7",
+          from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -207,11 +207,11 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xf15eD819347b862a20f28fF59853D077214950E7";
+      req.query.account || "0x5C244c22379dCf4b7A02546973D42df433A18b06";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -275,7 +275,7 @@ app.post("/purchasetoken", async (req, res) => {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      purchaseABI,
+      contractABI,
       contractAddress
     );
 
@@ -284,7 +284,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8", //
+        from: "0xc49C1F24ad9561D6827342F3294eeb7A427D1572", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -294,7 +294,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8"; // Replace with the actual buyer's address
+    const buyerAddress = "0xc49C1F24ad9561D6827342F3294eeb7A427D1572"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -317,10 +317,7 @@ app.post("/purchasetoken", async (req, res) => {
     // You can handle the receipt or send a response back
     res.json({ success: true, receipt: serializedReceipt });
   } catch (error) {
-    // Log more information about the error
-    console.error("Error in token purchase:", error);
-
-    // Handle other errors
+    console.error("Error in /purchasetoken endpoint:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
@@ -397,7 +394,7 @@ app.post("/writeData", async (req, res) => {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      purchaseABI,
+      contractABI,
       contractAddress
     );
 
