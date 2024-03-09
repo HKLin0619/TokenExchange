@@ -10,8 +10,6 @@ const byteCode = require("../contract/Bytecode");
 const purchaseABI = require("../contract/ContractABI");
 const contractABI = require("./assets/contractABI");
 
-// const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
-// const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -22,7 +20,6 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(purchaseABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
