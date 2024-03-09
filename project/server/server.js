@@ -127,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xF30e148624ab8389c1d053a1CEE8A4D3C97FbB3A",
+        from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -160,9 +160,9 @@ app.post("/tokenminting", async (req, res) => {
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
-        const mintTokenName = "KDX"; // Specify the token name
+        const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xF30e148624ab8389c1d053a1CEE8A4D3C97FbB3A",
+          from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -211,8 +211,8 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xF30e148624ab8389c1d053a1CEE8A4D3C97FbB3A";
-    const tokenSymbol = "KDX";
+      req.query.account || "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2";
+    const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
       .getBalance(account, tokenSymbol)
@@ -225,7 +225,7 @@ app.get("/viewtoken", async (req, res) => {
 
     return res
       .status(200)
-      .json({ tokenName: "KDX Token", tokenSymbol: "KDX", balance });
+      .json({ tokenName: "DBX Token", tokenSymbol: "DBX", balance });
   } catch (error) {
     console.log(error);
     return res.status(400).send({ status: 400, message: error.message });
@@ -284,7 +284,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0xd5fD26e299DD4027b26d4E5102372694cB2BCc4F", //
+        from: "0x18E11a181acA437ACcAbE3AE121763080b4886C7", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -294,7 +294,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0xd5fD26e299DD4027b26d4E5102372694cB2BCc4F"; // Replace with the actual buyer's address
+    const buyerAddress = "0x18E11a181acA437ACcAbE3AE121763080b4886C7"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -304,7 +304,7 @@ app.post("/purchasetoken", async (req, res) => {
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
     );
 
     // Convert transactionReceipt values to strings before sending in response
@@ -368,7 +368,7 @@ app.post("/writeData", async (req, res) => {
   const documenthash = req.body.documenthash;
 
   //fix tokenName to KDX and the spend 1 token per time
-  const tokenName = "KDX";
+  const tokenName = "DBX";
   const amount = "1";
   const financerid = "none";
   const funded_int = "0"; //"False";
@@ -405,7 +405,7 @@ app.post("/writeData", async (req, res) => {
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
     );
 
     try {
