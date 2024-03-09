@@ -127,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
+        from: "0xf15eD819347b862a20f28fF59853D077214950E7",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -162,7 +162,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
+          from: "0xf15eD819347b862a20f28fF59853D077214950E7",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -211,7 +211,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2";
+      req.query.account || "0xf15eD819347b862a20f28fF59853D077214950E7";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -284,7 +284,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x18E11a181acA437ACcAbE3AE121763080b4886C7", //
+        from: "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -294,7 +294,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x18E11a181acA437ACcAbE3AE121763080b4886C7"; // Replace with the actual buyer's address
+    const buyerAddress = "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -391,7 +391,7 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x7903402c65aA8e880B5903996B8D1F602c408afd";
+  const buyerAddress = "0xF67ABBEe6067aB4d0cE66560E8F3399D9C4C95f8";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
