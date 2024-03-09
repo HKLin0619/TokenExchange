@@ -14,12 +14,12 @@ export const AdminMenuItems = [
         icon : "fa-solid fa-gauge-high"
     },
 
-    {
-        title : "Update Fund Status",
-        url : "/admindashboard/updateFundStatus",
-        className : "nav-links",
-        icon : "fa-solid fa-pen-to-square"
-    },
+    // {
+    //     title : "Update Fund Status",
+    //     url : "/admindashboard/updateFundStatus",
+    //     className : "nav-links",
+    //     icon : "fa-solid fa-pen-to-square"
+    // },
 
     {
         title : "Logout",

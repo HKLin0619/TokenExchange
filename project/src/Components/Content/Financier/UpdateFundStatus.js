@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import "./UpdateFundStatusStyle.css";
-import { ColorFormat } from 'antd/es/color-picker/interface';
 
 
 function UpdateFundStatus() {
@@ -9,7 +8,13 @@ function UpdateFundStatus() {
 
     const handleBack = async () => {
 
-        navigate('/admindashboard');
+        navigate('/financierdashboard/searchAwardID');
+
+    }
+
+    const handleUpdate = async () => {
+
+        navigate('');
 
     }
 
@@ -43,6 +48,8 @@ function UpdateFundStatus() {
                     <strong style={{color: "red"}} className='ufs-radio-text2'>False</strong>
                 </label>
             </div>
+
+            <button className='ufs-btn-update' onClick={handleUpdate}>Update</button>
 
             <button className='ufs-btn' onClick={handleBack}>Back</button>
 

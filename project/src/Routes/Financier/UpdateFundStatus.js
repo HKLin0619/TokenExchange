@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "../../Components/Navbar/Admin/Navbar";
-import Content from "../../Components/Content/Admin/UpdateFundStatus";
+import Navbar from "../../Components/Navbar/Financier/Navbar";
+import Content from "../../Components/Content/Financier/UpdateFundStatus";
 import { useLocation } from "react-router-dom";
 
 function UpdateFundStatus() {
