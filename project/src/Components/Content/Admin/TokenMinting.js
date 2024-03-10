@@ -65,17 +65,17 @@ function TokenMinting() {
         // ...
       }
     } catch (error) {
-      console.error("MetaMask connection error:", error);
-      toast.error("Failed to connect to MetaMask.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      // console.error("MetaMask connection error:", error);
+      // toast.error("Failed to connect to MetaMask.", {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "colored",
+      // });
     }
   };
 

@@ -7,8 +7,7 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const purchaseABI = require("../contract/ContractABI");
-const contractABI = require("./assets/contractABI");
+const contractABI = require("../contract/ContractABI");
 
 
 app.post("/login", (req, res) => {
@@ -125,7 +124,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
+        from: ethAddress,
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -154,13 +153,13 @@ app.post("/tokenminting", async (req, res) => {
 
         // Perform minting operation
         const contractInstance = new web3.eth.Contract(
-          purchaseABI,
+          contractABI,
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x778dD9BBB2e44AB5275481d5624eF9a7057915B2",
+          from: ethAddress,
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -185,6 +184,7 @@ app.post("/tokenminting", async (req, res) => {
     });
 });
 
+
 //View Token
 app.get("/viewtoken", async (req, res) => {
   try {
@@ -205,7 +205,7 @@ app.get("/viewtoken", async (req, res) => {
     const contractAddress = result.rows[0].contractID;
 
     // Create a contract instance using the contract address
-    const contract = new web3.eth.Contract(purchaseABI, contractAddress);
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
@@ -273,7 +273,7 @@ app.post("/purchasetoken", async (req, res) => {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      purchaseABI,
+      contractABI,
       contractAddress
     );
 
@@ -395,7 +395,7 @@ app.post("/writeData", async (req, res) => {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
     const contractInstance = new web3.eth.Contract(
-      purchaseABI,
+      contractABI,
       contractAddress
     );
 
