@@ -463,20 +463,15 @@ app.post("/searchAwardID", async (req, res) => {
       console.log("Matching Award ID:", result.rows[0]);
       console.log(result.rows[0].funded_ind);
 
-      if (fundedInd.toString() === "0"){
+      
+      if (fundedInd === null) {
+        // Explicitly set status code to 250 for funded_ind "0"
+        console.log("Sending status 250 for funded_ind 0");  // Add console log for debugging
         return res.status(250).send({ status: 250, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
+      } else {
+        // Use the usual 200 status code for other funded_ind values
+        return res.status(200).send({ status: 200, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
       }
-      
-
-      
-      // if (matchingAwardID === '1') {
-      //   // Explicitly set status code to 250 for funded_ind "0"
-      //   console.log("Sending status 250 for funded_ind 0");  // Add console log for debugging
-      //   return res.status(250).send({ status: 250, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
-      // } else {
-      //   // Use the usual 200 status code for other funded_ind values
-      //   // return res.status(200).send({ status: 200, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
-      // }
     } else {
       console.log("No matching awardID found.");
       // Handle the case where no matching awardID is found, e.g., return an error response
