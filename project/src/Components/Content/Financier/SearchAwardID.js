@@ -1,18 +1,66 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "./SearchAwardIDStyle.css";
 
 function SearchAwardID() {
+    const [awardID, setAwardID] = useState("");
+    const location = useLocation();
     const navigate = useNavigate();
 
-    const handleSearch = () => {
-        navigate('/financierdashboard/updateFundStatus');
-    }
-
-
     const handleBack = () => {
-        navigate('/financierdashboard');
-    }
+        navigate("/financierdashboard");
+    };
+
+    const handleSearch = async () => {
+        try {
+            if (!awardID) {
+                console.log("No awardID provided.");
+                return;
+            }
+    
+            const response = await fetch("/searchAwardID", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ awardID }),
+            });
+    
+            if (!response.ok) {
+                throw new Error("Request failed with status: " + response.status);
+            }
+    
+            const data = await response.json();
+            console.log(data);
+    
+            if (data.status === 200) {
+                navigate(`/financierdashboard/fundingStatus?awardID=${awardID}`);
+            
+            }
+            else if (data.status === 250){
+                navigate(`/financierdashboard/updateFundStatus?awardID=${awardID}`);
+            }
+            else {
+                console.log("No matching awardID found.");
+            }
+        } catch (error) {
+            console.error(error);
+            // Handle errors here, such as displaying an error message to the user
+        }
+    };
+    
+    
+
+    // Extract awardID from query parameters when component mounts
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const paramAwardID = searchParams.get("awardID");
+        if (paramAwardID) {
+            setAwardID(paramAwardID);
+            // Now you can perform further actions based on the awardID
+            // For example, fetch additional data based on the awardID
+        }
+    }, [location.search]);
 
 
     return (
@@ -27,11 +75,11 @@ function SearchAwardID() {
                     <div className="sa-input">
                         <i className="fa-solid fa-magnifying-glass"/>
                         <input
-                        type="text"
-                        placeholder="Award ID"
-                        className="sa-name"
-
-                        />
+                            type="text"
+                            placeholder="AwardID"
+                            className="tm-name"
+                            value={awardID}
+                            onChange={(e) => setAwardID(e.target.value)}/>
                     </div>
                 </div>
 
