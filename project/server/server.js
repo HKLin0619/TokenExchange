@@ -368,7 +368,7 @@ app.post("/writeData", async (req, res) => {
   const tokenName = "DBX";
   const amount = "1";
   const financerid = "none";
-  const funded_int = "0"; //"False";
+  const funded_int = null; //"False";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
@@ -455,7 +455,8 @@ app.post("/writeData", async (req, res) => {
 app.post("/searchAwardID", async (req, res) => {
   try {
     const awardID = req.body.awardID;
-    const result = await database.query('SELECT "awardid", "funded_ind", "buyerid" FROM "award" WHERE "awardid" = $1;', [awardID]);
+    const result = await database.query('SELECT "awardid", "funded_ind" FROM "award" WHERE "awardid" = $1;', [awardID]);
+  
 
     if (result.rows.length > 0) {
       const matchingAwardID = result.rows[0].awardid;
@@ -482,10 +483,6 @@ app.post("/searchAwardID", async (req, res) => {
     return res.status(400).send({ status: 400, message: error.message });
   }
 });
-
-
-
-
 
 
 //Search Award ID

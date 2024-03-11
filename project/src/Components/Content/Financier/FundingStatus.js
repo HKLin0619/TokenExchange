@@ -34,13 +34,15 @@ function FundingStatus() {
     
             if (response.status === 200) {
                 const awardData = result.data[0];
+                const fundedIndString = awardData.funded_ind.toString();
                 // setUserID(awardData.buyerid || ''); 
                 setAwardID(awardData.awardid || '');
                 setSupplierID(awardData.supplierid || '');
                 setAwardAmount(awardData.awardamount || '');
                 setDocumentHash(awardData.award_doc_hash || '');
-                setFundStatus(awardData.funded_ind || '');
+                setFundStatus(fundedIndString || '');
                 setDocument(awardData.document || '');
+                console.log(awardData.funded_ind);
             } else {
                 console.error("Failed to fetch award ID:", result.message);
             }
