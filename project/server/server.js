@@ -155,9 +155,7 @@ app.post("/tokenminting", async (req, res) => {
         gas: 6721975,
         gasPrice: 20000000000,
       });
-      console.log("AAA");
-      console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
-      console.log("AAA");
+      
       // Insert contract address into the database
       await database.query(
         'INSERT INTO "Contract" ("contractID") VALUES ($1);',
