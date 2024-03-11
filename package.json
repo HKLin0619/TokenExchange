@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@iconscout/react-unicons": "^2.0.2",
+    "axios": "^1.6.7",
+    "node-fetch": "^3.3.2",
     "react-toastify": "^10.0.3"
   }
 }

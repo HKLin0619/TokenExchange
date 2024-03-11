@@ -119,69 +119,60 @@ app.post("/tokenminting", async (req, res) => {
   }
 
   const deployedContract = await tokenContract
-    .deploy({
-      data: byteCode,
-    })
-    .send(
-      {
+  .deploy({
+    data: byteCode,
+  })
+  .send({
+    from: ethAddress,
+    gas: 3000000,
+    gasPrice: 20000000000,
+  })
+  .on("error", (error) => {
+    console.error("Contract deployment error:", error.message);
+    res.json({
+      success: false,
+      errorType: "deploymentError",
+      errorMessage: error.message,
+    });
+  })
+  .on("transactionHash", function (transactionHash) {})
+  .on("receipt", async (receipt) => {
+    try {
+      const contractAddress = receipt.contractAddress;
+      console.log("Contract deployed at address: " + contractAddress);
+      console.log(receipt);
+
+      // Perform minting operation
+      const contractInstance = new web3.eth.Contract(
+        contractABI,
+        contractAddress
+      );
+      const mintAmount = numberOfToken; // Specify the amount to mint
+      const mintTokenName = "DBX"; // Specify the token name
+      await contractInstance.methods.mint(mintTokenName, mintAmount).send({
         from: ethAddress,
-        gas: 3000000,
+        gas: 6721975,
         gasPrice: 20000000000,
-      },
-      async function (error, transactionHash) {
-        if (error) {
-          console.error("Error generating transaction hash:", error);
-        } else {
-          console.log("Transaction hash:", transactionHash);
-        }
-      }
-    )
-    .on("error", (error) => {
-      console.error("Contract deployment error:", error.message);
+      });
+      console.log("AAA");
+      console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
+      console.log("AAA");
+      // Insert contract address into the database
+      await database.query(
+        'INSERT INTO "Contract" ("contractID") VALUES ($1);',
+        [contractAddress]
+      );
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Minting error:", error.message);
       res.json({
         success: false,
-        errorType: "deploymentError",
+        errorType: "mintingError",
         errorMessage: error.message,
       });
-    })
-    .on("transactionHash", function (transactionHash) {})
-    .on("receipt", async (receipt) => {
-      try {
-        const contractAddress = receipt.contractAddress;
-        console.log("Contract deployed at address: " + contractAddress);
-        console.log(receipt);
-
-        // Perform minting operation
-        const contractInstance = new web3.eth.Contract(
-          contractABI,
-          contractAddress
-        );
-        const mintAmount = numberOfToken; // Specify the amount to mint
-        const mintTokenName = "DBX"; // Specify the token name
-        await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: ethAddress,
-          gas: 6721975,
-          gasPrice: 20000000000,
-        });
-        console.log("AAA");
-        console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
-        console.log("AAA");
-        // Insert contract address into the database
-        await database.query(
-          'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-          [contractAddress]
-        );
-
-        res.json({ success: true });
-      } catch (error) {
-        console.error("Minting error:", error.message);
-        res.json({
-          success: false,
-          errorType: "mintingError",
-          errorMessage: error.message,
-        });
-      }
-    });
+    }
+  });
 });
 
 
