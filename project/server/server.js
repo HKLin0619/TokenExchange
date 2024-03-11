@@ -82,6 +82,7 @@ app.post("/signup", (req, res) => {
     });
 });
 
+//Token Minting
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
