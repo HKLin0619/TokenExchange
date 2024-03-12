@@ -13,13 +13,13 @@ const contractABI = require("../contract/ContractABI");
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  console.log(username);
-  console.log(password);
+
   database
     .query('SELECT * FROM "User" WHERE "userName" = $1', [username])
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
+        console.log(contractABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });
@@ -35,6 +35,7 @@ app.post("/login", (req, res) => {
       res.json({ success: false });
     });
 });
+
 
 app.post("/signup", (req, res) => {
   const userType = req.body.userType;
