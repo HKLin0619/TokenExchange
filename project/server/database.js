@@ -12,7 +12,7 @@ client
   .connect()
   .then(() => {
     console.log("Successful connection to the database !");
-    client.query('SET search_path TO "DBX Schemas";');
+    client.query('SET search_path TO "KDX Schemas";');
   })
   .catch((error) => {
     console.error("Unable to connect to database: ", error);
