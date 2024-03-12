@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,114 +10,72 @@ function TokenMinting() {
   const navigate = useNavigate();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
 
+  useEffect(() => {
+    // Check if MetaMask is installed
+    if (typeof window.ethereum !== "undefined") {
+      console.log("MetaMask is installed!");
+    } else {
+      console.log("MetaMask is not installed.");
+    }
+  }, []);
+
   const handleBack = async () => {
     navigate("/admindashboard");
   };
 
   const handleSubmit = async () => {
-    const response = await fetch("/tokenminting", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ tokenSymbol, numberOfToken }),
-    });
+    try {
+      // Request access to MetaMask accounts
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
-    const data = await response.json();
-
-    console.log(data); // Log the entire data object
-
-    if (data.success) {
-      console.log("tokenMintingSuccessfully");
-      navigate("/admindashboard?success=true", storedUserData);
-    } else {
-      if (data.errorType === "tokenSymbol") {
-        console.log("tokenName");
-
-        toast.error("Please enter token Name !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (data.errorType === "tokenName") {
-        console.log("tokenName");
-
-        toast.error("Token Name not found a!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        setTokenName("");
-      } else if (data.errorType === "numberOfToken") {
-        console.log("numberOfToken");
-
-        toast.error("Please enter number of token !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (data.errorType === "numberError") {
-        console.log("numberError");
-
-        toast.error("Please enter number format !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        setNumberOfToken("");
-      } else if (data.errorType === "overNumberError") {
-        console.log("overNumberError");
-
-        toast.error("Only Provide 1 Million token to mint!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        setNumberOfToken("");
-      } else {
-        console.log("tokenMintingFail");
-
-        toast.error("Token Minting failed !", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-
-        setTokenName("");
-        setNumberOfToken("");
+      // Ensure that at least one account is available
+      if (accounts.length === 0) {
+        throw new Error("No MetaMask accounts available.");
       }
+
+      // Include the MetaMask account address in the request body
+      const requestBody = {
+        tokenSymbol,
+        numberOfToken,
+        ethereumAddress: accounts[0], // Include the MetaMask account address
+      };
+
+      console.log(requestBody);
+
+      // Make the POST request to the backend
+      const response = await fetch("/tokenminting", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const data = await response.json();
+
+      console.log(data); // Log the entire data object
+
+      if (data.success) {
+        console.log("tokenMintingSuccessfully");
+        navigate("/admindashboard?success=true", storedUserData);
+      } else {
+        // Handle error responses from the backend
+        // ...
+      }
+    } catch (error) {
+      // console.error("MetaMask connection error:", error);
+      // toast.error("Failed to connect to MetaMask.", {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "colored",
+      // });
     }
   };
 
