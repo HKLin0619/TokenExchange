@@ -24,8 +24,9 @@ const {Web3} = require('web3');
 const web3 = new Web3();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const NonceTrackerSubprovider = require('web3-provider-engine/subproviders/nonce-tracker');
-const MNEMONIC_FILE = require('./MNEMONIC.js');
+const MNEMONIC_FILE = require('./migrations/MNEMONIC.js');
 const {NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = MNEMONIC_FILE;
+// const RPC = process.env.RPC_URL
 const RPC = process.env.HTTPS_RPC_URL_FOR_PUBLISH;
 const MNEMONIC = process.env.MNEMONIC;
 const NETWORK_ID = process.env.NETWORK_ID;
@@ -128,6 +129,7 @@ module.exports = {
       provider: () => {
         var wallet = new HDWalletProvider(MNEMONIC, RPC, 0, 1000);
         var nonceTracker = new NonceTrackerSubprovider();
+        
         wallet.engine._providers.unshift(nonceTracker);
         nonceTracker.setEngine(wallet.engine);
         return wallet;
