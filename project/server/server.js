@@ -7,13 +7,10 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-<<<<<<< HEAD
-const purchaseABI = require("../contract/ContractABI");
-const contractABI = require("./assets/contractABI");
-=======
+
 const contractABI = require("../contract/ContractABI");
 // const contractABI = require("../assets/ContractABI");
->>>>>>> KangLin
+
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -132,11 +129,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-<<<<<<< HEAD
         from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
-=======
-        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
->>>>>>> KangLin
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -171,13 +164,6 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-<<<<<<< HEAD
-          from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
-          gas: 3000000,
-          gasPrice: 20000000000,
-        });
-        console.log(contractABI);
-=======
           from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
           gas: 6721975,
           gasPrice: 20000000000,
@@ -185,7 +171,6 @@ app.post("/tokenminting", async (req, res) => {
         console.log("AAA");
         console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
         console.log("AAA");
->>>>>>> KangLin
         // Insert contract address into the database
         await database.query(
           'INSERT INTO "Contract" ("contractID") VALUES ($1);',
@@ -228,13 +213,8 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-<<<<<<< HEAD
-      req.query.account || "0x87e6fA887D99d7CE540F5694eB4B404043a37A31";
-    const tokenSymbol = "KDX";
-=======
       req.query.account || "0x5C244c22379dCf4b7A02546973D42df433A18b06";
     const tokenSymbol = "DBX";
->>>>>>> KangLin
 
     const balanceBigInt = await contract.methods
       .getBalance(account, tokenSymbol)
@@ -297,25 +277,17 @@ app.post("/purchasetoken", async (req, res) => {
     );
     const result = await database.query('SELECT "contractID" FROM "Contract";');
     const contractAddress = result.rows[0].contractID;
-<<<<<<< HEAD
-    const contractInstance = new web3.eth.Contract(purchaseABI, contractAddress);
-=======
     const contractInstance = new web3.eth.Contract(
       contractABI,
       contractAddress
     );
->>>>>>> KangLin
 
 
     // Calling the purchase function on the contract
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-<<<<<<< HEAD
-        from: "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67", //
-=======
         from: "0xc49C1F24ad9561D6827342F3294eeb7A427D1572", //
->>>>>>> KangLin
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -325,11 +297,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-<<<<<<< HEAD
-    const buyerAddress = "0x97a1Dd2757b5A441Dee2E7b759Ef5b1e6Ea56D67"; // Replace with the actual buyer's address
-=======
     const buyerAddress = "0xc49C1F24ad9561D6827342F3294eeb7A427D1572"; // Replace with the actual buyer's address
->>>>>>> KangLin
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -357,9 +325,6 @@ app.post("/purchasetoken", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-    // Handle other errors  
-=======
 //
 app.get("/searchUserID", async (req, res) => {
   try {
@@ -485,7 +450,6 @@ app.post("/writeData", async (req, res) => {
     res.json({ success: true /*receipt: serializedReceipt */ });
   } catch (error) {
     console.error("Error on write data:", error);
->>>>>>> KangLin
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
@@ -497,17 +461,8 @@ app.post("/searchAwardID", async (req, res) => {
     console.log(result.rows);
 
     if (result.rows.length > 0) {
-<<<<<<< HEAD
-      const matchingAwardID = result.rows[0].awardid;
-      console.log("Matching Award ID:", matchingAwardID);
-
-      // Redirect to the "/searchawardid" route passing the awardID as a query parameter
-      // res.redirect(`/searchawardid?awardID=${matchingAwardID}`);
-      return res.status(200).send({ status: 200, message: "Matching with the awardID" });
-=======
       const awardIDs = result.rows.map(row => row.awardid); // Extract award IDs from result
       return res.status(200).send({ status: 200, message: "Success", awardIDs });
->>>>>>> KangLin
     } else {
       console.log("No matching awardID found.");
       return res.status(404).send({ status: 404, message: "No matching awardID found." });
@@ -518,19 +473,8 @@ app.post("/searchAwardID", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-app.get("/searchawardid", async (req, res) =>{
-  const awardID = req.query.awardid;
-  const result = await database.query('SELECT * FROM "award" WHERE "awardid" = $1;', [awardID]);
-
-  console.log(awardID);
-  console.log(result.rows);
-=======
->>>>>>> KangLin
 
 
-<<<<<<< HEAD
-=======
 
 //Search Award ID
 // app.get("/searchawardid", async (req, res) => {
@@ -573,7 +517,6 @@ async function generateNextAwardIdFromDatabase() {
   return nextAwardId;
 }
 
->>>>>>> KangLin
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
