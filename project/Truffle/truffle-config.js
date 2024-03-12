@@ -20,7 +20,7 @@
  *
  */
 require('dotenv').config();
-const Web3 = require('web3');
+const {Web3} = require('web3');
 const web3 = new Web3();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const NonceTrackerSubprovider = require('web3-provider-engine/subproviders/nonce-tracker');
