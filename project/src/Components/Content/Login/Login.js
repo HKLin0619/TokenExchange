@@ -49,47 +49,60 @@ function LoginSignUpContent() {
     }
   }, [location.search]);
 
-  /*
-  const connectWallet = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        console.log(accounts[0]);
-      } catch (err) {
-        console.error(err.message);
-      }
-    } else {
-      console.log("Please install MetaMask");
-    }
-  };*/
-
   const handleLogin = async () => {
-    if (typeof window != "undefined" && typeof window.ethereum != "undefined") {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        console.log(accounts[0]);
-      } catch (err) {
-        console.error(err.message);
-      }
-    } else {
-      console.log("Please install MetaMask");
-    }
+    let ethereumAddress;
 
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
+  if (typeof window !== "undefined" && typeof window.ethereum !== "undefined") {
+    try {
+      // Check if MetaMask is connected
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+      if (accounts.length === 0) {
+        // MetaMask is not connected, prompt user to connect
+        toast.error("Please connect MetaMask and login to your account.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        return;
+      }
+      // Get the first Ethereum address from MetaMask
+      ethereumAddress = accounts[0];
+    } catch (err) {
+      console.error(err.message);
+    }
+  } else {
+    // MetaMask is not installed
+    toast.error("Please install MetaMask and login to your account.", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
     });
+    return;
+  }
+
+  const response = await fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username, password }), // Send username and password
+  });
 
     const data = await response.json();
 
-    console.log(data);
+    console.log(ethereumAddress);
 
     if (!username && !password) {
       toast.error("Enter username and password !", {
