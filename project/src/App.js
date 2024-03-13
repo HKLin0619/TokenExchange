@@ -12,7 +12,7 @@ import UploadTenderAwards from "./Routes/Buyer/UploadTenderAward";
 import SearchAwardID from "./Routes/Financier/SearchAwardID";
 import ViewAccount from "./Routes/Buyer/ViewAccount";
 import FundingStatus from "./Routes/Financier/FundingStatus";
-import UpdateFundStatus from "./Routes/Admin/UpdateFundStatus";
+import UpdateFundStatus from "./Routes/Financier/UpdateFundStatus";
 
 function App() {
   return (
@@ -54,11 +54,6 @@ function App() {
           element={<ViewToken />} 
         />
 
-        <Route 
-          path="/admindashboard/updateFundStatus" 
-          element={<UpdateFundStatus />} 
-        />
-
         <Route
           path="/buyerdashboard/purchasetoken"
           element={<PurchaseToken />}
@@ -82,6 +77,11 @@ function App() {
         <Route
           path="/financierdashboard/fundingStatus"
           element={<FundingStatus />}
+        />
+
+        <Route 
+          path="/financierdashboard/updateFundStatus" 
+          element={<UpdateFundStatus />} 
         />
 
       </Routes>

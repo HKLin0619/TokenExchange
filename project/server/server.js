@@ -371,7 +371,7 @@ app.post("/writeData", async (req, res) => {
   const tokenName = "DBX";
   const amount = "1";
   const financerid = "none";
-  const funded_int = "0"; //"False";
+  const funded_int = null; //"False";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
@@ -457,14 +457,28 @@ app.post("/writeData", async (req, res) => {
 //Search Award
 app.post("/searchAwardID", async (req, res) => {
   try {
-    const result = await database.query('SELECT "awardid" FROM "award"');
-    console.log(result.rows);
+    const awardID = req.body.awardID;
+    const result = await database.query('SELECT "awardid", "funded_ind" FROM "award" WHERE "awardid" = $1;', [awardID]);
+  
 
     if (result.rows.length > 0) {
-      const awardIDs = result.rows.map(row => row.awardid); // Extract award IDs from result
-      return res.status(200).send({ status: 200, message: "Success", awardIDs });
+      const matchingAwardID = result.rows[0].awardid;
+      const fundedInd = result.rows[0].funded_ind;
+      console.log("Matching Award ID:", result.rows[0]);
+      console.log(result.rows[0].funded_ind);
+
+      
+      if (fundedInd === null) {
+        // Explicitly set status code to 250 for funded_ind "0"
+        console.log("Sending status 250 for funded_ind 0");  // Add console log for debugging
+        return res.status(250).send({ status: 250, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
+      } else {
+        // Use the usual 200 status code for other funded_ind values
+        return res.status(200).send({ status: 200, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
+      }
     } else {
       console.log("No matching awardID found.");
+      // Handle the case where no matching awardID is found, e.g., return an error response
       return res.status(404).send({ status: 404, message: "No matching awardID found." });
     }
   } catch (error) {
@@ -474,22 +488,22 @@ app.post("/searchAwardID", async (req, res) => {
 });
 
 
-
-
 //Search Award ID
-// app.get("/searchawardid", async (req, res) => {
-//   const awardID = req.query.awardid;
-//   const result = await database.query(
-//     'SELECT * FROM "award" WHERE "awardid" = $1;',
-//     [awardID]
-//   );
+app.get("/fundingStatus", async (req, res) => {
+  const awardID = req.query.awardid;
+  const result = await database.query(
+    'SELECT * FROM "award" WHERE "awardid" = $1;',
+    [awardID]
+  );
 
-//   console.log(awardID);
-//   console.log(result.rows);
+  console.log(awardID);
+  console.log(result.rows);
 
-//   // Send the fetched data back in the response
-//   return res.status(200).send({ status: 200, data: result.rows });
-// });
+  // Send the fetched data back in the response
+  return res.status(200).send({ status: 200, data: result.rows });
+});
+
+
 
 async function generateNextAwardIdFromDatabase() {
   // Fetch the latest awardID from the database
@@ -517,6 +531,31 @@ async function generateNextAwardIdFromDatabase() {
   return nextAwardId;
 }
 
+app.post("/updateFundStatus", async (req, res) => {
+  try {
+
+    const status = req.body.status;
+    const awardID = req.body.awardid;
+
+    console.log("Funded Status:",status);
+    console.log("Award ID:",awardID);
+
+    const result = await database.query('UPDATE "award" SET "funded_ind" =$1 WHERE "awardid" = $2', [status, awardID]);
+
+ 
+    if (result.rows.length > 0) {
+
+      return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
+
+    } 
+      
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
+

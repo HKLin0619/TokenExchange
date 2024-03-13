@@ -1,120 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import "./SearchAwardIDStyle.css";
-import { Space, Table} from 'antd';
 
 function SearchAwardID() {
-<<<<<<< HEAD
-    const [userid, setUserID] = useState('');
-    const [awardid, setAwardID] = useState('');
-    const [supplierid, setSupplierID] = useState('');
-    const [awardamount, setAwardAmount] = useState('');
-    const [documenthash, setDocumentHash] = useState('');
-    const [fundstatus, setFundStatus] = useState('');
-=======
->>>>>>> KangLin
+    const [awardID, setAwardID] = useState("");
+    const location = useLocation();
     const navigate = useNavigate();
-    const [awardIDs, setAwardIDs] = useState([]);
 
-<<<<<<< HEAD
-    const handleBack = async () => {
-        navigate("/financierdashboard/searchaward");
-      };
-    
-    useEffect(() => {
-        const searchParams = new URLSearchParams(location.search);
-        const paramAwardID = searchParams.get("awardID");
-        fetchAwardID(paramAwardID);
-    }, [location.search]);
-
-   const fetchAwardID = async (paramAwardID) => {
-    try {
-        const response = await fetch("/searchawardid?awardid=" + paramAwardID, {
-            method: "GET",
-        });
-        const result = await response.json();
-        console.log(result);
-
-        if (response.status === 200) {
-            const awardData = result.data[0];
-            setUserID(awardData.buyerid || ''); 
-            setAwardID(awardData.awardid || '');
-            setSupplierID(awardData.supplierid || '');
-            setAwardAmount(awardData.awardamount || '');
-            setDocumentHash(awardData.award_doc_hash || '');
-            setFundStatus(awardData.funded_ind || '');
-        } else {
-            console.error("Failed to fetch award ID:", result.message);
-        }
-    } catch (error) {
-        console.error("Error fetching award ID:", error);
-=======
     const handleBack = () => {
-        navigate('/financierdashboard');
->>>>>>> KangLin
-    }
+        navigate("/financierdashboard");
+    };
 
-    useEffect(() => {
-        fetchAwardIDs();
-    }, []);
-
-    const fetchAwardIDs = async () => {
+    const handleSearch = async () => {
         try {
+            if (!awardID) {
+                console.log("No awardID provided.");
+                return;
+            }
+    
             const response = await fetch("/searchAwardID", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ awardID }),
             });
-
+    
             if (!response.ok) {
                 throw new Error("Request failed with status: " + response.status);
             }
-
+    
             const data = await response.json();
             console.log(data);
-
+    
             if (data.status === 200) {
-                setAwardIDs(data.awardIDs); // Set award IDs in state
-            } else {
+                navigate(`/financierdashboard/fundingStatus?awardID=${awardID}`);
+            
+            }
+            else if (data.status === 250){
+                navigate(`/financierdashboard/updateFundStatus?awardID=${awardID}`);
+            }
+            else {
                 console.log("No matching awardID found.");
             }
         } catch (error) {
             console.error(error);
+            // Handle errors here, such as displaying an error message to the user
         }
     };
+    
+    
 
-    const handleSearch = (awardID) => {
-        navigate(`/financierdashboard/searchawardid?awardID=${awardID}`);
-    };
+    // Extract awardID from query parameters when component mounts
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const paramAwardID = searchParams.get("awardID");
+        if (paramAwardID) {
+            setAwardID(paramAwardID);
+            // Now you can perform further actions based on the awardID
+            // For example, fetch additional data based on the awardID
+        }
+    }, [location.search]);
 
-    const columns = [
-        {
-          title: 'No.',
-          dataIndex: 'no',
-          key: 'no',
-          width: 70,
-          align: 'center',
-        },
-        {
-          title: <div style={{ textAlign: 'center' }}>Award ID</div>,
-          dataIndex: 'awardID',
-          key: 'awardID',
-        },
-        {
-          title: 'Action',
-          key: 'action',
-          render: (_, record) => (
-            <Space size="middle">
-              <button className='sa-btn-search' onClick={() => handleSearch(record.awardID)}>Search</button>
-            </Space>
-          ),
-          align: 'center',
-          width: 150,
-        },
-    ];
-
-    const data = awardIDs.map((awardID, index) => ({ no: index + 1, awardID }));
 
     return (
         <div className="sa-main">
@@ -123,10 +70,23 @@ function SearchAwardID() {
                     <h1>Search Award ID</h1>
                     <div className='sa-underline'></div>
                 </div>
-                <div className="sa-table">
-                    <Table columns={columns} dataSource={data} pagination={{ pageSize: 4 }} bordered={true} />
+
+                <div className="sa-inputs">
+                    <div className="sa-input">
+                        <i className="fa-solid fa-magnifying-glass"/>
+                        <input
+                            type="text"
+                            placeholder="AwardID"
+                            className="tm-name"
+                            value={awardID}
+                            onChange={(e) => setAwardID(e.target.value)}/>
+                    </div>
                 </div>
+
+                <button className="sa-btn-search" onClick={handleSearch}>Search</button>
+
                 <button className='sa-btn' onClick={handleBack}>Back</button>
+
             </div>
         </div>
     );
