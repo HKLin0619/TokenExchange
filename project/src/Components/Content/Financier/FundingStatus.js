@@ -12,6 +12,25 @@ function FundingStatus() {
     const [documenthash, setDocumentHash] = useState('');
     const [fundstatus, setFundStatus] = useState('');
     const location = useLocation();
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+  
+    useEffect(() => {
+      const queryParams = new URLSearchParams(location.search);
+      const successParam = queryParams.get('success');
+  
+      if (successParam === 'true') {
+          toast.success('Token Minting Successfully !', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+      } 
+    }, [location.search]);
 
     const handleBack = async () => {
 

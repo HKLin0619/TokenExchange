@@ -38,7 +38,7 @@ function UpdateFundStatus() {
     
             if (data.status === 200) {
 
-                navigate(`/financierdashboard/fundingStatus?awardID=${awardid}`);
+                navigate(`/financierdashboard/fundingStatus?awardID=${awardid}?success=true`);
 
                 
             } else if (data.status === 400) {
