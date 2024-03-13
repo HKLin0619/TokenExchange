@@ -528,6 +528,31 @@ async function generateNextAwardIdFromDatabase() {
   return nextAwardId;
 }
 
+app.post("/updateFundStatus", async (req, res) => {
+  try {
+
+    const status = req.body.status;
+    const awardID = req.body.awardid;
+
+    console.log("Funded Status:",status);
+    console.log("Award ID:",awardID);
+
+    const result = await database.query('UPDATE "award" SET "funded_ind" =$1 WHERE "awardid" = $2', [status, awardID]);
+
+ 
+    if (result.rows.length > 0) {
+
+      return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
+
+    } 
+      
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server started on port 5000");
 });
+

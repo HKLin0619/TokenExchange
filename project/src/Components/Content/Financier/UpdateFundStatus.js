@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./UpdateFundStatusStyle.css";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 function UpdateFundStatus() {
     const navigate = useNavigate();
@@ -18,10 +19,49 @@ function UpdateFundStatus() {
         navigate('/financierdashboard/searchAwardID');
     }
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => {
         // Send the selected status to the backend for updating
         console.log("Selected status:", status);
         // Add your logic to send the selected status to the backend for updating
+        try {
+
+            const response = await fetch("/updateFundStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status, awardid }),
+            });
+    
+            const data = await response.json();
+            console.log(data);
+    
+            if (data.status === 200) {
+
+                navigate(`/financierdashboard/fundingStatus?awardID=${awardid}`);
+
+                
+            } else if (data.status === 400) {
+
+                toast.error("Please select funded status !", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+
+            }
+            else {
+                console.log("No matching awardID found.");
+            }
+        } catch (error) {
+            console.error(error);
+            // Handle errors here, such as displaying an error message to the user
+        }
     }
 
     useEffect(() => {
@@ -61,6 +101,18 @@ function UpdateFundStatus() {
 
     return (
         <div className="ufs-main">
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <div className="ufs-sub-main">
                 <div className='ufs-title'>
                     <h1>Upload Fund Status</h1>
@@ -82,8 +134,8 @@ function UpdateFundStatus() {
                             className='ufs-radio-btn1'
                             type="radio"
                             name="status"
-                            value="Funded"
-                            checked={status === "Funded"}
+                            value="true"
+                            checked={status === "true"}
                             onChange={handleChangeStatus}
                         />
                         <strong style={{ color: "green" }} className='ufs-radio-text1'>True</strong>
@@ -92,8 +144,8 @@ function UpdateFundStatus() {
                             className='ufs-radio-btn2'
                             type="radio"
                             name="status"
-                            value="0"
-                            checked={status === "0"}
+                            value="false"
+                            checked={status === "false"}
                             onChange={handleChangeStatus}
                         />
                         <strong style={{ color: "red" }} className='ufs-radio-text2'>False</strong>
