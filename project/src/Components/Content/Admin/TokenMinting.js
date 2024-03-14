@@ -138,7 +138,7 @@ function TokenMinting() {
 
       <div className="tm-sub-main">
         <div className="tm-title">
-          <h1>Token Minting</h1>
+          <h1>Token Minting！！！！</h1>
           <div className="tm-underline"></div>
         </div>
 
