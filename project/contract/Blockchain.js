@@ -31,5 +31,5 @@ fetch("https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480", {
 
 // Assuming you want to filter functions from the ABI
 const functionsAbi = ContractABI.abi.filter(abi => abi.type === 'function');
-console.log(functionsAbi);
+// console.log(functionsAbi);
 

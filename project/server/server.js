@@ -85,10 +85,11 @@ app.post("/signup", (req, res) => {
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
+  const ethAddress = req.body.ethereumAddress;
 
-  console.log("ASDASDASDSAD");
   console.log(tokenSymbol);
   console.log(numberOfToken);
+  console.log(ethAddress);
 
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
@@ -123,7 +124,7 @@ app.post("/tokenminting", async (req, res) => {
       })
       .send(
         {
-          from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+          from: ethAddress,
           gas: 3000000,
           gasPrice: 20000000000,
         }
@@ -139,7 +140,7 @@ app.post("/tokenminting", async (req, res) => {
 
     const mintTokenName = "DBX"; // Specify the token name
     await contractInstance.methods.mint(mintTokenName, numberOfToken).send({
-      from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+      from: ethAddress,
       gas: 6721975,
       gasPrice: 20000000000,
     });
