@@ -8,6 +8,8 @@ app.use(express.json());
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
 const contractABI = require("C:/Users/ACER/Documents/GitHub/TokenExchange/project/Truffle/build/contracts/TokenSaleContract.json");
+const { Transaction } = require('ethereumjs-tx');
+const privateKey = require('../contract/PrivateKey');
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -82,6 +84,7 @@ app.post("/signup", (req, res) => {
     });
 });
 
+//Token Mint
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
@@ -90,6 +93,7 @@ app.post("/tokenminting", async (req, res) => {
   console.log(tokenSymbol);
   console.log(numberOfToken);
   console.log(ethAddress);
+  console.log(privateKey);
 
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
@@ -118,48 +122,36 @@ app.post("/tokenminting", async (req, res) => {
       return;
     }
 
-    const deployedContract = await tokenContract
-      .deploy({
+    const nonce = await web3.eth.getTransactionCount(ethAddress);
+    const gasPrice = await web3.eth.getGasPrice();
+    const gasLimit = 6721975; // Adjust this value as needed
+
+    const rawTx = {
+      nonce: web3.utils.toHex(nonce),
+      gasPrice: web3.utils.toHex(gasPrice),
+      gasLimit: web3.utils.toHex(gasLimit),
+      data: tokenContract.deploy({
         data: byteCode,
-      })
-      .send(
-        {
-          from: ethAddress,
-          gas: 3000000,
-          gasPrice: 20000000000,
-        }
-      );
+      }).encodeABI()
+    };
 
-    const contractAddress = deployedContract.options.address;
-    console.log("Contract deployed at address: " + contractAddress);
+    const tx = new Transaction(rawTx, { chain: 'mainnet', hardfork: 'istanbul' });
+    tx.sign(Buffer.from(privateKey, 'hex'));
 
-    const contractInstance = new web3.eth.Contract(
-      contractABI.abi,
-      contractAddress
-    );
+    const serializedTx = tx.serialize();
 
-    const mintTokenName = "DBX"; // Specify the token name
-    await contractInstance.methods.mint(mintTokenName, numberOfToken).send({
-      from: ethAddress,
-      gas: 6721975,
-      gasPrice: 20000000000,
-    });
+    const receipt = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+    console.log('Transaction receipt:', receipt);
 
-    console.log("AAA");
-    const writeDataResult = await contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2").send({
-      from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
-      gas: 6721975,
-      gasPrice: 20000000000,
-    });
-    console.log("WriteData result:", writeDataResult);
-    console.log("AAA");
+    const contractAddress = receipt.contractAddress; // Get the deployed contract address
 
+    // Insert contract address into the database
     await database.query(
       'INSERT INTO "Contract" ("contractID") VALUES ($1);',
       [contractAddress]
     );
 
-    res.json({ success: true });
+    res.json({ success: true, contractAddress });
   } catch (error) {
     console.error("Error in token minting:", error);
     res.status(500).json({ success: false, error: error.message });
