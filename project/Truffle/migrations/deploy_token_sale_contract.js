@@ -1,20 +1,20 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const { artifacts } = require('truffle'); // Import artifacts module from Truffle
+const { artifacts } = require('truffle');
 const TokenSaleContract = artifacts.require("TokenSaleContract");
-const Web3 = require('web3');
 
 module.exports = function(deployer, network, accounts) {
-  const mnemonic = process.env.MNEMONIC; // Retrieve the mnemonic from environment variables or elsewhere
-  const infuraKey = process.env.INFURA_KEY; // Retrieve the Infura key from environment variables or elsewhere
+  const mnemonic = process.env.MNEMONIC;
+  const infuraKey = process.env.INFURA_KEY;
 
   if (!mnemonic || !infuraKey) {
     console.error("Please set MNEMONIC and INFURA_KEY environment variables");
     return;
   }
 
-  // Set up HDWalletProvider with the mnemonic and Infura URL
-  const provider = new Web3.providers.HttpProvider('https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480');
+  const provider = new HDWalletProvider({
+    mnemonic: mnemonic,
+    providerOrUrl: `https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480`
+  });
 
-  // Set the provider for the deployerecho
   deployer.deploy(TokenSaleContract, { from: accounts[0] });
 };
