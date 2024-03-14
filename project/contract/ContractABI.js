@@ -21,9 +21,9 @@ module.exports = [
       },
       {
         indexed: false,
-        internalType: "uint256",
+        internalType: "string",
         name: "newFundedInt",
-        type: "uint256",
+        type: "string",
       },
       {
         indexed: false,
@@ -94,9 +94,9 @@ module.exports = [
       },
       {
         indexed: false,
-        internalType: "uint256",
+        internalType: "string",
         name: "funded_int",
-        type: "uint256",
+        type: "string",
       },
     ],
     name: "TokensBurned",
@@ -321,24 +321,6 @@ module.exports = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "callFunction",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "string",
@@ -396,9 +378,9 @@ module.exports = [
     name: "fundedInt",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "string",
         name: "",
-        type: "uint256",
+        type: "string",
       },
     ],
     stateMutability: "view",
@@ -450,11 +432,6 @@ module.exports = [
       },
       {
         internalType: "string",
-        name: "buyerID",
-        type: "string",
-      },
-      {
-        internalType: "string",
         name: "supplierID",
         type: "string",
       },
@@ -464,9 +441,9 @@ module.exports = [
         type: "uint256",
       },
       {
-        internalType: "uint256",
+        internalType: "string",
         name: "award_Doc_Hash",
-        type: "uint256",
+        type: "string",
       },
       {
         internalType: "string",
@@ -474,54 +451,9 @@ module.exports = [
         type: "string",
       },
       {
-        internalType: "uint256",
-        name: "funded_int",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getNumber",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "string",
-        name: "tokenName",
+        name: "funded_int",
         type: "string",
-      },
-    ],
-    name: "getOwnerByTokenName",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTotalSupply",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -543,24 +475,6 @@ module.exports = [
     name: "mint",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "myFunction",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {

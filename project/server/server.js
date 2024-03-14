@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x22e325518feAbe25D63824c4007ECEc03bdDFF3c",
+        from: "0x7b44Fe3186F4595c2E44c6BAa9C0FaE0aF714BB1",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -159,9 +159,9 @@ app.post("/tokenminting", async (req, res) => {
           contractAddress
         );
         const mintAmount = numberOfToken; // Specify the amount to mint
-        const mintTokenName = "KDX"; // Specify the token name
+        const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x22e325518feAbe25D63824c4007ECEc03bdDFF3c",
+          from: "0x7b44Fe3186F4595c2E44c6BAa9C0FaE0aF714BB1",
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -208,8 +208,8 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0x22e325518feAbe25D63824c4007ECEc03bdDFF3c";
-    const tokenSymbol = "KDX";
+      req.query.account || "0x7b44Fe3186F4595c2E44c6BAa9C0FaE0aF714BB1";
+    const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
       .getBalance(account, tokenSymbol)
@@ -222,7 +222,7 @@ app.get("/viewtoken", async (req, res) => {
 
     return res
       .status(200)
-      .json({ tokenName: "KDX Token", tokenSymbol: "KDX", balance });
+      .json({ tokenName: "DBX Token", tokenSymbol: "DBX", balance });
   } catch (error) {
     console.log(error);
     return res.status(400).send({ status: 400, message: error.message });
@@ -293,7 +293,7 @@ app.post("/purchasetoken", async (req, res) => {
     const transactionReceipt = await contractInstance.methods
       .purchase(tokenName, amountString)
       .send({
-        from: "0x0aF0c2AFD460331D752750F26396A16FD0A99281", //
+        from: "0x6453C41aef31dc9452F89f63aBc8b0DA9E95be6B", //
         gas: 3000000,
         gasPrice: 20000000000,
         value: web3.utils.toWei(amountString, "ether"),
@@ -303,7 +303,7 @@ app.post("/purchasetoken", async (req, res) => {
     console.log("Transaction Receipt:", transactionReceipt);
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x0aF0c2AFD460331D752750F26396A16FD0A99281"; // Replace with the actual buyer's address
+    const buyerAddress = "0x6453C41aef31dc9452F89f63aBc8b0DA9E95be6B"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -313,7 +313,7 @@ app.post("/purchasetoken", async (req, res) => {
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
     );
 
     // Convert transactionReceipt values to strings before sending in response
@@ -375,8 +375,8 @@ app.post("/writeData", async (req, res) => {
   const document = req.body.document;
   const documenthash = req.body.documenthash;
 
-  //fix tokenName to KDX and the spend 1 token per time
-  const tokenName = "KDX";
+  //fix tokenName to DBX and the spend 1 token per time
+  const tokenName = "DBX";
   const amount = "1";
   const financerid = "none";
   const funded_int = "0"; //"False";
@@ -399,7 +399,7 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x0aF0c2AFD460331D752750F26396A16FD0A99281";
+  const buyerAddress = "0x6453C41aef31dc9452F89f63aBc8b0DA9E95be6B";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -413,7 +413,7 @@ app.post("/writeData", async (req, res) => {
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `账户 ${buyerAddress} 在 KDX 代币中的余额：${balanceInWei} KDX`
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
     );
 
     try {
@@ -430,7 +430,7 @@ app.post("/writeData", async (req, res) => {
           funded_intString
         )
         .send({
-          from: "0x0aF0c2AFD460331D752750F26396A16FD0A99281", //buyer address
+          from: "0x6453C41aef31dc9452F89f63aBc8b0DA9E95be6B", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
