@@ -1,7 +1,7 @@
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const { Web3 } = require('web3'); // Corrected import statement
-const MNEMONIC = ''; //Find your own mnemonic in Metamask
+const MNEMONIC = 'hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst'; //Find your own mnemonic in Metamask
 const INFURA_KEY = 'fa837cf8998749cf8f4afd6497a17480';
 const MNEMONIC_FILE = require('./MNEMONIC.js');
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = MNEMONIC_FILE;

@@ -7,7 +7,7 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const contractABI = require("../contract/ContractABI");
+const contractABI = require("C:/Users/ACER/Documents/GitHub/TokenExchange/project/Truffle/build/contracts/TokenSaleContract.json");
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -94,93 +94,75 @@ app.post("/tokenminting", async (req, res) => {
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
     .then((res) => res.rows[0]);
 
-  if (!tokenSymbol) {
-    res.json({ success: false, errorType: "tokenSymbol" });
-    console.log("tokenSymbol");
-    return;
-  } else if (!tokenName) {
-    res.json({ success: false, errorType: "tokenName" });
-    console.log("tokenName");
-    return;
-  } else if (!numberOfToken) {
-    res.json({ success: false, errorType: "numberOfToken" });
-    console.log("numberOfToken");
-    return;
-  } else if (isNaN(numberOfToken)) {
-    res.json({ success: false, errorType: "numberError" });
-    console.log("numberError");
-    return;
-  }
-  else if (numberOfToken > 1000000) {
-    res.json({ success: false, errorType: "overNumberError" });
-    console.log("numberError");
-    return;
-  }
+  try {
+    if (!tokenSymbol) {
+      res.json({ success: false, errorType: "tokenSymbol" });
+      console.log("tokenSymbol");
+      return;
+    } else if (!tokenName) {
+      res.json({ success: false, errorType: "tokenName" });
+      console.log("tokenName");
+      return;
+    } else if (!numberOfToken) {
+      res.json({ success: false, errorType: "numberOfToken" });
+      console.log("numberOfToken");
+      return;
+    } else if (isNaN(numberOfToken)) {
+      res.json({ success: false, errorType: "numberError" });
+      console.log("numberError");
+      return;
+    } else if (numberOfToken > 1000000) {
+      res.json({ success: false, errorType: "overNumberError" });
+      console.log("numberError");
+      return;
+    }
 
-  const deployedContract = await tokenContract
-    .deploy({
-      data: byteCode,
-    })
-    .send(
-      {
-        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
-        gas: 3000000,
-        gasPrice: 20000000000,
-      },
-      async function (error, transactionHash) {
-        if (error) {
-          console.error("Error generating transaction hash:", error);
-        } else {
-          console.log("Transaction hash:", transactionHash);
-        }
-      }
-    )
-    .on("error", (error) => {
-      console.error("Contract deployment error:", error.message);
-      res.json({
-        success: false,
-        errorType: "deploymentError",
-        errorMessage: error.message,
-      });
-    })
-    .on("transactionHash", function (transactionHash) {})
-    .on("receipt", async (receipt) => {
-      try {
-        const contractAddress = receipt.contractAddress;
-        console.log("Contract deployed at address: " + contractAddress);
-        console.log(receipt);
-
-        // Perform minting operation
-        const contractInstance = new web3.eth.Contract(
-          contractABI,
-          contractAddress
-        );
-        const mintAmount = numberOfToken; // Specify the amount to mint
-        const mintTokenName = "DBX"; // Specify the token name
-        await contractInstance.methods.mint(mintTokenName, mintAmount).send({
+    const deployedContract = await tokenContract
+      .deploy({
+        data: byteCode,
+      })
+      .send(
+        {
           from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
-          gas: 6721975,
+          gas: 3000000,
           gasPrice: 20000000000,
-        });
-        console.log("AAA");
-        console.log(contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2"));
-        console.log("AAA");
-        // Insert contract address into the database
-        await database.query(
-          'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-          [contractAddress]
-        );
+        }
+      );
 
-        res.json({ success: true });
-      } catch (error) {
-        console.error("Minting error:", error.message);
-        res.json({
-          success: false,
-          errorType: "mintingError",
-          errorMessage: error.message,
-        });
-      }
+    const contractAddress = deployedContract.options.address;
+    console.log("Contract deployed at address: " + contractAddress);
+
+    const contractInstance = new web3.eth.Contract(
+      contractABI.abi,
+      contractAddress
+    );
+
+    const mintTokenName = "DBX"; // Specify the token name
+    await contractInstance.methods.mint(mintTokenName, numberOfToken).send({
+      from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+      gas: 6721975,
+      gasPrice: 20000000000,
     });
+
+    console.log("AAA");
+    const writeDataResult = await contractInstance.methods.WriteData("1", "2", "2", "2", "2","2","a","2","2").send({
+      from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+      gas: 6721975,
+      gasPrice: 20000000000,
+    });
+    console.log("WriteData result:", writeDataResult);
+    console.log("AAA");
+
+    await database.query(
+      'INSERT INTO "Contract" ("contractID") VALUES ($1);',
+      [contractAddress]
+    );
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error in token minting:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 //View Token
