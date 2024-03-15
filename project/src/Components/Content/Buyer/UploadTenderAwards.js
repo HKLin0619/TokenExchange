@@ -9,8 +9,17 @@ function UploadTenderAwards() {
   const [awardamount, setAwardAmount] = useState("");
   const [document, setDocument] = useState("");
   const [documenthash, setDocumentHash] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+  const [cid, setCid] = useState();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
+
+  const changeHandler = (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +54,46 @@ function UploadTenderAwards() {
     };
     fetchData();
   }, []);
+
+  const handleSubmittion = async () => {
+    try {
+      if (!selectedFile) {
+        console.log("未选择文件");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const metadata = JSON.stringify({
+        name: selectedFile.name, // 使用文件名作为元数据
+      });
+      formData.append("pinataMetadata", metadata);
+
+      console.log("Pinata JWT Token:", import.meta.env.VITE_PINATA_JWT);
+
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formData.append("pinataOptions", options);
+
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+          },
+          body: formData,
+        }
+      );
+      const resData = await res.json();
+      setCid(resData.IpfsHash);
+      console.log(resData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -137,14 +186,22 @@ function UploadTenderAwards() {
           </div>
 
           <div className="uta-input">
+            <input type="file" onChange={changeHandler}></input>
+            <button onClick={handleSubmittion}>Submit</button>
+          </div>
+
+          <div className="uta-input">
             <i className="fa-solid fa-file" />
-            <input
-              type="text"
-              placeholder="https://ipfs.io/..."
-              className="uta-name"
-              value={document}
-              onChange={(e) => setDocument(e.target.value)}
-            />
+            {cid && (
+              <input
+                type="text"
+                placeholder="https://ipfs.io/..."
+                className="uta-name"
+                src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
+                value={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
+                onChange={(e) => setDocument(e.target.value)}
+              />
+            )}
           </div>
 
           <div className="uta-input">
