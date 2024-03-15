@@ -7,9 +7,39 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-const contractABI = require("C:/Users/ACER/Documents/GitHub/TokenExchange/project/Truffle/build/contracts/TokenSaleContract.json");
+const contractABI = require("../Truffle/build/contracts/TokenSaleContract.json");
 const { Transaction } = require('ethereumjs-tx');
 const privateKey = require('../contract/PrivateKey');
+const { Buffer } = require('buffer');
+
+// Add the network configuration check here
+web3.eth.net.getId()
+  .then((networkId) => {
+    console.log("Network ID:", networkId);
+
+    // Extract numeric part from the networkId string
+    const numericNetworkId = parseInt(networkId, 10);
+
+    // Check if the numeric part is a valid integer
+    if (!isNaN(numericNetworkId)) {
+      // Check the network ID against known network IDs
+      if (numericNetworkId === 1) {
+        console.log("Connected to Ethereum Mainnet");
+      } else if (numericNetworkId === 4) {
+        console.log("Connected to Rinkeby Testnet");
+      } else if (numericNetworkId === 80001) {
+        console.log("Connected to Mumbai Testnet");
+      } else {
+        console.log("Connected to Unknown Network with ID:", numericNetworkId);
+      }
+    } else {
+      console.error("Invalid network ID format:", networkId);
+    }
+  })
+  .catch((error) => {
+    console.error("Error retrieving network ID:", error);
+  });
+  
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -84,7 +114,99 @@ app.post("/signup", (req, res) => {
     });
 });
 
-//Token Mint
+
+//Token Minting
+// app.post("/tokenminting", async (req, res) => {
+//   const tokenSymbol = req.body.tokenSymbol;
+//   const numberOfToken = req.body.numberOfToken;
+//   const ethAddress = req.body.ethereumAddress;
+
+//   console.log(tokenSymbol);
+//   console.log(numberOfToken);
+//   console.log(ethAddress);
+
+//   const tokenName = await database
+//     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
+//     .then((res) => res.rows[0]);
+
+//   if (!tokenSymbol) {
+//     res.json({ success: false, errorType: "tokenSymbol" });
+//     console.log("tokenSymbol");
+//     return;
+//   } else if (!tokenName) {
+//     res.json({ success: false, errorType: "tokenName" });
+//     console.log("tokenName");
+//     return;
+//   } else if (!numberOfToken) {
+//     res.json({ success: false, errorType: "numberOfToken" });
+//     console.log("numberOfToken");
+//     return;
+//   } else if (isNaN(numberOfToken)) {
+//     res.json({ success: false, errorType: "numberError" });
+//     console.log("numberError");
+//     return;
+//   }
+//   else if (numberOfToken > 1000000) {
+//     res.json({ success: false, errorType: "overNumberError" });
+//     console.log("numberError");
+//     return;
+//   }
+
+//   const deployedContract = await tokenContract
+//   .deploy({
+//     data: byteCode,
+//   })
+//   .send({
+//     from: ethAddress,
+//     gas: 3000000,
+//     gasPrice: 20000000000,
+//   })
+//   .on("error", (error) => {
+//     console.error("Contract deployment error:", error.message);
+//     res.json({
+//       success: false,
+//       errorType: "deploymentError",
+//       errorMessage: error.message,
+//     });
+//   })
+//   .on("transactionHash", function (transactionHash) {})
+//   .on("receipt", async (receipt) => {
+//     try {
+//       const contractAddress = receipt.contractAddress;
+//       console.log("Contract deployed at address: " + contractAddress);
+//       console.log(receipt);
+
+//       // Perform minting operation
+//       const contractInstance = new web3.eth.Contract(
+//         contractABI,
+//         contractAddress
+//       );
+//       const mintAmount = numberOfToken; // Specify the amount to mint
+//       const mintTokenName = "DBX"; // Specify the token name
+//       await contractInstance.methods.mint(mintTokenName, mintAmount).send({
+//         from: ethAddress,
+//         gas: 6721975,
+//         gasPrice: 20000000000,
+//       });
+      
+//       // Insert contract address into the database
+//       await database.query(
+//         'INSERT INTO "Contract" ("contractID") VALUES ($1);',
+//         [contractAddress]
+//       );
+
+//       res.json({ success: true });
+//     } catch (error) {
+//       console.error("Minting error:", error.message);
+//       res.json({
+//         success: false,
+//         errorType: "mintingError",
+//         errorMessage: error.message,
+//       });
+//     }
+//   });
+// });
+
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
@@ -93,68 +215,89 @@ app.post("/tokenminting", async (req, res) => {
   console.log(tokenSymbol);
   console.log(numberOfToken);
   console.log(ethAddress);
-  // console.log(privateKey);
+  web3.eth.net.getId().then(console.log);
 
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
     .then((res) => res.rows[0]);
 
+  if (!tokenSymbol) {
+    res.json({ success: false, errorType: "tokenSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!numberOfToken) {
+    res.json({ success: false, errorType: "numberOfToken" });
+    console.log("numberOfToken");
+    return;
+  } else if (isNaN(numberOfToken)) {
+    res.json({ success: false, errorType: "numberError" });
+    console.log("numberError");
+    return;
+  } else if (numberOfToken > 1000000) {
+    res.json({ success: false, errorType: "overNumberError" });
+    console.log("numberError");
+    return;
+  }
+
   try {
-    if (!tokenSymbol) {
-      res.json({ success: false, errorType: "tokenSymbol" });
-      console.log("tokenSymbol");
-      return;
-    } else if (!tokenName) {
-      res.json({ success: false, errorType: "tokenName" });
-      console.log("tokenName");
-      return;
-    } else if (!numberOfToken) {
-      res.json({ success: false, errorType: "numberOfToken" });
-      console.log("numberOfToken");
-      return;
-    } else if (isNaN(numberOfToken)) {
-      res.json({ success: false, errorType: "numberError" });
-      console.log("numberError");
-      return;
-    } else if (numberOfToken > 1000000) {
-      res.json({ success: false, errorType: "overNumberError" });
-      console.log("numberError");
-      return;
-    }
+    // Deploy contract
+    const contract = new web3.eth.Contract(contractABI.abi);
+    const contractData = contract.deploy({
+      data: byteCode,
+    }).encodeABI();
 
     const nonce = await web3.eth.getTransactionCount(ethAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasLimit = 6721975; // Adjust this value as needed
+    const gasLimit = 3000000; // You may need to adjust this
 
-    const rawTx = {
+    const txParams = {
       nonce: web3.utils.toHex(nonce),
       gasPrice: web3.utils.toHex(gasPrice),
       gasLimit: web3.utils.toHex(gasLimit),
-      data: tokenContract.deploy({
-        data: byteCode,
-      }).encodeABI()
+      data: contractData,
+      from: ethAddress,
     };
 
-    const tx = new Transaction(rawTx, { chain: 'mainnet', hardfork: 'istanbul' });
-    tx.sign(Buffer.from(privateKey, 'hex'));
+    const tx = new Transaction(txParams, { chain: 'mainnet', hardfork: 'istanbul' });
+    tx.sign(Buffer.from(privateKey, 'hex')); // Using the imported private key here
 
     const serializedTx = tx.serialize();
 
-    const receipt = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
-    console.log('Transaction receipt:', receipt);
+    const txHash = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'));
+    console.log('Contract deployed at address:', txHash.contractAddress);
 
-    const contractAddress = receipt.contractAddress; // Get the deployed contract address
+    // Perform minting operation
+    const contractInstance = new web3.eth.Contract(
+      contractABI.abi,
+      txHash.contractAddress
+    );
+
+    const mintAmount = numberOfToken;
+    const mintTokenName = "DBX"; // Specify the token name
+    await contractInstance.methods.mint(mintTokenName, mintAmount).send({
+      from: ethAddress,
+      gas: 6721975,
+      gasPrice: 20000000000,
+    });
 
     // Insert contract address into the database
     await database.query(
       'INSERT INTO "Contract" ("contractID") VALUES ($1);',
-      [contractAddress]
+      [txHash.contractAddress]
     );
 
-    res.json({ success: true, contractAddress });
+    res.json({ success: true });
   } catch (error) {
-    console.error("Error in token minting:", error);
-    res.status(500).json({ success: false, error: error.message });
+    console.error("Error:", error);
+    res.json({
+      success: false,
+      errorType: "error",
+      errorMessage: error.message,
+    });
   }
 });
 

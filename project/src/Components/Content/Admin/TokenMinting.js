@@ -14,6 +14,22 @@ function TokenMinting() {
     // Check if MetaMask is installed
     if (typeof window.ethereum !== "undefined") {
       console.log("MetaMask is installed!");
+      
+      // Check the network
+      window.ethereum.request({ method: 'eth_chainId' })
+        .then((chainId) => {
+          console.log("Current chainId:", chainId);
+          if (chainId === '0x1') {
+            console.log("Connected to Ethereum Mainnet");
+          } else if (chainId === '0x13881') {
+            console.log("Connected to Mumbai Testnet");
+          } else {
+            console.log("Connected to another network");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting chainId:", error);
+        });
     } else {
       console.log("MetaMask is not installed.");
     }
