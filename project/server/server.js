@@ -93,7 +93,7 @@ app.post("/tokenminting", async (req, res) => {
   console.log(tokenSymbol);
   console.log(numberOfToken);
   console.log(ethAddress);
-  console.log(privateKey);
+  // console.log(privateKey);
 
   const tokenName = await database
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenSymbol])
@@ -471,20 +471,12 @@ app.get("/fundingStatus", async (req, res) => {
   return res.status(200).send({ status: 200, data: result.rows });
 });
 
-
-
+//Generate Award ID
 async function generateNextAwardIdFromDatabase() {
   // Fetch the latest awardID from the database
   const latestAwardResult = await database.query(
     'SELECT "awardid" FROM "award" ORDER BY "awardid" DESC LIMIT 1;'
   );
-
-  if (latestAwardResult.rows.length > 0) {
-    const awardId = latestAwardResult.rows[0].awardid;
-    console.log("awardId:", awardId);
-  } else {
-    console.log("No award found");
-  }
 
   let nextAwardId;
 
@@ -492,12 +484,44 @@ async function generateNextAwardIdFromDatabase() {
     // If no previous awardID found, start from 1 or any initial value you prefer
     nextAwardId = 1;
   } else {
+    // Extract the latest awardID from the query result
+    const latestAwardId = latestAwardResult.rows[0].awardid;
+
     // Increment the latest awardID by 1
-    nextAwardId = latestAwardResult.rows[0].awardid + 1;
+    nextAwardId = latestAwardId + 1;
   }
 
-  return nextAwardId;
+  // Convert nextAwardId to the desired format (e.g., "AD001", "AD002", ...)
+  const formattedAwardId = `AD${String(nextAwardId).padStart(3, '0')}`;
+
+  console.log("Next Award ID:", formattedAwardId);
+
+  return formattedAwardId;
 }
+
+app.post("/updateFundStatus", async (req, res) => {
+  try {
+
+    const status = req.body.status;
+    const awardID = req.body.awardid;
+
+    console.log("Funded Status:",status);
+    console.log("Award ID:",awardID);
+
+    const result = await database.query('UPDATE "award" SET "funded_ind" =$1 WHERE "awardid" = $2', [status, awardID]);
+
+ 
+    if (result.rows.length > 0) {
+
+      return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
+
+    } 
+      
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
