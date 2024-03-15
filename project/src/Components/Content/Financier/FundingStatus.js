@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./FundingStatusStyle.css";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 function FundingStatus() {
 
@@ -73,6 +74,19 @@ function FundingStatus() {
   return (
     
     <div className="fa-main">
+
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
 
         <div className="fa-sub-main">
 
