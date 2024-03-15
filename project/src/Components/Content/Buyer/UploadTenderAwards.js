@@ -104,6 +104,11 @@ function UploadTenderAwards() {
   };
 
   const handleSubmit = async () => {
+    const document = `${Gateway}/ipfs/${cid}`;
+    const documenthash = cid;
+    console.log("Doc: " + document);
+    console.log("Dochash: " + documenthash);
+
     try {
       const response = await fetch("/writeData", {
         method: "POST",
@@ -222,6 +227,7 @@ function UploadTenderAwards() {
               className="uta-name"
               value={cid}
               onChange={(e) => setDocumentHash(e.target.value)}
+              disabled="true"
             />
           </div>
         </div>
