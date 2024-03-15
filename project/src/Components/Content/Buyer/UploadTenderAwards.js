@@ -9,10 +9,15 @@ function UploadTenderAwards() {
   const [awardamount, setAwardAmount] = useState("");
   const [document, setDocument] = useState("");
   const [documenthash, setDocumentHash] = useState("");
-  const [selectedFile, setSelectedFile] = useState("");
+  // eslint-disable-next-line no-self-compare
+  const [selectedFile, setSelectedFile] = useState(null);
   const [cid, setCid] = useState();
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
+
+  const JWT =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIzNGU2MDE2ZS03NDZkLTQ2OTctODM2OS05Y2ZmMGViODFkMjkiLCJlbWFpbCI6Imhvbmd6aGFubmdAeWFob28uY29tLm15IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjE2YTVhYTI2YTVkYmZkMGZlZjJiIiwic2NvcGVkS2V5U2VjcmV0IjoiNjM1NTY3ZTFkNmMxMTU4NzE4MmEwNzI0NmY1ODFjMGQyZDY3ZjEzYjRlZDFjNmJhYzAwZGEwNjI1Nzg3N2ZiZSIsImlhdCI6MTcxMDQ3Nzk5MH0.Or0JtYpwvSLk89cIYCLyVvryI1Q11xfAhzjumscA2qM";
+  const Gateway = "https://scarlet-binding-rat-292.mypinata.cloud";
 
   const changeHandler = (event) => {
     const files = event.target.files;
@@ -70,7 +75,9 @@ function UploadTenderAwards() {
       });
       formData.append("pinataMetadata", metadata);
 
-      console.log("Pinata JWT Token:", import.meta.env.VITE_PINATA_JWT);
+      console.log("Pinata link to: ", JWT);
+      console.log("Gateway: " + Gateway);
+      //console.log("Pinata JWT Token:", import.meta.env.VITE_PINATA_JWT);
 
       const options = JSON.stringify({
         cidVersion: 0,
@@ -82,13 +89,14 @@ function UploadTenderAwards() {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PINATA_JWT}`,
+            Authorization: `Bearer ${JWT /*import.meta.env.VITE_PINATA_JWT */}`,
           },
           body: formData,
         }
       );
       const resData = await res.json();
       setCid(resData.IpfsHash);
+      console.log("hash: " + resData.IpfsHash);
       console.log(resData);
     } catch (error) {
       console.log(error);
@@ -197,9 +205,10 @@ function UploadTenderAwards() {
                 type="text"
                 placeholder="https://ipfs.io/..."
                 className="uta-name"
-                src={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
-                value={`${import.meta.env.VITE_GATEWAY_URL}/ipfs/${cid}`}
+                src={`${Gateway}/ipfs/${cid}`}
+                value={`${Gateway}/ipfs/${cid}`}
                 onChange={(e) => setDocument(e.target.value)}
+                disabled="true"
               />
             )}
           </div>
@@ -211,7 +220,7 @@ function UploadTenderAwards() {
               type="text"
               placeholder="0x7be3b5f0f43b3ef1f14d26a66997"
               className="uta-name"
-              value={documenthash}
+              value={cid}
               onChange={(e) => setDocumentHash(e.target.value)}
             />
           </div>
