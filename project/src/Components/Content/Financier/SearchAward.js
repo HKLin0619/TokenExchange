@@ -44,7 +44,15 @@ function SearchAward() {
       if (data.status === 200) {
         console.log("Success");
         // Navigate to "/searchawardid" route passing the awardID as a query parameter
-        window.open("https://ipfs.io/ipfs/" + award);
+        window.open(
+          "https://ipfs.io/ipfs/" +
+            award +
+            "?filename=" +
+            awardID +
+            "&download=true"
+        );
+        //window.open("https://ipfs.io/ipfs/" + award);
+
         navigate(`/financierdashboard/searchawardid?awardID=${awardID}`);
       } else {
         console.log("No matching awardID found.");
