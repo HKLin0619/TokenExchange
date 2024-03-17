@@ -210,8 +210,8 @@ function UploadTenderAwards() {
                 type="text"
                 placeholder="https://ipfs.io/..."
                 className="uta-name"
-                src={`${Gateway}/ipfs/${cid}`}
-                value={`${Gateway}/ipfs/${cid}`}
+                src={`https://ipfs.io/ipfs/${cid}`}
+                value={`https://ipfs.io/ipfs/${cid}`}
                 onChange={(e) => setDocument(e.target.value)}
                 disabled="true"
               />
