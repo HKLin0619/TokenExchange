@@ -104,7 +104,7 @@ function UploadTenderAwards() {
   };
 
   const handleSubmit = async () => {
-    const document = `${Gateway}/ipfs/${cid}`;
+    const document = `https://ipfs.io/ipfs/${cid}`;
     const documenthash = cid;
     console.log("Doc: " + document);
     console.log("Dochash: " + documenthash);
