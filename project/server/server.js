@@ -265,6 +265,8 @@ app.post("/tokenminting", async (req, res) => {
       data: contractData,
       from: ethAddress,
     };
+    console.log("AAAAAAAAAAAAAAAAAABC")
+    console.log(gasPrice);
 
     const tx = new Transaction(txParams, { chain: 'mainnet', hardfork: 'istanbul' });
     tx.sign(Buffer.from(privateKey, 'hex')); // Using the imported private key here
