@@ -38,7 +38,9 @@ function UpdateFundStatus() {
     
             if (data.status === 200) {
 
-                navigate(`/financierdashboard/fundingStatus?awardID=${awardid}?success=true`);
+                //navigate(`/financierdashboard/fundingStatus?awardID=${awardid}?success=true`);
+                navigate(`/financierdashboard/fundingStatus?awardID=${awardid}&success=true`);
+
 
                 
             } else if (data.status === 400) {
@@ -126,6 +128,9 @@ function UpdateFundStatus() {
                     <p><strong>Award Amount (RM)</strong> <span style={{ marginLeft: "5px" }}>: {awardamount} </span></p>
                     <p><strong>Document (IPFS)</strong> <span style={{ marginLeft: "35px" }}>: {document} </span></p>
                     <p><strong>Document Hash</strong> <span style={{ marginLeft: "41px" }}>: {documenthash} </span></p>
+
+
+
                     <label>
                         <strong style={{ color: "red" }}>Status is Funded*</strong>
                         <span style={{ marginLeft: "32px" }}>:  </span>
@@ -135,7 +140,7 @@ function UpdateFundStatus() {
                             type="radio"
                             name="status"
                             value="true"
-                            checked={status === "true"}
+                            checked={status === "true"}            
                             onChange={handleChangeStatus}
                         />
                         <strong style={{ color: "green" }} className='ufs-radio-text1'>True</strong>
