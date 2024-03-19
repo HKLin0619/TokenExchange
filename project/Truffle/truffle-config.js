@@ -1,8 +1,7 @@
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const { Web3 } = require('web3'); // Corrected import statement
 const MNEMONIC = 'hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst'; //Find your own mnemonic in Metamask
-const INFURA_KEY = 'fa837cf8998749cf8f4afd6497a17480';
+const ALCHEMY_API_KEY = 'Dbycwpijz9kYrap5YX0zSc2wUFwIdL57'; // Use your Alchemy API key
 const MNEMONIC_FILE = require('./MNEMONIC.js');
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = MNEMONIC_FILE;
 
@@ -22,14 +21,14 @@ module.exports = {
   networks: {
     development: {
       provider: () => {
-        if (!MNEMONIC || !INFURA_KEY) {
-          console.error("Please set MNEMONIC and INFURA_KEY environment variables");
+        if (!MNEMONIC || !ALCHEMY_API_KEY) {
+          console.error("Please set MNEMONIC and ALCHEMY_API_KEY environment variables");
           return;
         }
 
         return new HDWalletProvider({
           mnemonic: MNEMONIC,
-          providerOrUrl: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`
+          providerOrUrl: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
         });
       },
       ...networkConfig

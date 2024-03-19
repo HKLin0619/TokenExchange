@@ -13,7 +13,7 @@ module.exports = function(deployer, network, accounts) {
 
   const provider = new HDWalletProvider({
     mnemonic: mnemonic,
-    providerOrUrl: `https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480`
+    providerOrUrl: `http://mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57`
   });
 
   deployer.deploy(TokenSaleContract, { from: accounts[0] });

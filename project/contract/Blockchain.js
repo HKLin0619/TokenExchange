@@ -2,14 +2,16 @@ const { Web3 } = require("web3");
 const ContractABI = require('C:/Users/ACER/Documents/GitHub/TokenExchange/project/Truffle/build/contracts/TokenSaleContract.json');
 const fetch = require('node-fetch');
 
-const infuraUrl = `https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480`;
+// Replace the Infura URL with your Alchemy endpoint URL
+const alchemyUrl = `https://polygon-mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57`;
 
-const web3 = new Web3(infuraUrl);
+// Create a Web3 instance using the Alchemy endpoint URL
+const web3 = new Web3(alchemyUrl);
 
 const tokenContract = new web3.eth.Contract(ContractABI.abi); // Accessing the ABI array
 module.exports = { web3, tokenContract };
 
-fetch("https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480", {
+fetch("https://polygon-mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
@@ -32,4 +34,3 @@ fetch("https://polygon-mumbai.infura.io/v3/fa837cf8998749cf8f4afd6497a17480", {
 // Assuming you want to filter functions from the ABI
 const functionsAbi = ContractABI.abi.filter(abi => abi.type === 'function');
 // console.log(functionsAbi);
-

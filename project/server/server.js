@@ -1,16 +1,21 @@
 const express = require("express");
 const app = express();
 const database = require("./database");
-
-app.use(express.static("public"));
-app.use(express.json());
-
-const { tokenContract, web3 } = require("../contract/Blockchain");
-const byteCode = require("../contract/Bytecode");
+const { Web3 } = require("web3"); // Import the Web3 class
 const contractABI = require("../Truffle/build/contracts/TokenSaleContract.json");
 const { Transaction } = require('ethereumjs-tx');
 const privateKey = require('../contract/PrivateKey');
 const { Buffer } = require('buffer');
+const byteCode = require("../contract/Bytecode");
+
+// Alchemy URL
+const alchemyUrl = "https://polygon-mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57";
+
+// Create a new instance of Web3 with Alchemy as the HTTPProvider
+const web3 = new Web3(new Web3.providers.HttpProvider(alchemyUrl));
+
+app.use(express.static("public"));
+app.use(express.json());
 
 // Add the network configuration check here
 web3.eth.net.getId()
@@ -39,7 +44,6 @@ web3.eth.net.getId()
   .catch((error) => {
     console.error("Error retrieving network ID:", error);
   });
-  
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -210,7 +214,7 @@ app.post("/signup", (req, res) => {
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
-  const ethAddress = req.body.ethereumAddress;
+  const ethAddress = "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2";
 
   console.log(tokenSymbol);
   console.log(numberOfToken);
