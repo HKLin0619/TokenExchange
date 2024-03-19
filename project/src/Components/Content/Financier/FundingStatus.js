@@ -97,8 +97,8 @@ function FundingStatus() {
 
 
             <div className="fa-shows">
-                <p><strong>AwardID</strong> <span style={{marginLeft: "96px"}}>: {awardid}</span></p>
-                <p><strong>SupplierID</strong> <span style={{marginLeft: "82px"}}>: {supplierid}</span></p>
+                <p><strong>Award ID</strong> <span style={{marginLeft: "96px"}}>: {awardid}</span></p>
+                <p><strong>Supplier ID</strong> <span style={{marginLeft: "82px"}}>: {supplierid}</span></p>
                 <p><strong>Award Amount (RM)</strong> <span style={{marginLeft: "5px"}}>: {awardamount}</span></p>
                 <p><strong>Document (IPFS)</strong> <span style={{marginLeft: "35px"}}>: {document}</span></p>
                 <p><strong>Document Hash</strong> <span style={{marginLeft: "41px"}}>: {documenthash}</span></p>

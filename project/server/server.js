@@ -7,10 +7,8 @@ app.use(express.json());
 
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
-
 const contractABI = require("../contract/ContractABI");
 // const contractABI = require("../assets/ContractABI");
-
 
 // const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
 // const contract = new web3.eth.Contract(purchaseABI, contractAddress);
@@ -129,7 +127,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x559275216F9189d7baFA32bd6B4224aee1718795",
+        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -248,20 +246,19 @@ app.post("/purchasetoken", async (req, res) => {
     .query('SELECT "Name" FROM "Token" where "Symbol" = $1;', [tokenName])
     .then((res) => res.rows[0]);
 
-    if (!validationSymbol) {
-      res.json({ success: false, errorType: "validationSymbol" });
-      console.log("tokenSymbol");
-      return;
-    } else if (!tokenName) {
-      res.json({ success: false, errorType: "tokenName" });
-      console.log("tokenName");
-      return;
-    }
-    else if (!amount) {
-      res.json({ success: false, errorType: "amount" });
-      console.log("tokenName");
-      return;
-    }
+  if (!validationSymbol) {
+    res.json({ success: false, errorType: "validationSymbol" });
+    console.log("tokenSymbol");
+    return;
+  } else if (!tokenName) {
+    res.json({ success: false, errorType: "tokenName" });
+    console.log("tokenName");
+    return;
+  } else if (!amount) {
+    res.json({ success: false, errorType: "amount" });
+    console.log("tokenName");
+    return;
+  }
 
   // Convert amount to string before passing it to web3.utils.toWei
   const amountString = amount.toString();
@@ -468,7 +465,7 @@ app.post("/searchAwardID", async (req, res) => {
       console.log(result.rows[0].funded_ind);
 
       
-      if (fundedInd === null) {
+      if (fundedInd === null || fundedInd === false) {
         // Explicitly set status code to 250 for funded_ind "0"
         console.log("Sending status 250 for funded_ind 0");  // Add console log for debugging
         return res.status(250).send({ status: 250, message: "Matching with the awardID", awardID: matchingAwardID, fundedInd: fundedInd });
@@ -505,18 +502,12 @@ app.get("/fundingStatus", async (req, res) => {
 
 
 
+//Generate Award ID
 async function generateNextAwardIdFromDatabase() {
   // Fetch the latest awardID from the database
   const latestAwardResult = await database.query(
     'SELECT "awardid" FROM "award" ORDER BY "awardid" DESC LIMIT 1;'
   );
-
-  if (latestAwardResult.rows.length > 0) {
-    const awardId = latestAwardResult.rows[0].awardid;
-    console.log("awardId:", awardId);
-  } else {
-    console.log("No award found");
-  }
 
   let nextAwardId;
 
@@ -524,11 +515,19 @@ async function generateNextAwardIdFromDatabase() {
     // If no previous awardID found, start from 1 or any initial value you prefer
     nextAwardId = 1;
   } else {
+    // Extract the latest awardID from the query result
+    const latestAwardId = latestAwardResult.rows[0].awardid;
+
     // Increment the latest awardID by 1
-    nextAwardId = latestAwardResult.rows[0].awardid + 1;
+    nextAwardId = latestAwardId + 1;
   }
 
-  return nextAwardId;
+  // Convert nextAwardId to the desired format (e.g., "AD001", "AD002", ...)
+  const formattedAwardId = `AD${String(nextAwardId).padStart(3, '0')}`;
+
+  console.log("Next Award ID:", formattedAwardId);
+
+  return formattedAwardId;
 }
 
 app.post("/updateFundStatus", async (req, res) => {
@@ -536,13 +535,22 @@ app.post("/updateFundStatus", async (req, res) => {
 
     const status = req.body.status;
     const awardID = req.body.awardid;
+    const financierID = req.body.financierID;
 
     console.log("Funded Status:",status);
     console.log("Award ID:",awardID);
+    console.log("Financier ID:",financierID);
 
-    const result = await database.query('UPDATE "award" SET "funded_ind" =$1 WHERE "awardid" = $2', [status, awardID]);
+    if (status === 'true') {
 
-    return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
+      const result = await database.query('UPDATE "award" SET "funded_ind" =$1, "financierid" =$2 WHERE "awardid" = $3', [status, financierID, awardID]);
+      return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
+
+    } else {
+
+      return res.status(250).send({ status: 250, message: "Please use another award ID !", errorType: "again"});
+
+    }
 
   } catch (error) {
     console.log(error);
