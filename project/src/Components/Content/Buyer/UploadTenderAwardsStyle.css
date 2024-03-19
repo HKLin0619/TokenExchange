@@ -7,22 +7,34 @@
 }
 
 .uta-sub-main {
-  display: grid;
   position: absolute;
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  grid-template-columns: repeat(2, 370px);
-  grid-gap: 10px;
   padding-top: 30px;
-  padding: 0px 30px;
+  padding-left: 40px;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 20px;
   box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
 }
 
-.uta-title {
+.uta-sec-sub-main {
+  margin-right: 40px;
   margin-top: 30px;
+  padding: 20px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px 0 rgb(126, 126, 126);
+}
+
+.uta-sec-sub-main h6 {
+  color: red;
+  align-items: start;
+  display: flex;
+  margin-left: 10px;
+}
+
+.uta-title {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +54,35 @@
   border-radius: 9px;
 }
 
+.uta-outputs {
+  margin-top: 0px;
+  align-items: center;
+  margin-bottom: 0px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 50px;
+
+}
+
+.uta-output{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  width: 350px;
+  height: 50px;
+} 
+
+.uta-output p{
+  color: black;
+  font-size: 16px;
+  margin: 0px
+}
+
+.uta-output i{
+  color: black;
+  margin: 0px 20px;
+}
+
 .uta-inputs {
   margin-top: 0px;
   align-items: center;
@@ -55,7 +96,7 @@
   display: flex;
   align-items: center;
   margin-top: 20px;
-  width: 350px;
+  width: 310px;
   height: 50px;
   border-radius: 6px;
   border-bottom: 2px solid black;
@@ -84,9 +125,40 @@
   margin: 0px 20px;
 }
 
+.uta-uploads {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  margin-left: 15px;
+  display: flex;
+  align-items: start;
+}
+
+
+.uta-ipfs-outputs {
+  align-items: start;
+}
+
+.uta-ipfs-output{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+} 
+
+.uta-ipfs-output p{
+  color: black;
+  font-size: 16px;
+  margin: 0px
+}
+
+.uta-ipfs-output i{
+  color: black;
+  margin: 0px 20px;
+}
+
+
 
 .uta-btn-upload {
-  width: 100%;
+  width: 95%;
   height: 45px;
   background: white;
   border: 2px solid black;
@@ -94,15 +166,16 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 10px;
+  margin-right: 50px;
   color: black;
   font-weight:600;
   grid-column: span 2;
 }
 
 .uta-btn-back {
-  width: 100%;
+  width: 95%;
   height: 45px;
   background: white;
   border: 2px solid black;
@@ -113,7 +186,24 @@
   color: black;
   font-weight:600;
   margin-bottom: 20px;
+  margin-right: 50px;
   grid-column: span 2;
+}
+
+.uta-ipfs-btn-upload {
+  background: white;
+  border: 2px solid black;
+  outline: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  color: red;
+  font-weight:600;
+}
+
+.uta-ipfs-btn-upload:hover {
+  background: black;
+  color: white;
 }
 
 .uta-btn-back:hover {

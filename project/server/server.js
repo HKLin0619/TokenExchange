@@ -542,13 +542,8 @@ app.post("/updateFundStatus", async (req, res) => {
 
     const result = await database.query('UPDATE "award" SET "funded_ind" =$1 WHERE "awardid" = $2', [status, awardID]);
 
- 
-
-
     return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
 
-
-      
   } catch (error) {
     console.log(error);
     return res.status(400).send({ status: 400, message: error.message });

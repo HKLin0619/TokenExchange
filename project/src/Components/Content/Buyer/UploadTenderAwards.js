@@ -99,37 +99,35 @@ function UploadTenderAwards() {
 
   return (
     <div className="uta-main">
+
       <div className="uta-sub-main">
+
         <div className="uta-title">
           <h1>Upload Tender Awards</h1>
           <div className="uta-underline"></div>
         </div>
 
-        <div className="uta-inputs">
-          <div className="uta-input">
+        <div className="uta-outputs">
+
+          <div className="uta-output">
             <i className="fa-solid fa-user" />
-            <input
-              type="text"
-              placeholder="UserID"
-              className="uta-name"
-              value={userid}
-              onChange={(e) => setUserID(e.target.value)}
-              disabled="true"
-            />
+            <p>
+              <strong>User ID</strong>
+              <span> : {userid}</span>
+            </p>
           </div>
 
-          <div className="uta-input">
+          <div className="uta-output">
             <i className="fa-solid fa-award" />
-            <input
-              type="text"
-              placeholder="AwardID"
-              className="uta-name"
-              value={awardid}
-              onChange={(e) => setAwardID(e.target.value)}
-              disabled="true"
-            />
+            <p>
+              <strong>Award ID</strong>
+              <span> : {awardid}</span>
+            </p>
           </div>
 
+        </div>
+
+        <div className="uta-inputs">
           <div className="uta-input">
             <i className="fa-solid fa-user" />
             <input
@@ -151,38 +149,51 @@ function UploadTenderAwards() {
               onChange={(e) => setAwardAmount(e.target.value)}
             />
           </div>
+        </div>
 
-          <div className="uta-input">
-            <i className="fa-solid fa-file" />
-            <input
-              type="text"
-              placeholder="https://ipfs.io/..."
-              className="uta-name"
-              value={document}
-              onChange={(e) => setDocument(e.target.value)}
-            />
+        <div className="uta-sec-sub-main">
+
+          <h6>*Pleasae upload your document</h6>
+
+          <div className="uta-uploads">
+            <div className="uta-upload">
+              <input type="file" onChange={''}></input>
+              <button className="uta-ipfs-btn-upload" onClick={''}>Upload</button>
+            </div>
           </div>
 
-          <div className="uta-input">
-            <i className="fa-solid fa-link" />
+          <div className="uta-ipfs-outputs">
 
-            <input
-              type="text"
-              placeholder="0x7be3b5f0f43b3ef1f14d26a66997"
-              className="uta-name"
-              value={documenthash}
-              onChange={(e) => setDocumentHash(e.target.value)}
-            />
+            <div className="uta-ipfs-output">
+              <i className="fa-solid fa-file"  style={{marginRight: "28px"}}/>
+              <p>
+                <strong>Document</strong>
+                <span style={{marginLeft: "41px"}}> : {document}</span>
+              </p>
+            </div>
+
+            <div className="uta-ipfs-output">
+              <i className="fa-solid fa-link" />
+              <p>
+                <strong>Document Hash</strong>
+                <span> : {documenthash}</span>
+              </p>
           </div>
+
+          </div>
+
         </div>
 
         <button className="uta-btn-upload" onClick={handleSubmit}>
           Upload
         </button>
+
         <button className="uta-btn-back" onClick={handleBack}>
           Back
         </button>
+          
       </div>
+        
     </div>
   );
 }
