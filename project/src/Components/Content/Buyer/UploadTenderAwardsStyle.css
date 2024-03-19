@@ -216,6 +216,10 @@
   color: white;
 }
 
+.uta-name{
+  width: 460px;
+}
+
 @media screen and (max-width: 850px) {
 
   .uta-sub-main{
