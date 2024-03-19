@@ -6,14 +6,18 @@ import { ToastContainer, toast } from "react-toastify";
 function UpdateFundStatus() {
     const navigate = useNavigate();
     const [status, setStatus] = useState('');
-    const [userID, setUserID] = useState('');
+    //const [userID, setUserID] = useState('');
     const [awardid, setAwardID] = useState('');
     const [supplierid, setSupplierID] = useState('');
     const [awardamount, setAwardAmount] = useState('');
     const [document, setDocument] = useState('');
     const [documenthash, setDocumentHash] = useState('');
-    const [fundstatus, setFundStatus] = useState('');
+    //const [fundstatus, setFundStatus] = useState('');
     const location = useLocation();
+
+    const storedUserData = JSON.parse(localStorage.getItem("userData"));
+
+    const financierID = storedUserData.userID;
 
     const handleBack = () => {
         navigate('/financierdashboard/searchAwardID');
@@ -30,7 +34,7 @@ function UpdateFundStatus() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ status, awardid }),
+                body: JSON.stringify({ status, awardid, financierID }),
             });
     
             const data = await response.json();
@@ -43,6 +47,10 @@ function UpdateFundStatus() {
 
 
                 
+            } else if (data.status === 250) {
+
+                navigate(`/financierdashboard/searchAwardID?success=again`);
+
             } else if (data.status === 400) {
 
                 toast.error("Please select funded status !", {
@@ -82,12 +90,12 @@ function UpdateFundStatus() {
     
             if (response.status === 200) {
                 const awardData = result.data[0];
-                setUserID(awardData.buyerid || ''); 
+                // setUserID(awardData.buyerid || ''); 
                 setAwardID(awardData.awardid || '');
                 setSupplierID(awardData.supplierid || '');
                 setAwardAmount(awardData.awardamount || '');
                 setDocumentHash(awardData.award_doc_hash || '');
-                setFundStatus(awardData.funded_ind || '');
+                // setFundStatus(awardData.funded_ind || '');
                 setDocument(awardData.document || '');
             } else {
                 console.error("Failed to fetch award ID:", result.message);
@@ -122,7 +130,7 @@ function UpdateFundStatus() {
                 </div>
 
                 <div className="ufs-shows">
-                    <p><strong>User ID</strong> <span style={{ marginLeft: "105px" }}>: {userID} </span></p>
+                    <p><strong>User ID</strong> <span style={{ marginLeft: "105px" }}>: {financierID} </span></p>
                     <p><strong>Award ID</strong> <span style={{ marginLeft: "91px" }}>: {awardid} </span></p>
                     <p><strong>Supplier ID</strong> <span style={{ marginLeft: "77px" }}>: {supplierid} </span></p>
                     <p><strong>Award Amount (RM)</strong> <span style={{ marginLeft: "5px" }}>: {awardamount} </span></p>

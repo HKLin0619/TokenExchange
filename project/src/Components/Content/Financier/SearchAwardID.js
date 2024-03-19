@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./SearchAwardIDStyle.css";
+import { ToastContainer, toast } from "react-toastify";
 
 function SearchAwardID() {
   const [awardID, setAwardID] = useState("");
@@ -62,24 +63,57 @@ function SearchAwardID() {
     }
   };
 
-  // Extract awardID from query parameters when component mounts
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const paramAwardID = searchParams.get("awardID");
-    if (paramAwardID) {
-      setAwardID(paramAwardID);
-      // Now you can perform further actions based on the awardID
-      // For example, fetch additional data based on the awardID
-    }
-  }, [location.search]);
+    // Extract awardID from query parameters when component mounts
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const paramAwardID = searchParams.get("awardID");
+        if (paramAwardID) {
+            setAwardID(paramAwardID);
+            // Now you can perform further actions based on the awardID
+            // For example, fetch additional data based on the awardID
+        }
+    }, [location.search]);
 
-  return (
-    <div className="sa-main">
-      <div className="sa-sub-main">
-        <div className="sa-title">
-          <h1>Search Award ID</h1>
-          <div className="sa-underline"></div>
-        </div>
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const successParam = queryParams.get('success');
+    
+        if (successParam === 'again') {
+            toast.success('Please use another award ID !', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+            });
+        } 
+    }, [location.search]);
+
+
+    return (
+        <div className="sa-main">
+
+        <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
+
+            <div className="sa-sub-main">
+                <div className='sa-title'>
+                    <h1>Search Award ID</h1>
+                    <div className='sa-underline'></div>
+                </div>
 
         <div className="sa-inputs">
           <div className="sa-input">
