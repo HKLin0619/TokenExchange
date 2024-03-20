@@ -8,11 +8,14 @@ const privateKey = require('../contract/PrivateKey');
 const { Buffer } = require('buffer');
 const byteCode = require("../contract/Bytecode");
 
-// Alchemy URL
-const alchemyUrl = "https://polygon-mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57";
+// Import the Web3 constructor
 
-// Create a new instance of Web3 with Alchemy as the HTTPProvider
-const web3 = new Web3(new Web3.providers.HttpProvider(alchemyUrl));
+// Import the network provider from truffle-config.js
+const truffleConfig = require('../Truffle/truffle-config');
+const networkProvider = truffleConfig.networks.development.provider();
+
+// Create a new instance of Web3 using the provider from truffle-config.js
+const web3 = new Web3(networkProvider);
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -54,7 +57,6 @@ app.post("/login", (req, res) => {
     .then((result) => {
       if (result.rows.length === 1) {
         const dbPassword = result.rows[0].password;
-        console.log(contractABI);
         if (dbPassword === password) {
           const userData = result.rows[0];
           res.json({ success: true, userData });

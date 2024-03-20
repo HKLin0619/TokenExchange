@@ -1,6 +1,9 @@
+// truffle-config.js
+
+// Import necessary modules and configurations
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const MNEMONIC = 'hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst'; //Find your own mnemonic in Metamask
+const MNEMONIC = 'hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst'; // Find your own mnemonic in Metamask
 const ALCHEMY_API_KEY = 'Dbycwpijz9kYrap5YX0zSc2wUFwIdL57'; // Use your Alchemy API key
 const MNEMONIC_FILE = require('./MNEMONIC.js');
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = MNEMONIC_FILE;
@@ -15,6 +18,8 @@ const networkConfig = {
   skipDryRun: SKIP_DRY_RUN,
   timeoutBlocks: TIME_OUT_BLOCK,
   websocket: true,
+  maxFeePerGas: '200000000000', // 200gwei
+  maxPriorityFeePerGas: '50000000000' // 50 gwei
 };
 
 module.exports = {
@@ -28,7 +33,7 @@ module.exports = {
 
         return new HDWalletProvider({
           mnemonic: MNEMONIC,
-          providerOrUrl: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
+          providerOrUrl: `wss://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
         });
       },
       ...networkConfig
