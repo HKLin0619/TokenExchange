@@ -41,57 +41,60 @@ function TokenMinting() {
 
   const handleSubmit = async () => {
     try {
+      // Check if MetaMask is installed
+      if (typeof window.ethereum === 'undefined') {
+        throw new Error('MetaMask is not installed.');
+      }
+  
       // Request access to MetaMask accounts
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  
       // Ensure that at least one account is available
       if (accounts.length === 0) {
-        throw new Error("No MetaMask accounts available.");
+        throw new Error('No MetaMask accounts available.');
       }
-
+  
       // Include the MetaMask account address in the request body
       const requestBody = {
         tokenSymbol,
         numberOfToken,
         ethereumAddress: accounts[0], // Include the MetaMask account address
       };
-
+  
       console.log(requestBody);
-
+  
       // Make the POST request to the backend
-      const response = await fetch("/tokenminting", {
-        method: "POST",
+      const response = await fetch('/tokenminting', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       });
-
+  
       const data = await response.json();
-
+  
       console.log(data); // Log the entire data object
-
+  
       if (data.success) {
-        console.log("tokenMintingSuccessfully");
-        navigate("/admindashboard?success=true", storedUserData);
+        console.log('tokenMintingSuccessfully');
+        navigate('/admindashboard?success=true', storedUserData);
       } else {
         // Handle error responses from the backend
         // ...
       }
     } catch (error) {
-      // console.error("MetaMask connection error:", error);
-      // toast.error("Failed to connect to MetaMask.", {
-      //   position: "top-center",
-      //   autoClose: 3000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "colored",
-      // });
+      console.error('MetaMask connection error:', error);
+      toast.error('Failed to connect to MetaMask.', {
+        position: 'top-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
     }
   };
 

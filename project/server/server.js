@@ -8,8 +8,6 @@ const privateKey = require('../contract/PrivateKey');
 const { Buffer } = require('buffer');
 const byteCode = require("../contract/Bytecode");
 
-// Import the Web3 constructor
-
 // Import the network provider from truffle-config.js
 const truffleConfig = require('../Truffle/truffle-config');
 const networkProvider = truffleConfig.networks.development.provider();
@@ -258,7 +256,11 @@ app.post("/tokenminting", async (req, res) => {
 
     const nonce = await web3.eth.getTransactionCount(ethAddress);
     const gasPrice = await web3.eth.getGasPrice();
-    const gasLimit = 3000000; // You may need to adjust this
+    const gasLimit = await web3.eth.estimateGas({
+      nonce: nonce,
+      data: contractData,
+      from: ethAddress
+    });
 
     const txParams = {
       nonce: web3.utils.toHex(nonce),
@@ -267,10 +269,9 @@ app.post("/tokenminting", async (req, res) => {
       data: contractData,
       from: ethAddress,
     };
-    console.log("AAAAAAAAAAAAAAAAAABC")
-    console.log(gasPrice);
+    console.log("Estimated gas limit:", gasLimit);
 
-    const tx = new Transaction(txParams, { chain: 'mainnet', hardfork: 'istanbul' });
+    const tx = new Transaction(txParams);
     tx.sign(Buffer.from(privateKey, 'hex')); // Using the imported private key here
 
     const serializedTx = tx.serialize();
