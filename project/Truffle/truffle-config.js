@@ -1,7 +1,7 @@
 // Import necessary modules and configurations
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const MNEMONIC = 'hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst';
+const MNEMONIC = '';
 const ALCHEMY_API_KEY = 'Dbycwpijz9kYrap5YX0zSc2wUFwIdL57';
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = require('./MNEMONIC.js');
 

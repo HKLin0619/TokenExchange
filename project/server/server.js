@@ -215,7 +215,7 @@ app.post("/signup", (req, res) => {
 app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
-  const ethAddress = "0x894b5062EdbcEF66F6FcD203CC2B63eB7bA32bB2";
+  const ethAddress = "";
 
   console.log(tokenSymbol);
   console.log(numberOfToken);
