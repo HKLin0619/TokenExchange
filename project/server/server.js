@@ -8,6 +8,7 @@ const privateKey = require('../contract/PrivateKey');
 const { Buffer } = require('buffer');
 const byteCode = require("../contract/Bytecode");
 
+
 // Import the network provider from truffle-config.js
 const truffleConfig = require('../Truffle/truffle-config');
 const networkProvider = truffleConfig.networks.development.provider();
