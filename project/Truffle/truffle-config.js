@@ -2,7 +2,7 @@
 require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const MNEMONIC =
-  "glance option quit donate common force now timber loyal medal travel rude";
+  "hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst";
 const ALCHEMY_API_KEY = "Dbycwpijz9kYrap5YX0zSc2wUFwIdL57";
 const {
   NETWORK_CHECK_TIMEOUT,
