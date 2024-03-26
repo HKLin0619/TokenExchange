@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\ACER\\Documents\\GitHub\\TokenExchange\\Testing\\contracts\\PurchaseContract.sol": {
+      "lastModificationDate": 1711445673070,
+      "contentHash": "7ac07e1527bfcfd0a4a817e7eb978532",
+      "sourceName": "contracts/PurchaseContract.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenSaleContract"
+      ]
+    },
+    "C:\\Users\\ACER\\Documents\\GitHub\\TokenExchange\\project\\hardhat\\contracts\\PurchaseContract.sol": {
+      "lastModificationDate": 1711445673070,
+      "contentHash": "7ac07e1527bfcfd0a4a817e7eb978532",
+      "sourceName": "contracts/PurchaseContract.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "TokenSaleContract"
+      ]
+    }
+  }
+}

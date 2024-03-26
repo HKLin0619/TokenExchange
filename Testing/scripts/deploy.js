@@ -1,9 +1,9 @@
 async function main() {
-  const PurchaseContract = await ethers.getContractFactory("TokenSaleContract");
+  const deployContract = await ethers.getContractFactory("TokenSaleContract");
 
-  const purchase_contract = await PurchaseContract.deploy();
+  const deploy_contract = await deployContract.deploy();
 
-  console.log("Contract deployed to address: ", purchase_contract.address);
+  console.log("Contract deployed to address: ", deploy_contract.address);
 }
 
 main()
@@ -12,3 +12,5 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+module.exports = main;
