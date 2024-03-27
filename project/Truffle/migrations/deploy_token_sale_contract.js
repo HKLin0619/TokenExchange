@@ -1,8 +1,8 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const { artifacts } = require("truffle");
+const { artifacts } = require("@truffle/hdwallet-provider"); // Import artifacts from Truffle
 const TokenSaleContract = artifacts.require("TokenSaleContract");
 
-module.exports = function (deployer, network, accounts) {
+module.exports = async function (deployer, network, accounts) {
   const mnemonic = process.env.MNEMONIC;
   const infuraKey = process.env.INFURA_KEY;
 
@@ -16,6 +16,10 @@ module.exports = function (deployer, network, accounts) {
     providerOrUrl: `http://mumbai.g.alchemy.com/v2/Dbycwpijz9kYrap5YX0zSc2wUFwIdL57`,
   });
 
-  deployer.deploy(TokenSaleContract, { from: accounts[0] });
-  console.log(deployer);
+  try {
+    await deployer.deploy(TokenSaleContract, { from: accounts[0] });
+    console.log("TokenSaleContract deployed successfully.");
+  } catch (error) {
+    console.error("Error deploying TokenSaleContract:", error);
+  }
 };
