@@ -177,7 +177,7 @@ function LoginSignUpContent() {
 
       <div className="login-sub-main">
         <div className="login-title">
-          <h1>ERC 20 Token Exchange</h1>
+          <h1>DBX 20 Token Exchange</h1>
           <div className="login-underline"></div>
         </div>
 
@@ -205,17 +205,7 @@ function LoginSignUpContent() {
           </div>
         </div>
 
-        <div className="login-forgot-remember">
-          <label>
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-            />
-            Remember Me
-          </label>
-          <a href="/">Forgot password ?</a>
-        </div>
+
 
         <button className="login-btn" onClick={handleLogin}>
           Login
