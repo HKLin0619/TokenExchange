@@ -126,7 +126,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x5C244c22379dCf4b7A02546973D42df433A18b06",
+        from: "0xCA480e9424dd35cD3a8d8D00B70997Be73e3d3e5",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +161,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xedD2C4aa7432eB2082904A07442A807A5Aa53f3D",
+          from: "0xCA480e9424dd35cD3a8d8D00B70997Be73e3d3e5",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -222,7 +222,7 @@ app.get("/viewtoken", async (req, res) => {
 
     // Get the account address (you can obtain it from query parameters or use a default one)
     const account =
-      req.query.account || "0xedD2C4aa7432eB2082904A07442A807A5Aa53f3D";
+      req.query.account || "0xCA480e9424dd35cD3a8d8D00B70997Be73e3d3e5";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
