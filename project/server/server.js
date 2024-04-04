@@ -8,10 +8,6 @@ app.use(express.json());
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
 const contractABI = require("../contract/ContractABI");
-// const contractABI = require("../assets/ContractABI");
-
-// const contractAddress = '0x5FC800309D59224A994235B1c586ef951E7063D2';
-// const contract = new web3.eth.Contract(purchaseABI, contractAddress);
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
@@ -126,7 +122,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x42406cF8E1c59eD8EAF89a71A44E87eD0E46fd20",
+        from: "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -161,7 +157,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x42406cF8E1c59eD8EAF89a71A44E87eD0E46fd20",
+          from: "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -207,7 +203,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x42406cF8E1c59eD8EAF89a71A44E87eD0E46fd20";
+    const account = "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -275,47 +271,37 @@ app.post("/purchasetoken", async (req, res) => {
       contractAddress
     );
 
-    // Calling the purchase function on the contract
-    const transactionReceipt = await contractInstance.methods
-      .purchase(tokenName, amountString)
-      .send({
-        from: "0x1917a46b279B01B55aE75fE61CE3488a55f40387", //
-        gas: 6721975,
-        gasPrice: 20000000000,
-        value: web3.utils.toWei(amountString, "ether"),
-      });
-
-    // Log transaction receipt
-    console.log("Transaction Receipt:", transactionReceipt);
+    // Call the WriteData function on the contract to transfer tokens
+    await contractInstance.methods.purchase(tokenName, amount).send({
+      from: "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56", // Replace with the buyer's address
+      gas: 6721975,
+      gasPrice: 20000000000,
+    });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x1917a46b279B01B55aE75fE61CE3488a55f40387"; // Replace with the actual buyer's address
+    const buyerAddress = "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
     );
 
+    console.log("Token purchase successful");
+
     const balanceInWei = await contractInstance.methods
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
+      `Account: ${buyerAddress}  still have：${balanceInWei} DBX`
     );
 
-    // Convert transactionReceipt values to strings before sending in response
-    const serializedReceipt = {
-      transactionHash: transactionReceipt.transactionHash,
-      blockHash: transactionReceipt.blockHash,
-      // Add any other relevant properties here
-    };
-
-    // You can handle the receipt or send a response back
-    res.json({ success: true, receipt: serializedReceipt });
+    // You can send a success response back
+    res.json({ success: true });
   } catch (error) {
     console.error("Error in /purchasetoken endpoint:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
+
 
 //
 app.get("/searchUserID", async (req, res) => {
@@ -538,6 +524,51 @@ async function generateNextAwardIdFromDatabase() {
   return formattedAwardId;
 }
 
+//View Buyer Token
+app.get("/viewbuyertoken", async (req, res) => {
+  try {
+    // Get token symbol from query parameters
+
+    // Fetch the latest contractID from the database
+    const result = await database.query('SELECT "contractID" FROM "Contract";');
+
+    console.log(result.rows);
+
+    if (result.rows.length === 0) {
+      return res
+        .status(404)
+        .send({ status: 404, message: "Contract not found." });
+    }
+
+    // Extract the contract address from the query result
+    const contractAddress = result.rows[0].contractID;
+
+    // Create a contract instance using the contract address
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    // Get the account address (you can obtain it from query parameters or use a default one)
+    const account = "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56";
+    const tokenSymbol = "DBX";
+
+    const balanceBigInt = await contract.methods
+      .getBalance(account, tokenSymbol)
+      .call();
+
+    // Convert the balance from BigInt to a string or number
+    const balance = balanceBigInt.toString();
+    console.log(contract);
+    console.log(balance);
+
+    return res
+      .status(200)
+      .json({ tokenName: "DBX Token", tokenSymbol: "DBX", balance });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).send({ status: 400, message: error.message });
+  }
+});
+
+//Update Fund Status
 app.post("/updateFundStatus", async (req, res) => {
   try {
     const status = req.body.status;

@@ -47,7 +47,7 @@ export const BuyerMenuItems = [
     },
 
     {
-        title : "View Account",
+        title : "View Token",
         url : "/buyerdashboard/ViewAccount",
         className : "nav-links",
         icon : "fa-solid fa-gauge-high"
