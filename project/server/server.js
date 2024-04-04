@@ -86,7 +86,6 @@ app.post("/tokenminting", async (req, res) => {
   const tokenSymbol = req.body.tokenSymbol;
   const numberOfToken = req.body.numberOfToken;
 
-  console.log("ASDASDASDSAD");
   console.log(tokenSymbol);
   console.log(numberOfToken);
 
@@ -122,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x245bE5cc27203785300bb1dDF22E52D441b87623",
+        from: "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -157,11 +156,11 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x245bE5cc27203785300bb1dDF22E52D441b87623",
+          from: "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7",
           gas: 6721975,
           gasPrice: 20000000000,
         });
-        console.log("AAA");
+
         // Insert contract address into the database
         await database.query(
           'INSERT INTO "Contract" ("contractID") VALUES ($1);',
@@ -203,7 +202,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x245bE5cc27203785300bb1dDF22E52D441b87623";
+    const account = "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
