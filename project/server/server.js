@@ -122,7 +122,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97",
+        from: "0xC0a79641a3ea5f4B531a26a46541e8A74D0B5Ac9",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -157,7 +157,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97",
+          from: "0xC0a79641a3ea5f4B531a26a46541e8A74D0B5Ac9",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -203,7 +203,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0xE78DBdF3504F789b03BfAefbA7967aF51B199F97";
+    const account = "0xC0a79641a3ea5f4B531a26a46541e8A74D0B5Ac9";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -273,13 +273,13 @@ app.post("/purchasetoken", async (req, res) => {
 
     // Call the WriteData function on the contract to transfer tokens
     await contractInstance.methods.purchase(tokenName, amount).send({
-      from: "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56", // Replace with the buyer's address
+      from: "0x78e60e7cB73e9bbA5c8c606f42f650c53D94FA5E", // Replace with the buyer's address
       gas: 6721975,
       gasPrice: 20000000000,
     });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56"; // Replace with the actual buyer's address
+    const buyerAddress = "0x78e60e7cB73e9bbA5c8c606f42f650c53D94FA5E"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -291,7 +291,7 @@ app.post("/purchasetoken", async (req, res) => {
       .getBalance(buyerAddress, tokenName)
       .call();
     console.log(
-      `Account: ${buyerAddress}  still have：${balanceInWei} DBX`
+      `Account: ${buyerAddress}  still have: ${balanceInWei} DBX`
     );
 
     // You can send a success response back
@@ -347,9 +347,9 @@ app.post("/writeData", async (req, res) => {
 
   //fix tokenName to KDX and the spend 1 token per time
   const tokenName = "DBX";
-  const amount = "1";
+  const amount = awardamount;
   const financerid = "none";
-  const funded_int = null; //"False";
+  const funded_int = "false"; //"False";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
@@ -362,14 +362,13 @@ app.post("/writeData", async (req, res) => {
   console.log("funded_int:" + funded_int);
 
   const useridString = userid.toString();
-  const awardidString = awardid.toString();
+  // const awardidString = awardid.toString();
   const supplieridString = supplierid.toString();
   const documentString = document.toString();
-  //const funded_intString = funded_int.toString();
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x2c2aA60b7Edd2572539F898A9691aA370A38c3b5";
+  const buyerAddress = "0x78e60e7cB73e9bbA5c8c606f42f650c53D94FA5E";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -391,16 +390,16 @@ app.post("/writeData", async (req, res) => {
         .WriteData(
           tokenName,
           amount,
-          awardidString,
+          awardid,
           useridString,
           supplieridString,
           awardamount,
           documenthashString,
           financerIDString,
-          funded_int //funded_intString
+          funded_int
         )
         .send({
-          from: "0x2c2aA60b7Edd2572539F898A9691aA370A38c3b5", //buyer address
+          from: "0x78e60e7cB73e9bbA5c8c606f42f650c53D94FA5E", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -415,7 +414,7 @@ app.post("/writeData", async (req, res) => {
     await database.query(
       'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
       [
-        awardidString,
+        awardid,
         useridString,
         supplieridString,
         awardamount,
@@ -494,8 +493,6 @@ app.get("/fundingStatus", async (req, res) => {
   return res.status(200).send({ status: 200, data: result.rows });
 });
 
-
-
 //Generate Award ID
 async function generateNextAwardIdFromDatabase() {
   // Fetch the latest awardID from the database
@@ -509,20 +506,16 @@ async function generateNextAwardIdFromDatabase() {
     // If no previous awardID found, start from 1 or any initial value you prefer
     nextAwardId = 1;
   } else {
-    // Extract the latest awardID from the query result
-    const latestAwardId = latestAwardResult.rows[0].awardid;
-
-    // Increment the latest awardID by 1
-    nextAwardId = latestAwardId + 1;
+    // Increment the latest awardID by 1 after parsing it to an integer
+    nextAwardId = parseInt(latestAwardResult.rows[0].awardid.replace(/^AD0*/, ''), 10) + 1;
   }
 
-  // Convert nextAwardId to the desired format (e.g., "AD001", "AD002", ...)
-  const formattedAwardId = `AD${String(nextAwardId).padStart(3, '0')}`;
-
-  console.log("Next Award ID:", formattedAwardId);
+  // Format nextAwardId with leading zeros if needed
+  const formattedAwardId = `AD${nextAwardId.toString().padStart(3, '0')}`;
 
   return formattedAwardId;
 }
+
 
 //View Buyer Token
 app.get("/viewbuyertoken", async (req, res) => {
@@ -547,7 +540,7 @@ app.get("/viewbuyertoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x8FA528D2ca0f6b11aeeDa6fF4FF1FE9A92A02d56";
+    const account = "0x78e60e7cB73e9bbA5c8c606f42f650c53D94FA5E";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
