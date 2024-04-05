@@ -177,7 +177,7 @@ function LoginSignUpContent() {
 
       <div className="login-sub-main">
         <div className="login-title">
-          <h1>DBX 20 Token Exchange</h1>
+          <h1>ERC 20 Token Exchange</h1>
           <div className="login-underline"></div>
         </div>
 

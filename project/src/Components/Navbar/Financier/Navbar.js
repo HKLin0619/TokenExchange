@@ -21,7 +21,7 @@ class Navbar extends Component{
                 {FinancierMenuItems.map((item, index) => {
                     return(
                         <li key={index}>
-                            <Link className={item.className} to={item.url}>
+                            <Link className={`${item.className} ${this.props.currentPage === item.url ? 'active-link' : ''}`} to={item.url}>
                                 <i className={item.icon}></i>{item.title}
                             </Link>
                         </li>
