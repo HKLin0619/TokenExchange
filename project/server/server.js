@@ -590,6 +590,7 @@ app.post("/updateFundStatus", async (req, res) => {
 
       if (status === '') {
 
+        
         return res.status(400).send({ status: 400, message: error.message });
 
       } else {
