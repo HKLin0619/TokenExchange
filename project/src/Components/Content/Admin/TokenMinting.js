@@ -147,7 +147,7 @@ function TokenMinting() {
             <i className="fa-solid fa-coins" />
             <input
               type="text"
-              placeholder="Token Name (DBX 20)"
+              placeholder="Token Name (ERC 20)"
               className="tm-name"
               value={tokenSymbol}
               onChange={(e) => setTokenName(e.target.value)}

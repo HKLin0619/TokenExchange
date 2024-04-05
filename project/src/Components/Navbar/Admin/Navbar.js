@@ -14,7 +14,7 @@ class Navbar extends Component{
     render(){
         return(
             <nav className='navbarIteams'>
-                <h1 className='navbar-logo'>DBX 20 Token Exchange</h1>
+                <h1 className='navbar-logo'>ERC 20 Token Exchange</h1>
                 <div className='menu-icons' onClick={this.handleClick}>
                     <i className={this.state.clicked ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'}></i>
                 </div>

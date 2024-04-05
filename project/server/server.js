@@ -584,13 +584,21 @@ app.post("/updateFundStatus", async (req, res) => {
 
     } else {
 
-      return res.status(250).send({ status: 250, message: "Please use another award ID !", errorType: "again"});
+      if (status === '') {
+
+        return res.status(400).send({ status: 400, message: error.message });
+
+      } else {
+
+        return res.status(250).send({ status: 250, message: "Please use another award ID !", errorType: "again"});
+
+      }
 
     }
 
   } catch (error) {
     console.log(error);
-    return res.status(400).send({ status: 400, message: error.message });
+    return res.status(500).send({ status: 400, message: error.message });
   }
 });
 

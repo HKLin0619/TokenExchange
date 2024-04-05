@@ -19,8 +19,6 @@ function ProfileCard({ userData }) {
           <p><strong>User Email </strong> <span style={{marginLeft: "15px"}}>: {userData.email}</span></p>
         </div>
               
-        <button className="profile-btn">Edit Profile</button>    
-
       </div>
 
     </div>
