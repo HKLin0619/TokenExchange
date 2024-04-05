@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
 
 function UploadTenderAwards() {
   const [userid, setUserID] = useState("");
@@ -114,20 +115,59 @@ function UploadTenderAwards() {
     //console.log("Dochash: " + documenthash);
 
     if (!supplierid) {
-      alert("SupplierID is not filled.");
-      return;
-    }
-    if (!awardamount) {
-      alert("Award amount is not filled.");
-      return;
-    }
-    if (!document) {
-      alert("Document is not uploaded.");
-      return;
-    }
-    if (!documenthash) {
-      alert("Document hash is not generated.");
-      return;
+      // alert("SupplierID is not filled.");
+      // return;
+
+      toast.error('SupplierID is not filled !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else if (!awardamount) {
+      // alert("Award amount is not filled.");
+      // return;
+      toast.error('Award amount is not filled !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+
+    } else if (!selectedFile) {
+      // alert("Document is not uploaded.");
+      // return;
+      toast.error('Document is not uploaded !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else if (!documenthash) {
+      // alert("Document hash is not generated.");
+      // return;
+      toast.error('Document hash is not generated !', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
 
     console.log("Checking Status 1");
@@ -174,6 +214,18 @@ function UploadTenderAwards() {
 
   return (
     <div className="uta-main">
+      <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+        />
       <div className="uta-sub-main">
         <div className="uta-title">
           <h1>Upload Tender Awards</h1>
