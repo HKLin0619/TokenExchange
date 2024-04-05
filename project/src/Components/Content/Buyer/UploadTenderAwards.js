@@ -113,6 +113,25 @@ function UploadTenderAwards() {
     //console.log("Doc: " + document);
     //console.log("Dochash: " + documenthash);
 
+    if (!supplierid) {
+      alert("SupplierID is not filled.");
+      return;
+    }
+    if (!awardamount) {
+      alert("Award amount is not filled.");
+      return;
+    }
+    if (!document) {
+      alert("Document is not uploaded.");
+      return;
+    }
+    if (!documenthash) {
+      alert("Document hash is not generated.");
+      return;
+    }
+
+    console.log("Checking Status 1");
+
     try {
       const response = await fetch("/writeData", {
         method: "POST",
@@ -132,6 +151,8 @@ function UploadTenderAwards() {
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
+
+      console.log("Checking Status 2");
 
       // Optionally handle the response from the server, if needed
       const responseData = await response.json();

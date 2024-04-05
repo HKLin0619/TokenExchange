@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B",
+        from: "0x1B05cEa160E67b0F5a8e9fE0e9831bdC5183Aac6",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B",
+          from: "0x1B05cEa160E67b0F5a8e9fE0e9831bdC5183Aac6",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -202,7 +202,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B";
+    const account = "0x1B05cEa160E67b0F5a8e9fE0e9831bdC5183Aac6";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -272,13 +272,13 @@ app.post("/purchasetoken", async (req, res) => {
 
     // Call the WriteData function on the contract to transfer tokens
     await contractInstance.methods.purchase(tokenName, amount).send({
-      from: "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f", // Replace with the buyer's address
+      from: "0x432cBf7955572AEe872187177f5a82A23E00Dca4", // Replace with the buyer's address
       gas: 6721975,
       gasPrice: 20000000000,
     });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f"; // Replace with the actual buyer's address
+    const buyerAddress = "0x432cBf7955572AEe872187177f5a82A23E00Dca4"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -289,9 +289,7 @@ app.post("/purchasetoken", async (req, res) => {
     const balanceInWei = await contractInstance.methods
       .getBalance(buyerAddress, tokenName)
       .call();
-    console.log(
-      `Account: ${buyerAddress}  still have: ${balanceInWei} DBX`
-    );
+    console.log(`Account: ${buyerAddress}  still have: ${balanceInWei} DBX`);
 
     // You can send a success response back
     res.json({ success: true });
@@ -300,7 +298,6 @@ app.post("/purchasetoken", async (req, res) => {
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 });
-
 
 //
 app.get("/searchUserID", async (req, res) => {
@@ -346,7 +343,7 @@ app.post("/writeData", async (req, res) => {
 
   //fix tokenName to KDX and the spend 1 token per time
   const tokenName = "DBX";
-  const amount = '1';
+  const amount = "1";
   const financerid = "none";
   const funded_int = "false"; //"False";
 
@@ -367,7 +364,9 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f";
+  const buyerAddress = "0x432cBf7955572AEe872187177f5a82A23E00Dca4";
+
+  console.log("Received a writeData request:", req.body);
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -398,7 +397,7 @@ app.post("/writeData", async (req, res) => {
           funded_int
         )
         .send({
-          from: "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f", //buyer address
+          from: "0x432cBf7955572AEe872187177f5a82A23E00Dca4", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -451,7 +450,6 @@ app.post("/searchAwardID", async (req, res) => {
       console.log("Matching Award ID:", result.rows[0]);
       console.log(result.rows[0].funded_ind);
 
-      
       if (fundedInd === null || fundedInd === false) {
         // Explicitly set status code to 250 for funded_ind "0"
         console.log("Sending status 250 for funded_ind 0"); // Add console log for debugging
@@ -512,15 +510,15 @@ async function generateNextAwardIdFromDatabase() {
     nextAwardId = 1;
   } else {
     // Increment the latest awardID by 1 after parsing it to an integer
-    nextAwardId = parseInt(latestAwardResult.rows[0].awardid.replace(/^AD0*/, ''), 10) + 1;
+    nextAwardId =
+      parseInt(latestAwardResult.rows[0].awardid.replace(/^AD0*/, ""), 10) + 1;
   }
 
   // Format nextAwardId with leading zeros if needed
-  const formattedAwardId = `AD${nextAwardId.toString().padStart(3, '0')}`;
+  const formattedAwardId = `AD${nextAwardId.toString().padStart(3, "0")}`;
 
   return formattedAwardId;
 }
-
 
 //View Buyer Token
 app.get("/viewbuyertoken", async (req, res) => {
@@ -545,7 +543,7 @@ app.get("/viewbuyertoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f";
+    const account = "0x432cBf7955572AEe872187177f5a82A23E00Dca4";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -573,21 +571,28 @@ app.post("/updateFundStatus", async (req, res) => {
     const awardID = req.body.awardid;
     const financierID = req.body.financierID;
 
-    console.log("Funded Status:",status);
-    console.log("Award ID:",awardID);
-    console.log("Financier ID:",financierID);
+    console.log("Funded Status:", status);
+    console.log("Award ID:", awardID);
+    console.log("Financier ID:", financierID);
 
-    if (status === 'true') {
-
-      const result = await database.query('UPDATE "award" SET "funded_ind" =$1, "financierid" =$2 WHERE "awardid" = $3', [status, financierID, awardID]);
-      return res.status(200).send({ status: 200, message: "Update Status Successfully !", errorType: "success", awardID: awardID});
-
+    if (status === "true") {
+      const result = await database.query(
+        'UPDATE "award" SET "funded_ind" =$1, "financierid" =$2 WHERE "awardid" = $3',
+        [status, financierID, awardID]
+      );
+      return res.status(200).send({
+        status: 200,
+        message: "Update Status Successfully !",
+        errorType: "success",
+        awardID: awardID,
+      });
     } else {
-
-      return res.status(250).send({ status: 250, message: "Please use another award ID !", errorType: "again"});
-
+      return res.status(250).send({
+        status: 250,
+        message: "Please use another award ID !",
+        errorType: "again",
+      });
     }
-
   } catch (error) {
     console.log(error);
     return res.status(400).send({ status: 400, message: error.message });
