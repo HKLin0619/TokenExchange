@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7",
+        from: "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7",
+          from: "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -202,7 +202,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0xBFc1aa90c0b5Df98453D5fCd0D8bF319e1E42bE7";
+    const account = "0xD420c8F51F123D7715B6A14561bD55F8DD6FB04B";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -272,13 +272,13 @@ app.post("/purchasetoken", async (req, res) => {
 
     // Call the WriteData function on the contract to transfer tokens
     await contractInstance.methods.purchase(tokenName, amount).send({
-      from: "0x7ac4Ea4d25cD2C8DC798581612B76bCC3BeD78cA", // Replace with the buyer's address
+      from: "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f", // Replace with the buyer's address
       gas: 6721975,
       gasPrice: 20000000000,
     });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x7ac4Ea4d25cD2C8DC798581612B76bCC3BeD78cA"; // Replace with the actual buyer's address
+    const buyerAddress = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -346,7 +346,7 @@ app.post("/writeData", async (req, res) => {
 
   //fix tokenName to KDX and the spend 1 token per time
   const tokenName = "DBX";
-  const amount = awardamount;
+  const amount = '1';
   const financerid = "none";
   const funded_int = "false"; //"False";
 
@@ -367,7 +367,7 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x7ac4Ea4d25cD2C8DC798581612B76bCC3BeD78cA";
+  const buyerAddress = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f";
 
   try {
     const result = await database.query('SELECT "contractID" FROM "Contract";');
@@ -377,12 +377,12 @@ app.post("/writeData", async (req, res) => {
       contractAddress
     );
 
-    const balanceInWei = await contractInstance.methods
-      .getBalance(buyerAddress, tokenName)
-      .call();
-    console.log(
-      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
-    );
+    // const balanceInWei = await contractInstance.methods
+    //   .getBalance(buyerAddress, tokenName)
+    //   .call();
+    // console.log(
+    //   `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
+    // );
 
     try {
       const transactionReceipt = await contractInstance.methods
@@ -398,15 +398,21 @@ app.post("/writeData", async (req, res) => {
           funded_int
         )
         .send({
-          from: "0x7ac4Ea4d25cD2C8DC798581612B76bCC3BeD78cA", //buyer address
+          from: "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
-
       console.log("Transaction Receipt:", transactionReceipt);
     } catch (error) {
       console.error("Error during contract method execution:", error);
     }
+
+    const balanceInWei = await contractInstance.methods
+      .getBalance(buyerAddress, tokenName)
+      .call();
+    console.log(
+      `账户 ${buyerAddress} 在 DBX 代币中的余额：${balanceInWei} DBX`
+    );
 
     //console.log("Transaction Receipt:", transactionReceipt);
 
@@ -539,7 +545,7 @@ app.get("/viewbuyertoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x7ac4Ea4d25cD2C8DC798581612B76bCC3BeD78cA";
+    const account = "0xAF5c6Da427e013c2bdCa6c4d37bcF0B5691Cc54f";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
