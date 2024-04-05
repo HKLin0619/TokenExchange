@@ -128,6 +128,7 @@ function UploadTenderAwards() {
         progress: undefined,
         theme: "colored",
       });
+      return;
     } else if (!awardamount) {
       // alert("Award amount is not filled.");
       // return;
@@ -141,6 +142,7 @@ function UploadTenderAwards() {
         progress: undefined,
         theme: "colored",
       });
+      return;
 
     } else if (!selectedFile) {
       // alert("Document is not uploaded.");
@@ -155,6 +157,7 @@ function UploadTenderAwards() {
         progress: undefined,
         theme: "colored",
       });
+      return;
     } else if (!documenthash) {
       // alert("Document hash is not generated.");
       // return;
@@ -168,6 +171,7 @@ function UploadTenderAwards() {
         progress: undefined,
         theme: "colored",
       });
+      return;
     }
 
     console.log("Checking Status 1");
