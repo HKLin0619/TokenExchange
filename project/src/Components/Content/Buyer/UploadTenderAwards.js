@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 function UploadTenderAwards() {
   const [userid, setUserID] = useState("");
@@ -80,8 +80,8 @@ function UploadTenderAwards() {
       formData.append("pinataMetadata", metadata);
 
       //checking connection to pinata
-      console.log("Pinata link to: " + JWT);
-      console.log("Gateway: " + Gateway);
+      //console.log("Pinata link to: " + JWT);
+      //console.log("Gateway: " + Gateway);
 
       const options = JSON.stringify({
         cidVersion: 0,
@@ -118,7 +118,7 @@ function UploadTenderAwards() {
       // alert("SupplierID is not filled.");
       // return;
 
-      toast.error('SupplierID is not filled !', {
+      toast.error("SupplierID is not filled !", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -132,7 +132,7 @@ function UploadTenderAwards() {
     } else if (!awardamount) {
       // alert("Award amount is not filled.");
       // return;
-      toast.error('Award amount is not filled !', {
+      toast.error("Award amount is not filled !", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -143,11 +143,10 @@ function UploadTenderAwards() {
         theme: "colored",
       });
       return;
-
     } else if (!selectedFile) {
       // alert("Document is not uploaded.");
       // return;
-      toast.error('Document is not uploaded !', {
+      toast.error("Document is not uploaded !", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -161,7 +160,7 @@ function UploadTenderAwards() {
     } else if (!documenthash) {
       // alert("Document hash is not generated.");
       // return;
-      toast.error('Document hash is not generated !', {
+      toast.error("Document hash is not generated !", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -174,7 +173,7 @@ function UploadTenderAwards() {
       return;
     }
 
-    console.log("Checking Status 1");
+    //console.log("Checking Status 1");
 
     try {
       const response = await fetch("/writeData", {
@@ -196,7 +195,7 @@ function UploadTenderAwards() {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
 
-      console.log("Checking Status 2");
+      //console.log("Checking Status 2");
 
       // Optionally handle the response from the server, if needed
       const responseData = await response.json();
@@ -219,17 +218,17 @@ function UploadTenderAwards() {
   return (
     <div className="uta-main">
       <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-        />
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="uta-sub-main">
         <div className="uta-title">
           <h1>Upload Tender Awards</h1>
