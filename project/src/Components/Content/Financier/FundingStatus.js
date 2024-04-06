@@ -20,7 +20,7 @@ function FundingStatus() {
       const successParam = queryParams.get('success');
   
       if (successParam === 'true') {
-          toast.success('Token Minting Successfully !', {
+          toast.success('Update Successfully !', {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
