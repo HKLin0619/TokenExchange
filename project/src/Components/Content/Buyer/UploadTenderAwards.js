@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,10 +12,26 @@ function UploadTenderAwards() {
   const [documenthash, setDocumentHash] = useState("");
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
+  const inputRef = useRef();
 
   //for ipfs
   const [selectedFile, setSelectedFile] = useState(null);
   const [cid, setCid] = useState("");
+
+  const copyText = () => {
+    if (inputRef.current) {
+      inputRef.current.select();
+      console.log("start copy");
+      navigator.clipboard
+        .writeText(inputRef.current.value)
+        .then(() => {
+          alert("Link copied to clipboard: " + inputRef.current.value);
+        })
+        .catch((error) => {
+          console.error("Failed to copy:", error);
+        });
+    }
+  };
 
   //ipfs JWT & Gateway
   const JWT =
@@ -269,7 +285,7 @@ function UploadTenderAwards() {
             <i className="fa-solid fa-usd" />
             <input
               type="text"
-              placeholder="RM..."
+              placeholder="Award Amount (RM...)"
               className="uta-name"
               value={awardamount}
               onChange={(e) => setAwardAmount(e.target.value)}
@@ -305,12 +321,15 @@ function UploadTenderAwards() {
                     src={`https://ipfs.io/ipfs/${cid}`}
                     value={`https://ipfs.io/ipfs/${cid}`}
                     onChange={(e) => setDocument(e.target.value)}
+                    ref={inputRef}
                     disabled="true"
                     className="uta-name"
                   />
                 }
               </p>
             </div>
+
+            <button onClick={copyText}>Copy Link</button>
 
             <div className="uta-ipfs-output">
               <i className="fa-solid fa-link" />
