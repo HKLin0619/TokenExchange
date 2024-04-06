@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./UploadTenderAwardsStyle.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,10 +12,53 @@ function UploadTenderAwards() {
   const [documenthash, setDocumentHash] = useState("");
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
+  const inputRef = useRef();
 
   //for ipfs
   const [selectedFile, setSelectedFile] = useState(null);
   const [cid, setCid] = useState("");
+
+  const copyText = () => {
+    if (inputRef.current) {
+      inputRef.current.select();
+      console.log("start copy");
+      navigator.clipboard
+        .writeText(inputRef.current.value)
+        .then(() => {
+          if(inputRef.current.value === "https://ipfs.io/ipfs/") {
+            // alert("Please upload file first");
+            
+            toast.warning("Please upload the document !", {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            return;
+          } else {
+            // alert("Link copied to clipboard: " + inputRef.current.value);
+            toast.success("Link copied to clipboard: " + inputRef.current.value, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+            return;
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to copy:", error);
+        });
+    }
+  };
 
   //ipfs JWT & Gateway
   const JWT =
@@ -256,9 +299,10 @@ function UploadTenderAwards() {
         <div className="uta-inputs">
           <div className="uta-input">
             <i className="fa-solid fa-user" />
+            <span style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Supplier ID : </span>
             <input
               type="text"
-              placeholder="SupplierID"
+              placeholder="Enter Supplier ID"
               className="uta-name"
               value={supplierid}
               onChange={(e) => setSupplierID(e.target.value)}
@@ -267,9 +311,10 @@ function UploadTenderAwards() {
 
           <div className="uta-input">
             <i className="fa-solid fa-usd" />
+            <span style={{ fontWeight: 'bold', whiteSpace: 'nowrap' }}>Award Amount : RM </span>
             <input
               type="text"
-              placeholder="RM..."
+              placeholder="0.00"
               className="uta-name"
               value={awardamount}
               onChange={(e) => setAwardAmount(e.target.value)}
@@ -305,12 +350,16 @@ function UploadTenderAwards() {
                     src={`https://ipfs.io/ipfs/${cid}`}
                     value={`https://ipfs.io/ipfs/${cid}`}
                     onChange={(e) => setDocument(e.target.value)}
+                    ref={inputRef}
                     disabled="true"
                     className="uta-name"
                   />
                 }
+                <span style={{ marginLeft: "10px" }}><button className="uta-ipfs-btn-upload" onClick={copyText}>Copy Link</button></span>
               </p>
             </div>
+
+            
 
             <div className="uta-ipfs-output">
               <i className="fa-solid fa-link" />
