@@ -15,7 +15,16 @@ function SearchAwardID() {
   const handleSearch = async () => {
     try {
       if (!awardID) {
-        console.log("No awardID provided.");
+        toast.error('Please enter award ID !', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+      });
         return;
       }
 
@@ -71,7 +80,7 @@ function SearchAwardID() {
             setAwardID(paramAwardID);
             // Now you can perform further actions based on the awardID
             // For example, fetch additional data based on the awardID
-        }
+        } 
     }, [location.search]);
 
     useEffect(() => {
