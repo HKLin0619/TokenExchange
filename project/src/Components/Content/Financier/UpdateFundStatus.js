@@ -136,9 +136,6 @@ function UpdateFundStatus() {
                     <p><strong>Award Amount (RM)</strong> <span style={{ marginLeft: "5px" }}>: {awardamount} </span></p>
                     <p><strong>Document (IPFS)</strong> <span style={{ marginLeft: "35px" }}>: <br></br>{document}</span></p>
                     <p><strong>Document Hash</strong> <span style={{ marginLeft: "41px" }}>: <br></br>{documenthash}</span></p>
-
-
-
                     <label>
                         <strong style={{ color: "red" }}>Status is Funded*</strong>
                         <span style={{ marginLeft: "32px" }}>:  </span>
