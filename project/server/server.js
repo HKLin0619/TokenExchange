@@ -492,7 +492,6 @@ app.get("/fundingStatus", async (req, res) => {
   console.log(awardID);
   console.log(result.rows);
 
-  // Send the fetched data back in the response
   return res.status(200).send({ status: 200, data: result.rows });
 });
 
@@ -506,10 +505,8 @@ async function generateNextAwardIdFromDatabase() {
   let nextAwardId;
 
   if (latestAwardResult.rows.length === 0) {
-    // If no previous awardID found, start from 1 or any initial value you prefer
     nextAwardId = 1;
   } else {
-    // Increment the latest awardID by 1 after parsing it to an integer
     nextAwardId =
       parseInt(latestAwardResult.rows[0].awardid.replace(/^AD0*/, ""), 10) + 1;
   }
