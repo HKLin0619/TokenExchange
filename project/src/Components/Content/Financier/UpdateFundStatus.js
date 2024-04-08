@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 function UpdateFundStatus() {
     const navigate = useNavigate();
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState();
     //const [userID, setUserID] = useState('');
     const [awardid, setAwardID] = useState('');
     const [supplierid, setSupplierID] = useState('');
@@ -106,8 +106,13 @@ function UpdateFundStatus() {
     };
 
     const handleChangeStatus = (event) => {
-        setStatus(event.target.value);
-    }
+        const value = event.target.value === "true"; 
+        setStatus(value);
+    };
+
+    // const handleChangeStatus = (event) => {
+    //     setStatus(event.target.value);
+    // }
 
     return (
         <div className="ufs-main">
@@ -145,7 +150,7 @@ function UpdateFundStatus() {
                             type="radio"
                             name="status"
                             value="true"
-                            checked={status === "true"}            
+                            checked={status === true}            
                             onChange={handleChangeStatus}
                         />
                         <strong style={{ color: "green" }} className='ufs-radio-text1'>True</strong>
@@ -155,7 +160,7 @@ function UpdateFundStatus() {
                             type="radio"
                             name="status"
                             value="false"
-                            checked={status === "false"}
+                            checked={status === false}
                             onChange={handleChangeStatus}
                         />
                         <strong style={{ color: "red" }} className='ufs-radio-text2'>False</strong>

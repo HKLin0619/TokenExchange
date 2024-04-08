@@ -121,7 +121,7 @@ app.post("/tokenminting", async (req, res) => {
     })
     .send(
       {
-        from: "0x2A79ccBDbFCB4d8d4D8Dc598e14F67e6cAcF7CBb",
+        from: "0x1E3F4463FE13206F0b4d84963446cc121C438E53",
         gas: 3000000,
         gasPrice: 20000000000,
       },
@@ -156,7 +156,7 @@ app.post("/tokenminting", async (req, res) => {
         const mintAmount = numberOfToken; // Specify the amount to mint
         const mintTokenName = "DBX"; // Specify the token name
         await contractInstance.methods.mint(mintTokenName, mintAmount).send({
-          from: "0x2A79ccBDbFCB4d8d4D8Dc598e14F67e6cAcF7CBb",
+          from: "0x1E3F4463FE13206F0b4d84963446cc121C438E53",
           gas: 6721975,
           gasPrice: 20000000000,
         });
@@ -202,7 +202,7 @@ app.get("/viewtoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x2A79ccBDbFCB4d8d4D8Dc598e14F67e6cAcF7CBb";
+    const account = "0x1E3F4463FE13206F0b4d84963446cc121C438E53";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -272,13 +272,13 @@ app.post("/purchasetoken", async (req, res) => {
 
     // Call the WriteData function on the contract to transfer tokens
     await contractInstance.methods.purchase(tokenName, amount).send({
-      from: "0x59Ec0D652F14Ad322e4E599Ae2Dcb03a3f3ccE28", // Replace with the buyer's address
+      from: "0xa513F6fFE2369c4f54F7171aa7c30aC5d7F27884", // Replace with the buyer's address
       gas: 6721975,
       gasPrice: 20000000000,
     });
 
     // If the transaction is successful, record the purchase in the database
-    const buyerAddress = "0x59Ec0D652F14Ad322e4E599Ae2Dcb03a3f3ccE28"; // Replace with the actual buyer's address
+    const buyerAddress = "0xa513F6fFE2369c4f54F7171aa7c30aC5d7F27884"; // Replace with the actual buyer's address
     await database.query(
       'INSERT INTO "tokenpurchase" (buyer_address, token_name, amount_purchased) VALUES ($1, $2, $3) RETURNING *;',
       [buyerAddress, tokenName, amount]
@@ -364,7 +364,7 @@ app.post("/writeData", async (req, res) => {
   const financerIDString = financerid.toString();
   const documenthashString = documenthash.toString();
 
-  const buyerAddress = "0x59Ec0D652F14Ad322e4E599Ae2Dcb03a3f3ccE28";
+  const buyerAddress = "0xa513F6fFE2369c4f54F7171aa7c30aC5d7F27884";
 
   console.log("Received a writeData request:", req.body);
 
@@ -397,7 +397,7 @@ app.post("/writeData", async (req, res) => {
           funded_int
         )
         .send({
-          from: "0x59Ec0D652F14Ad322e4E599Ae2Dcb03a3f3ccE28", //buyer address
+          from: "0xa513F6fFE2369c4f54F7171aa7c30aC5d7F27884", //buyer address
           gas: 3000000,
           gasPrice: 20000000000,
         });
@@ -543,7 +543,7 @@ app.get("/viewbuyertoken", async (req, res) => {
     const contract = new web3.eth.Contract(contractABI, contractAddress);
 
     // Get the account address (you can obtain it from query parameters or use a default one)
-    const account = "0x59Ec0D652F14Ad322e4E599Ae2Dcb03a3f3ccE28";
+    const account = "0xa513F6fFE2369c4f54F7171aa7c30aC5d7F27884";
     const tokenSymbol = "DBX";
 
     const balanceBigInt = await contract.methods
@@ -575,7 +575,7 @@ app.post("/updateFundStatus", async (req, res) => {
     console.log("Award ID:", awardID);
     console.log("Financier ID:", financierID);
 
-    if (status === "true") {
+    if (status === true) {
       const result = await database.query(
         'UPDATE "award" SET "funded_ind" =$1, "financierid" =$2 WHERE "awardid" = $3',
         [status, financierID, awardID]
@@ -587,7 +587,7 @@ app.post("/updateFundStatus", async (req, res) => {
         awardID: awardID,
       });
     } else {
-      if (status === "") {
+      if (typeof status === 'undefined') {
         return res.status(400).send({ status: 400, message: error.message });
       } else {
         return res.status(250).send({
