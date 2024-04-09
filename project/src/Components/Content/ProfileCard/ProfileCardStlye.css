@@ -43,7 +43,7 @@
 }
 
 .f-user-info {
-    text-align: start;
+    text-align: flex-start;
     margin-bottom: 20px;
 }
   
