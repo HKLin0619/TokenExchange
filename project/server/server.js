@@ -471,8 +471,7 @@ app.post("/searchAwardID", async (req, res) => {
     } else {
       console.log("No matching awardID found.");
       // Handle the case where no matching awardID is found, e.g., return an error response
-      return res
-        .status(404)
+      return res.status(404)
         .send({ status: 404, message: "No matching awardID found." });
     }
   } catch (error) {

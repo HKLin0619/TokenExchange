@@ -37,6 +37,16 @@ function SearchAwardID() {
       });
 
       if (!response.ok) {
+        toast.error('Invalid Award ID!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }); 
         throw new Error("Request failed with status: " + response.status);
       }
 
