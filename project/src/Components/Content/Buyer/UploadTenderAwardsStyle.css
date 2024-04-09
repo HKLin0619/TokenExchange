@@ -29,7 +29,7 @@
 
 .uta-sec-sub-main h6 {
   color: red;
-  align-items: flex-start;
+  align-items: start;
   display: flex;
   margin-left: 10px;
 }
@@ -130,12 +130,12 @@
   margin-bottom: 0px;
   margin-left: 15px;
   display: flex;
-  align-items: flex-start;
+  align-items: start;
 }
 
 
 .uta-ipfs-outputs {
-  align-items: flex-start;
+  align-items: start;
 }
 
 .uta-ipfs-output{
