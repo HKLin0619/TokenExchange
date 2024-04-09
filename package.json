@@ -2,5 +2,8 @@
   "dependencies": {
     "@iconscout/react-unicons": "^2.0.2",
     "react-toastify": "^10.0.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19"
   }
 }
