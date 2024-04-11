@@ -246,7 +246,7 @@ function UploadTenderAwards() {
 
       if (responseData.success) {
         console.log("successfullyWriteData");
-        navigate("/buyerdashboard?success=true", storedUserData);
+        navigate("/buyerdashboard?success=trueTender", storedUserData);
       }
       // You can also redirect or perform other actions after a successful request
     } catch (error) {

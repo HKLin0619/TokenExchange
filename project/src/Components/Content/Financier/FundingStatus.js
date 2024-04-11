@@ -20,7 +20,7 @@ function FundingStatus() {
       const successParam = queryParams.get('success');
   
       if (successParam === 'true') {
-          toast.success('Update Successfully !', {
+          toast.success('Updated Successfully !', {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
