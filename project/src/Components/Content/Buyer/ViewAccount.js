@@ -34,13 +34,13 @@ function ViewAccount() {
             <div className="vt-shows">
                 <p>
                     <strong>Token Symbol</strong>{" "}
-                    <span style={{ marginLeft: "10px" }}>
+                    <span style={{ marginLeft: "11px" }}>
                     : {tokenData.tokenSymbol}
                     </span>
                 </p>
                 <p>
-                    <strong>Total Supply</strong>{" "}
-                    <span style={{ marginLeft: "22px" }}>
+                    <strong>Available Token</strong>{" "}
+                    <span style={{ marginLeft: "0px" }}>
                     :{" "}
                     {tokenData.balance
                         ? tokenData.balance.toLocaleString()
