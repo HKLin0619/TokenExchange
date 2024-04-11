@@ -143,9 +143,6 @@ function UploadTenderAwards() {
       );
       const resData = await res.json();
       setCid(resData.IpfsHash);
-      //check is data sent success
-      //console.log("hash: " + resData.IpfsHash);
-      //console.log(resData);
     } catch (error) {
       console.log(error);
     }
