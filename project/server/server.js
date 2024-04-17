@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const database = require("./database");
 
 app.use(express.static("public"));
@@ -8,6 +9,12 @@ app.use(express.json());
 const { tokenContract, web3 } = require("../contract/Blockchain");
 const byteCode = require("../contract/Bytecode");
 const contractABI = require("../contract/ContractABI");
+
+app.use(cors({
+  origin: 'http://10.150.210.64:3000',
+  optionsSuccessStatus: 200
+}));
+
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
