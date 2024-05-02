@@ -13,7 +13,7 @@ module.exports = async function (deployer, network, accounts) {
 
   const provider = new HDWalletProvider({
     mnemonic: mnemonic,
-    providerOrUrl: `https://polygon-mainnet.g.alchemy.com/v2/-lYXl-x16NSsx1qnRY2FuXVs4rF0-dD8`,
+    providerOrUrl: `https://polygon-mumbai.g.alchemy.com/v2/F1ML4buVRkx0K-OaITs-MkUDZcSLigq9`,
   });
 
   try {
