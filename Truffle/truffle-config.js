@@ -2,14 +2,14 @@
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const MNEMONIC = "hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst";
-const ALCHEMY_API_KEY = "F1ML4buVRkx0K-OaITs-MkUDZcSLigq9";
+const ALCHEMY_API_KEY = "-lYXl-x16NSsx1qnRY2FuXVs4rF0-dD8";
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = require('./MNEMONIC.js');
 
 const GAS_FEE = 20000000; // Adjust gas fee according to your network
 
 const networkConfig = {
   gas: GAS_FEE,
-  network_id: '80001', // Replace with your network ID
+  network_id: '137', // Replace with your network ID
   networkCheckTimeout: NETWORK_CHECK_TIMEOUT,
   confirmations: CONFIRMATIONS,
   skipDryRun: SKIP_DRY_RUN,
@@ -30,7 +30,7 @@ module.exports = {
 
         return new HDWalletProvider({
           mnemonic: MNEMONIC,
-          providerOrUrl: `wss://polygon-mumbai.g.alchemy.com/v2/F1ML4buVRkx0K-OaITs-MkUDZcSLigq9`
+          providerOrUrl: `wss://polygon-mainnet.g.alchemy.com/v2/-lYXl-x16NSsx1qnRY2FuXVs4rF0-dD8`
         });
       },
       ...networkConfig
