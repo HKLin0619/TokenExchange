@@ -30,7 +30,7 @@ contract TokenSaleContract {
 
     constructor() {
         owner = msg.sender;
-        totalSupply = 2000000;
+        totalSupply = 1000;
         tokensAvailable = totalSupply;
         ownersByTokenName["default"] = owner;
         balances[owner]["default"] = totalSupply;
