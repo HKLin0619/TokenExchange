@@ -171,11 +171,6 @@ function UploadTenderAwards() {
       // Once CID is generated, submit form data to the server
       const document = `https://ipfs.io/ipfs/${cid}`;
       const documenthash = cid;
-      // const awardDocument = `https://ipfs.io/ipfs/${awardCid}`; // Use the new awardCid
-      // const awardDocumentHash = awardCid;
-
-      // console.log("Doc: ", awardDocument);
-      // console.log("Doc Hash: ", awardDocumentHash);
   
       const response = await fetch("/writeData", {
         method: "POST",
@@ -200,6 +195,16 @@ function UploadTenderAwards() {
       console.log("Server response:", responseData);
   
       if (responseData.success) {
+        // Generate PDF with form data
+        generatePDF({
+          UserID: userid,
+          AwardID: awardid,
+          SupplierID: supplierid,
+          AwardAmount: awardamount,
+          DocumentLink: document,
+          DocumentHash: documenthash,
+        });
+  
         navigate("/buyerdashboard?success=trueTender", storedUserData);
       }
     } catch (error) {
@@ -209,6 +214,22 @@ function UploadTenderAwards() {
   
   const handleBack = async () => {
     navigate("/buyerdashboard");
+  };
+
+  const generatePDF = (formData) => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+  
+    // Add form data to the PDF
+    doc.text("User ID: " + formData.UserID, 10, 10);
+    doc.text("Award ID: " + formData.AwardID, 10, 20);
+    doc.text("Supplier ID: " + formData.SupplierID, 10, 30);
+    doc.text("Award Amount: " + formData.AwardAmount, 10, 40);
+    doc.text("Document Link: " + formData.DocumentLink, 10, 50);
+    doc.text("Document Hash: " + formData.DocumentHash, 10, 60);
+  
+    // Save the PDF
+    doc.save("submission_document.pdf");
   };
 
   return (
