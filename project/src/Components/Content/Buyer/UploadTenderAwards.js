@@ -216,20 +216,61 @@ function UploadTenderAwards() {
     navigate("/buyerdashboard");
   };
 
-  const generatePDF = (formData) => {
-    // Create a new jsPDF instance
-    const doc = new jsPDF();
+  const generatePDF = async (formData) => {
+    try {
+      // Create a new jsPDF instance
+      const doc = new jsPDF();
   
-    // Add form data to the PDF
-    doc.text("User ID: " + formData.UserID, 10, 10);
-    doc.text("Award ID: " + formData.AwardID, 10, 20);
-    doc.text("Supplier ID: " + formData.SupplierID, 10, 30);
-    doc.text("Award Amount: " + formData.AwardAmount, 10, 40);
-    doc.text("Document Link: " + formData.DocumentLink, 10, 50);
-    doc.text("Document Hash: " + formData.DocumentHash, 10, 60);
+      // Add form data to the PDF
+      doc.text("User ID: " + formData.UserID, 10, 10);
+      doc.text("Award ID: " + formData.AwardID, 10, 20);
+      doc.text("Supplier ID: " + formData.SupplierID, 10, 30);
+      doc.text("Award Amount: " + formData.AwardAmount, 10, 40);
+      doc.text("Document Link: " + formData.DocumentLink, 10, 50);
+      doc.text("Document Hash: " + formData.DocumentHash, 10, 60);
   
-    // Save the PDF
-    doc.save("submission_document.pdf");
+      // Generate a unique filename based on the IPFS hash
+      const filename = `${formData.DocumentHash}.pdf`;
+  
+      // Convert the PDF document to a Blob
+      const blob = doc.output("blob");
+  
+      // Create a FormData object and append the Blob
+      const formDataObj = new FormData();
+      formDataObj.append("file", blob, filename);
+  
+      // Upload the PDF Blob to Pinata
+      const metadata = JSON.stringify({
+        name: filename,
+      });
+      formDataObj.append("pinataMetadata", metadata);
+  
+      const options = JSON.stringify({
+        cidVersion: 0,
+      });
+      formDataObj.append("pinataOptions", options);
+  
+      const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${JWT}`,
+          },
+          body: formDataObj,
+        }
+      );
+      const resData = await res.json();
+      const newDocumentLink = `https://ipfs.io/ipfs/${resData.IpfsHash}`;
+
+      console.log("newDocumentLink: ", newDocumentLink)
+  
+      // Return the new document link
+      return newDocumentLink;
+    } catch (error) {
+      console.error("Error generating PDF and uploading to Pinata:", error);
+      return null;
+    }
   };
 
   return (
