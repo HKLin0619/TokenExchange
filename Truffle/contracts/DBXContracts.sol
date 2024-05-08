@@ -10,10 +10,14 @@ contract TokenSaleContract {
     mapping(string => address) public ownersByTokenName;
     mapping(string => bytes32) public awardIDByTokenName;
     
+    // Additional mappings for TenderNo and TenderDate
+    mapping(string => mapping(string => string)) public tenderNos;
+    mapping(string => mapping(string => string)) public tenderDates;
+    mapping(string => mapping(string => string)) public awardDocIPFSURLs;
 
     event TokensMinted(address indexed owner, string tokenName, uint256 amount);
     event TokensPurchased(address indexed buyer, string tokenName, uint256 amount);
-    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID,string supplierID,uint256 awardAmount,string award_Doc_Hash,string financerID,string funded_int);
+    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID, string supplierID, uint256 awardAmount, string award_Doc_Hash, string tenderNo, string tenderDate);
     
     // Assume you have additional mappings to store buyerID, supplierID, awardAmount, awardDocHash, financerID, and fundedInt
     mapping(string => mapping(string => string)) public buyerIDs;
@@ -22,6 +26,8 @@ contract TokenSaleContract {
     mapping(string => mapping(string => string)) public awardDocHashes;
     mapping(string => mapping(string => string)) public financerIDs;
     mapping(bytes32 => mapping(string => string)) public fundedInt;
+    mapping(string => mapping(string => string)) public buyerNames;
+    mapping(string => mapping(string => string)) public supplierNames;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Only the owner can call this function");
@@ -35,7 +41,6 @@ contract TokenSaleContract {
         ownersByTokenName["default"] = owner;
         balances[owner]["default"] = totalSupply;
     }
-
 
     function mint(string calldata tokenName, uint256 amount) external onlyOwner {
         require(tokensAvailable >= amount, "Not enough tokens available for minting");
@@ -52,13 +57,11 @@ contract TokenSaleContract {
         emit TokensMinted(ownersByTokenName[tokenName], tokenName, amount);
     }
 
-
     function purchase(string calldata tokenName, uint256 amount) external payable {
         require(amount > 0, "Purchase amount must be greater than 0");
         require(balances[ownersByTokenName[tokenName]][tokenName] >= amount, "Not enough tokens available for purchase");
         require(msg.value == amount * 0 ether, "Incorrect Ether amount sent");
         require(tokensAvailable >= amount, "Not enough tokens available for purchase");
-
 
         // Transfer tokens from owner to buyer
         balances[ownersByTokenName[tokenName]][tokenName] -= amount;
@@ -71,82 +74,63 @@ contract TokenSaleContract {
     }
 
     // New function to burn tokens and write data to the blockchain
-    function WriteData(string calldata tokenName, uint256 amount, string memory awardID, string memory buyerID,string memory supplierID,uint256 awardAmount,string memory award_Doc_Hash,string memory financerID,string memory funded_int) external {
-        // Hash awardID to bytes32
-        bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
+    function WriteData(
+        string memory awardID,
+        string memory buyerID,
+        string memory supplierID,
+        uint256 awardAmount,
+        string memory award_Doc_IPFS_URL,
+        string memory award_Doc_Hash,
+        string memory tenderNo,
+        string memory tenderDate,
+        string memory buyerName,
+        string memory supplierName
+    ) external {
+        string memory tokenName = "DBX"; // Default token name
 
+        // Ensure the caller has at least one token to burn
+        require(balances[msg.sender][tokenName] > 0, "You do not have any tokens to burn");
+
+        // Burn one token
+        balances[msg.sender][tokenName] -= 1;
+        tokensAvailable += 1;
+
+        // Store data including TenderNo and TenderDate
         buyerIDs[tokenName][awardID] = buyerID;
         supplierIDs[tokenName][awardID] = supplierID;
         awardAmounts[tokenName][awardID] = awardAmount;
+        awardDocIPFSURLs[tokenName][awardID] = award_Doc_IPFS_URL;
         awardDocHashes[tokenName][awardID] = award_Doc_Hash;
-        financerIDs[tokenName][awardID] = financerID;
-        fundedInt[hashedAwardID][tokenName] = funded_int;
-        
-        require(balances[msg.sender][tokenName] >= amount, "Not enough tokens to burn");
+        tenderNos[tokenName][awardID] = tenderNo;
+        tenderDates[tokenName][awardID] = tenderDate;
+        buyerNames[tokenName][awardID] = buyerName;
+        supplierNames[tokenName][awardID] = supplierName;
 
-        // Burn tokens
-        balances[msg.sender][tokenName] -= amount;
-        tokensAvailable += amount;
-
-        // Emit event for the burned tokens
-        emit TokensBurned(msg.sender, tokenName, amount, awardID, buyerID,supplierID,awardAmount,award_Doc_Hash,financerID,funded_int);
+        // Emit event for the burned token
+        emit TokensBurned(msg.sender, tokenName, 1, awardID, buyerID, supplierID, awardAmount, award_Doc_Hash, tenderNo, tenderDate);
     }
 
-    function getData(string calldata tokenName, string calldata awardID) external view returns (
-    uint256 amount,
-    string memory supplierID,
-    uint256 awardAmount,
-    string memory award_Doc_Hash,
-    string memory financerID,
-    string memory funded_int
+    function getData(string calldata awardID) external view returns (
+        uint256 amount,
+        string memory supplierID,
+        uint256 awardAmount,
+        string memory award_Doc_Hash,
+        string memory financerID,
+        string memory funded_int
     ) {
-    //hash awardID to bytes32
-    bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
+        string memory tokenName = "DBX"; // Default token name
+        bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
 
-    // Retrieve data based on tokenName and awardID
-    amount = balances[msg.sender][tokenName];
-    // buyerID = buyerIDs[tokenName][awardID];
-    supplierID = supplierIDs[tokenName][awardID];
-    awardAmount = awardAmounts[tokenName][awardID];
-    award_Doc_Hash = awardDocHashes[tokenName][awardID];
-    financerID = financerIDs[tokenName][awardID];
-    funded_int = fundedInt[hashedAwardID][tokenName];
+        // Retrieve data based on tokenName and awardID
+        amount = balances[msg.sender][tokenName];
+        supplierID = supplierIDs[tokenName][awardID];
+        awardAmount = awardAmounts[tokenName][awardID];
+        award_Doc_Hash = awardDocHashes[tokenName][awardID];
+        financerID = financerIDs[tokenName][awardID];
+        funded_int = fundedInt[hashedAwardID][tokenName];
     }
     
     function getBalance(address account, string calldata tokenName) external view returns (uint256) {
         return balances[account][tokenName];
     }
-
-    
-
-
-    function updateFundedInt(string calldata tokenName, string calldata awardID, string calldata newFundedInt,string calldata newFinancerID) external {
-    bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
-
-    require(
-        msg.sender == ownersByTokenName[tokenName] || 
-        msg.sender == thirdPersonByAwardID[hashedAwardID], 
-        "Only the token owner or designated third person can update funded_int" 
-    );
-    
-    fundedInt[hashedAwardID][tokenName] = newFundedInt;
-    //update financerID with new value
-    financerIDs[tokenName][awardID] = newFinancerID;
-
-    emit FundedIntUpdated(msg.sender, tokenName, newFundedInt, hashedAwardID);
-    }
-
-    mapping(bytes32 => address) public thirdPersonByAwardID;
-
-    event FundedIntUpdated(address indexed updater, string tokenName, string newFundedInt, bytes32 hashedAwardID);
-    
-    function designateThirdPerson(string calldata awardID, address thirdPerson) external onlyOwner {
-    bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
-
-    
-    require(msg.sender == owner, "Only the contract owner can designate a third person");
-    
-    thirdPersonByAwardID[hashedAwardID] = thirdPerson;
-    }
-    
 }

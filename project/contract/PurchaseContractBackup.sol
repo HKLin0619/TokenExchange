@@ -13,7 +13,7 @@ contract TokenSaleContract {
 
     event TokensMinted(address indexed owner, string tokenName, uint256 amount);
     event TokensPurchased(address indexed buyer, string tokenName, uint256 amount);
-    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID,string supplierID,uint256 awardAmount,string award_Doc_Hash,string financerID,string funded_int);
+    event TokensBurned(address indexed owner, string tokenName, uint256 amount, string awardID, string buyerID,string supplierID,uint256 awardAmount,string award_Doc_Hash);
     
     // Assume you have additional mappings to store buyerID, supplierID, awardAmount, awardDocHash, financerID, and fundedInt
     mapping(string => mapping(string => string)) public buyerIDs;
@@ -30,15 +30,12 @@ contract TokenSaleContract {
 
     constructor() {
         owner = msg.sender;
-        totalSupply = 1000000;
+        totalSupply = 1000;
         tokensAvailable = totalSupply;
         ownersByTokenName["default"] = owner;
         balances[owner]["default"] = totalSupply;
     }
 
-    function myFunction() public view returns (uint256, string memory) {
-        return (totalSupply, "KDX");
-    }
 
     function mint(string calldata tokenName, uint256 amount) external onlyOwner {
         require(tokensAvailable >= amount, "Not enough tokens available for minting");
@@ -55,19 +52,11 @@ contract TokenSaleContract {
         emit TokensMinted(ownersByTokenName[tokenName], tokenName, amount);
     }
 
-    function callFunction() public view returns (string memory, uint256) {
-        (uint256 amount, string memory tokenName) = myFunction();
-        return (tokenName, amount);
-    }
-
-    function getNumber() public pure returns (uint256) {
-        return 1;
-    }
 
     function purchase(string calldata tokenName, uint256 amount) external payable {
         require(amount > 0, "Purchase amount must be greater than 0");
         require(balances[ownersByTokenName[tokenName]][tokenName] >= amount, "Not enough tokens available for purchase");
-        require(msg.value == amount * 1 ether, "Incorrect Ether amount sent");
+        require(msg.value == amount * 0 ether, "Incorrect Ether amount sent");
         require(tokensAvailable >= amount, "Not enough tokens available for purchase");
 
 
@@ -81,21 +70,8 @@ contract TokenSaleContract {
         emit TokensPurchased(msg.sender, tokenName, amount);
     }
 
-    // Additional functions for checking balances, total supply, and owner by token name
-    function getBalance(address account, string calldata tokenName) external view returns (uint256) {
-        return balances[account][tokenName];
-    }
-
-    function getTotalSupply() external view returns (uint256) {
-        return totalSupply; 
-    }
-
-    function getOwnerByTokenName(string calldata tokenName) external view returns (address) {
-        return ownersByTokenName[tokenName];
-    }
-
     // New function to burn tokens and write data to the blockchain
-    function WriteData(string calldata tokenName, uint256 amount, string memory awardID, string memory buyerID,string memory supplierID,uint256 awardAmount,string memory award_Doc_Hash,string memory financerID,string memory funded_int) external {
+    function WriteData(string calldata tokenName, uint256 amount, string memory awardID, string memory buyerID,string memory supplierID,uint256 awardAmount,string memory award_Doc_Hash) external {
         // Hash awardID to bytes32
         bytes32 hashedAwardID = keccak256(abi.encodePacked(awardID));
 
@@ -103,8 +79,6 @@ contract TokenSaleContract {
         supplierIDs[tokenName][awardID] = supplierID;
         awardAmounts[tokenName][awardID] = awardAmount;
         awardDocHashes[tokenName][awardID] = award_Doc_Hash;
-        financerIDs[tokenName][awardID] = financerID;
-        fundedInt[hashedAwardID][tokenName] = funded_int;
         
         require(balances[msg.sender][tokenName] >= amount, "Not enough tokens to burn");
 
@@ -113,12 +87,11 @@ contract TokenSaleContract {
         tokensAvailable += amount;
 
         // Emit event for the burned tokens
-        emit TokensBurned(msg.sender, tokenName, amount, awardID, buyerID,supplierID,awardAmount,award_Doc_Hash,financerID,funded_int);
+        emit TokensBurned(msg.sender, tokenName, amount, awardID, buyerID,supplierID,awardAmount,award_Doc_Hash);
     }
 
     function getData(string calldata tokenName, string calldata awardID) external view returns (
     uint256 amount,
-    string memory buyerID,
     string memory supplierID,
     uint256 awardAmount,
     string memory award_Doc_Hash,
@@ -130,12 +103,16 @@ contract TokenSaleContract {
 
     // Retrieve data based on tokenName and awardID
     amount = balances[msg.sender][tokenName];
-    buyerID = buyerIDs[tokenName][awardID];
+    // buyerID = buyerIDs[tokenName][awardID];
     supplierID = supplierIDs[tokenName][awardID];
     awardAmount = awardAmounts[tokenName][awardID];
     award_Doc_Hash = awardDocHashes[tokenName][awardID];
     financerID = financerIDs[tokenName][awardID];
     funded_int = fundedInt[hashedAwardID][tokenName];
+    }
+    
+    function getBalance(address account, string calldata tokenName) external view returns (uint256) {
+        return balances[account][tokenName];
     }
 
     
