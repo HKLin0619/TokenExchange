@@ -346,6 +346,12 @@ app.post("/writeData", async (req, res) => {
   const amount = "1";
   const financerid = "none";
   const funded_int = "false"; //"False";
+  const userName = "Kevin";
+  const tenderNo = "TD01";
+  const tednderDate = "1/1/2024";
+  const supplierName = "Heng";
+  const financierName = "PBank";
+  const fundedDate = "1/1/2024";
 
   console.log("Quick Check: userid:", userid);
   console.log("awardid:" + awardid);
@@ -379,15 +385,16 @@ app.post("/writeData", async (req, res) => {
     try {
       const transactionReceipt = await contractInstance.methods
         .WriteData(
-          tokenName,
-          amount,
           awardid,
           useridString,
           supplieridString,
           awardamount,
+          documentString,
           documenthashString,
-          financerIDString,
-          funded_int
+          tenderNo,
+          tednderDate,
+          userName,
+          supplierName
         )
         .send({
           from: "0x44d1Bc53C719D984B5aeEeeaFa692F14698639cd", //buyer address
@@ -409,15 +416,22 @@ app.post("/writeData", async (req, res) => {
     //console.log("Transaction Receipt:", transactionReceipt);
 
     await database.query(
-      'INSERT INTO "award" (awardid,buyerid,supplierid,awardamount,award_doc_hash,funded_ind,document) VALUES ($1,$2,$3,$4,$5,$6,$7);',
+      'INSERT INTO "award" (awardid, buyerid, supplierid, awardamount, award_doc_hash, funded_ind, document, financierid, buyername, tenderno, tenderdate, suppliername, financiername, fundeddate) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14);',
       [
         awardid,
         useridString,
         supplieridString,
         awardamount,
         documenthash,
-        funded_int, //funded_intString,
+        funded_int,
         documentString,
+        financerIDString,
+        userName,
+        tenderNo,
+        tednderDate,
+        supplierName,
+        financierName,
+        fundedDate
       ]
     );
 

@@ -10,37 +10,6 @@ module.exports = [
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "updater",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "tokenName",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "newFundedInt",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "hashedAwardID",
-				"type": "bytes32"
-			}
-		],
-		"name": "FundedIntUpdated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
 				"name": "owner",
 				"type": "address"
 			},
@@ -89,13 +58,13 @@ module.exports = [
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "financerID",
+				"name": "tenderNo",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "funded_int",
+				"name": "tenderDate",
 				"type": "string"
 			}
 		],
@@ -156,16 +125,6 @@ module.exports = [
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "tokenName",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
 				"name": "awardID",
 				"type": "string"
 			},
@@ -186,17 +145,32 @@ module.exports = [
 			},
 			{
 				"internalType": "string",
+				"name": "award_Doc_IPFS_URL",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "award_Doc_Hash",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "financerID",
+				"name": "tenderNo",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "funded_int",
+				"name": "tenderDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "buyerName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "supplierName",
 				"type": "string"
 			}
 		],
@@ -243,6 +217,30 @@ module.exports = [
 			}
 		],
 		"name": "awardDocHashes",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "awardDocIPFSURLs",
 		"outputs": [
 			{
 				"internalType": "string",
@@ -324,18 +322,24 @@ module.exports = [
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "awardID",
+				"name": "",
 				"type": "string"
 			},
 			{
-				"internalType": "address",
-				"name": "thirdPerson",
-				"type": "address"
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
-		"name": "designateThirdPerson",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"name": "buyerNames",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -412,11 +416,6 @@ module.exports = [
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "string",
-				"name": "tokenName",
-				"type": "string"
-			},
 			{
 				"internalType": "string",
 				"name": "awardID",
@@ -554,17 +553,70 @@ module.exports = [
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "",
-				"type": "bytes32"
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
-		"name": "thirdPersonByAwardID",
+		"name": "supplierNames",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "string",
 				"name": "",
-				"type": "address"
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "tenderDates",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "tenderNos",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -594,34 +646,6 @@ module.exports = [
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "tokenName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "awardID",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "newFundedInt",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "newFinancerID",
-				"type": "string"
-			}
-		],
-		"name": "updateFundedInt",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ];
