@@ -12,6 +12,7 @@ function UploadTenderAwards() {
   const [awardamount, setAwardAmount] = useState("");
   const [setDocument] = useState("");
   const [setDocumentHash] = useState("");
+  const [userName, setUserName] = useState("");
   const [awardCid, setAwardCid] = useState(""); // New state for award CID
   const storedUserData = JSON.parse(localStorage.getItem("userData"));
   const navigate = useNavigate();
@@ -94,11 +95,12 @@ function UploadTenderAwards() {
             );
           }
           const data = await response.json();
-
+          setUserName(storedUserData.userName);
           setUserID(data.userId);
           setAwardID(data.awardId);
           // Set other state values if needed
           console.log("UserID and AwardID:", data.userId, data.awardId);
+          console.log("AAA = ", userName);
         } else {
           console.error("Invalid storedUserData:", storedUserData);
         }
@@ -166,7 +168,7 @@ function UploadTenderAwards() {
           theme: "colored",
         });
         return;
-      }
+      };
   
       // Once CID is generated, submit form data to the server
       const document = `https://ipfs.io/ipfs/${cid}`;
@@ -184,9 +186,10 @@ function UploadTenderAwards() {
           awardamount,
           document,
           documenthash,
+          userName
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -194,6 +197,21 @@ function UploadTenderAwards() {
       const responseData = await response.json();
       console.log("Server response:", responseData);
   
+      if(responseData.errorType === "insufficientToken"){
+        console.log("validationSymbol!");
+
+          toast.error('Insufficient Token!', {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+          });
+      }
+
       if (responseData.success) {
         // Generate PDF with form data
         // generatePDF({
