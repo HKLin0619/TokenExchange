@@ -1,10 +1,9 @@
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-const { artifacts } = require("@truffle/hdwallet-provider"); // Import artifacts from Truffle
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 const TokenSaleContract = artifacts.require("TokenSaleContract");
 
 module.exports = async function (deployer, network, accounts) {
-  const mnemonic = process.env.MNEMONIC;
-  const infuraKey = process.env.INFURA_KEY;
+  const mnemonic = "hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst";
+  const infuraKey = "HgdQ5uEuyEkL80PxHnNkCvJgGzcioGDM";
 
   if (!mnemonic || !infuraKey) {
     console.error("Please set MNEMONIC and AlCHEMY_KEY environment variables");
