@@ -2,15 +2,13 @@
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const MNEMONIC = "hole tongue pledge citizen exclude inmate crisp danger stove sock drill burst";
-const ALCHEMY_API_KEY = "-lYXl-x16NSsx1qnRY2FuXVs4rF0-dD8";
+const ALCHEMY_API_KEY = "HgdQ5uEuyEkL80PxHnNkCvJgGzcioGDM";
 const { NETWORK_CHECK_TIMEOUT, CONFIRMATIONS, SKIP_DRY_RUN, TIME_OUT_BLOCK, POLYGON_SCAN_API_KEY } = require('./MNEMONIC.js');
-//b375af623c78c63ebb3a18d39dc411d0376ab899e7772cc83c1e61eb3086f19a
 
 const GAS_FEE = 20000000; // Adjust gas fee according to your network
 
 const networkConfig = {
   gas: GAS_FEE,
-  network_id: '137', // Replace with your network ID
   networkCheckTimeout: NETWORK_CHECK_TIMEOUT,
   confirmations: CONFIRMATIONS,
   skipDryRun: SKIP_DRY_RUN,
@@ -22,7 +20,7 @@ const networkConfig = {
 
 module.exports = {
   networks: {
-    polygon_mainnet: {
+    ethereum_sepolia: {
       provider: () => {
         if (!MNEMONIC || !ALCHEMY_API_KEY) {
           console.error("Please set MNEMONIC and ALCHEMY_API_KEY environment variables");
@@ -31,9 +29,10 @@ module.exports = {
 
         return new HDWalletProvider({
           mnemonic: MNEMONIC,
-          providerOrUrl: `wss://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
+          providerOrUrl: `wss://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
         });
       },
+      network_id: '11155111', // Ethereum Sepolia network id
       ...networkConfig
     },
   },
@@ -47,9 +46,5 @@ module.exports = {
         },
       },
     },
-  },
-  plugins: ['truffle-plugin-verify'],
-  api_keys: {
-    polygonscan: POLYGON_SCAN_API_KEY,
   },
 };

@@ -3,5 +3,5 @@ module.exports = {
     CONFIRMATIONS: 1,
     SKIP_DRY_RUN: false,
     TIME_OUT_BLOCK:20000,
-    POLYGON_SCAN_API_KEY: '-lYXl-x16NSsx1qnRY2FuXVs4rF0-dD8'
+    POLYGON_SCAN_API_KEY: 'HgdQ5uEuyEkL80PxHnNkCvJgGzcioGDM'
 };
